@@ -64,6 +64,11 @@ namespace FluentAssemblyScanner
             var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
             return FromAssembly(assembly);
         }
+        public static FromAssemblyDescriptor FromAssemblyMatched(string assemblyPrefix)
+        {
+            var assemblies = ReflectionUtil.GetAssembliesMatched(assemblyPrefix);
+            return new FromAssemblyDescriptor(assemblies, Filter);
+        }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static FromAssemblyDescriptor FromThisAssembly()

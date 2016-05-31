@@ -49,6 +49,11 @@ namespace FluentAssemblyScanner.Util
             return assemblyProvider.GetAssemblies();
         }
 
+        public static IEnumerable<Assembly> GetAssembliesMatched(string assemblyPrefix)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Assembly GetAssemblyNamed(string assemblyName)
         {
             Debug.Assert(string.IsNullOrEmpty(assemblyName) == false);
