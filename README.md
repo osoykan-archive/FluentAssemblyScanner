@@ -6,8 +6,8 @@
 
 ```csharp
 AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
-                 .IncludeNonPublicTypes()
-                 .BasedOn<JobModuleBase>()
-                 .NonStatic()
-                 .Scan();
+               .IncludeNonPublicTypes()
+               .BasedOn<JobModuleBase>()
+               .NonStatic()
+               .Scan();
 ```
