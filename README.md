@@ -5,9 +5,14 @@
 ##### How to ?
 
 ```csharp
-AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
-               .IncludeNonPublicTypes()
-               .BasedOn<JobModuleBase>()
-               .NonStatic()
-               .Scan();
+private static void Program()
+{
+  AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
+                 .IncludeNonPublicTypes()
+                 .BasedOn<JobModuleBase>()
+                 .NonStatic()
+                 .Scan();
+}
+
+ 
 ```
