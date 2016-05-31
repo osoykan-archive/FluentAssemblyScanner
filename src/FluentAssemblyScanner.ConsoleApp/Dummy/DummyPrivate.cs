@@ -1,4 +1,4 @@
 ﻿namespace FluentAssemblyScanner.ConsoleApp.Dummy
 {
-    class Dummy : IDummy {}
+    public class DummyPublic : IDummy {}
 }

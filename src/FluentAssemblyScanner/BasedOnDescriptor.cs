@@ -7,20 +7,28 @@ namespace FluentAssemblyScanner
 {
     public class BasedOnDescriptor
     {
-        private readonly List<Type> potentialBasedOns;
         private readonly IEnumerable<Assembly> assemblies;
+        private readonly List<Type> potentialBasedOns;
         private Predicate<Type> ifFilter;
+        private bool includeNonPublicTypes;
 
         internal BasedOnDescriptor(IEnumerable<Type> basedOn, Predicate<Type> additionalFilters, IEnumerable<Assembly> assemblies)
         {
             potentialBasedOns = basedOn.ToList();
             this.assemblies = assemblies;
             If(additionalFilters);
+            If(t => t.IsPublic == false);
         }
 
         public BasedOnDescriptor If(Predicate<Type> filter)
         {
             ifFilter += filter;
+            return this;
+        }
+
+        public BasedOnDescriptor IncludeNonPublicTypes()
+        {
+            includeNonPublicTypes = true;
             return this;
         }
 
@@ -42,12 +50,12 @@ namespace FluentAssemblyScanner
             return types;
         }
 
-        protected virtual bool Accepts(Type type, out Type[] baseTypes)
+        private bool Accepts(Type type, out Type[] baseTypes)
         {
-            return IsBasedOn(type, out baseTypes) && ExecuteIfCondition(type) == false;
+            return IsBasedOn(type, out baseTypes) && ExecuteIfCondition(type);
         }
 
-        protected bool ExecuteIfCondition(Type type)
+        private bool ExecuteIfCondition(Type type)
         {
             if (ifFilter == null)
             {
@@ -65,7 +73,7 @@ namespace FluentAssemblyScanner
             return true;
         }
 
-        protected bool IsBasedOn(Type type, out Type[] baseTypes)
+        private bool IsBasedOn(Type type, out Type[] baseTypes)
         {
             var actuallyBasedOn = new List<Type>();
             foreach (var potentialBase in potentialBasedOns)
@@ -101,7 +109,7 @@ namespace FluentAssemblyScanner
                 if (type.IsGenericType &&
                     type.GetGenericTypeDefinition() == basedOn)
                 {
-                    baseTypes = new[] {type};
+                    baseTypes = new[] { type };
                     return true;
                 }
 

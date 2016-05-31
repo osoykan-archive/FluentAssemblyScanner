@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dummy\Dummy.cs" />
+    <Compile Include="Dummy\DummyPrivate.cs" />
     <Compile Include="Dummy\IDummy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,10 +6,10 @@ namespace FluentAssemblyScanner.ConsoleApp
     {
         private static void Main(string[] args)
         {
-            var assemblyDescriptor = Classes
+            var assemblyDescriptor = AssemblyScanner
                 .FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
-                .IncludeNonPublicTypes()
                 .BasedOn<IDummy>()
+                .IncludeNonPublicTypes()
                 .Scan();
         }
     }

@@ -9,8 +9,6 @@ namespace FluentAssemblyScanner
         private readonly Predicate<Type> additionalFilters;
         private readonly IEnumerable<Assembly> assemblies;
 
-        protected bool NonPublicTypes;
-
         protected FromDescriptor(Predicate<Type> additionalFilters, IEnumerable<Assembly> assemblies)
         {
             this.additionalFilters = additionalFilters;
@@ -69,7 +67,7 @@ namespace FluentAssemblyScanner
             return Where(Component.IsInSameNamespaceAs<T>(includeSubnamespaces));
         }
 
-        public BasedOnDescriptor Pick()
+        public BasedOnDescriptor PickAny()
         {
             return BasedOn<object>();
         }

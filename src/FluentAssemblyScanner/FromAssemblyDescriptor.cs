@@ -19,11 +19,5 @@ namespace FluentAssemblyScanner
         {
             Assemblies = assemblies;
         }
-
-        public FromAssemblyDescriptor IncludeNonPublicTypes()
-        {
-            NonPublicTypes = true;
-            return this;
-        }
     }
 }
