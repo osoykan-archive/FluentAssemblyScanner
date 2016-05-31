@@ -13,10 +13,10 @@
 ```csharp
 public static void Program()
 {
-  AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
-                 .IncludeNonPublicTypes()
-                 .BasedOn<IAnyInterface>()
-                 .NonStatic()
-                 .Scan();
+  IEnumerable<Type> types = AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
+                                           .IncludeNonPublicTypes()
+                                           .BasedOn<IAnyInterface>()
+                                           .NonStatic()
+                                           .Scan();
 }
 ```
