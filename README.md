@@ -9,10 +9,8 @@ public static void Program()
 {
   AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
                  .IncludeNonPublicTypes()
-                 .BasedOn<JobModuleBase>()
+                 .BasedOn<IAnyInterface>()
                  .NonStatic()
                  .Scan();
 }
-
- 
 ```
