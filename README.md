@@ -4,7 +4,7 @@
 
 ##### How to ?
 
-```C#
+```csharp
 AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
                  .IncludeNonPublicTypes()
                  .BasedOn<JobModuleBase>()
