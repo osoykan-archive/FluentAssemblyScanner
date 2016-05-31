@@ -5,7 +5,7 @@
 ##### How to ?
 
 ```csharp
-private static void Program()
+public static void Program()
 {
   AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
                  .IncludeNonPublicTypes()
