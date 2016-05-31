@@ -31,7 +31,7 @@ namespace FluentAssemblyScanner.Util
 
         public static IEnumerable<Assembly> GetApplicationAssemblies(Assembly rootAssembly)
         {
-            var index = rootAssembly.FullName.IndexOfAny(new[] { '.', ',' });
+            var index = rootAssembly.FullName.IndexOfAny(new[] {'.', ','});
             if (index < 0)
             {
                 throw new ArgumentException(
@@ -49,9 +49,9 @@ namespace FluentAssemblyScanner.Util
             return assemblyProvider.GetAssemblies();
         }
 
-        public static IEnumerable<Assembly> GetAssembliesContains(string assemblyPrefix)
+        public static IEnumerable<Assembly> GetAssembliesContains(string assemblyPrefix, IAssemblyProvider assemblyProvider)
         {
-            throw new NotImplementedException();
+            return assemblyProvider.GetAssemblies().Where(assembly => assembly.FullName.Contains(assemblyPrefix));
         }
 
         public static Assembly GetAssemblyNamed(string assemblyName)
@@ -110,6 +110,7 @@ namespace FluentAssemblyScanner.Util
                     }
                 }
             }
+
             var assembly = LoadAssembly(assemblyName);
             if (assemblyFilter != null)
             {
@@ -121,6 +122,7 @@ namespace FluentAssemblyScanner.Util
                     }
                 }
             }
+
             return assembly;
         }
 
@@ -137,6 +139,7 @@ namespace FluentAssemblyScanner.Util
                 {
                     return assembly.GetTypes();
                 }
+
                 return assembly.GetExportedTypes();
             }
             catch (ReflectionTypeLoadException e)
@@ -173,11 +176,13 @@ namespace FluentAssemblyScanner.Util
             {
                 return null;
             }
+
             var openGeneric = type.GetGenericTypeDefinition();
             if (OpenGenericArrayInterfaces.Contains(openGeneric))
             {
                 return type.GetGenericArguments()[0];
             }
+
             return null;
         }
 
@@ -222,6 +227,7 @@ namespace FluentAssemblyScanner.Util
                 // path contains invalid characters...
                 return false;
             }
+
             return IsDll(extension) || IsExe(extension);
         }
 
@@ -231,6 +237,7 @@ namespace FluentAssemblyScanner.Util
             {
                 return;
             }
+
             foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
             {
                 if (IsApplicationAssembly(applicationName, referencedAssembly.FullName))
@@ -251,6 +258,7 @@ namespace FluentAssemblyScanner.Util
                     Expression.ArrayIndex(argument, Expression.Constant(i, typeof(int))),
                     parameterInfos[i].ParameterType.IsByRef ? parameterInfos[i].ParameterType.GetElementType() : parameterInfos[i].ParameterType);
             }
+
             return Expression.Lambda<Func<object[], object>>(
                 Expression.New(ctor, parameterExpressions),
                 argument).Compile();
@@ -284,7 +292,7 @@ namespace FluentAssemblyScanner.Util
             }
             catch (ArgumentException)
             {
-                assemblyName = new AssemblyName { CodeBase = filePath };
+                assemblyName = new AssemblyName {CodeBase = filePath};
             }
             return assemblyName;
         }
@@ -298,6 +306,7 @@ namespace FluentAssemblyScanner.Util
             {
                 return (TBase)Instantiate(constructor, ctorArgs);
             }
+
             try
             {
                 return (TBase)Activator.CreateInstance(subtypeofTBase, ctorArgs);
@@ -318,8 +327,10 @@ namespace FluentAssemblyScanner.Util
                     {
                         messageBuilder.AppendLine(type.FullName);
                     }
+
                     message = messageBuilder.ToString();
                 }
+
                 throw new ArgumentException(message, ex);
             }
             catch (Exception ex)

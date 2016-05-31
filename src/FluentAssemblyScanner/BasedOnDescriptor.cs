@@ -17,10 +17,7 @@ namespace FluentAssemblyScanner
             If(DefaultFilter);
         }
 
-        public static bool DefaultFilter(Type type)
-        {
-            return type.IsClass && type.IsAbstract == false;
-        }
+        private static bool DefaultFilter(Type type) => type.IsClass && type.IsAbstract == false;
 
         public BasedOnDescriptor If(Predicate<Type> filter)
         {
@@ -28,9 +25,33 @@ namespace FluentAssemblyScanner
             return this;
         }
 
+        public BasedOnDescriptor NonStatic()
+        {
+            ifFilter += type => type.IsAbstract == false && type.IsSealed == false;
+            return this;
+        }
+
+        public BasedOnDescriptor HasAttribute<TAttribute>() where TAttribute : Attribute
+        {
+            If(Component.HasAttribute<TAttribute>);
+            return this;
+        }
+
+        public BasedOnDescriptor HasAttribute<TAttribute>(Predicate<TAttribute> filter) where TAttribute : Attribute
+        {
+            If(Component.HasAttribute(filter));
+            return this;
+        }
+
         public BasedOnDescriptor OrBasedOn(Type basedOn)
         {
             potentialBasedOns.Add(basedOn);
+            return this;
+        }
+
+        public BasedOnDescriptor OrBasedOn<T>()
+        {
+            potentialBasedOns.Add(typeof(T));
             return this;
         }
 

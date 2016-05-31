@@ -24,31 +24,31 @@ namespace FluentAssemblyScanner
             if (includeSubnamespaces)
             {
                 return type => type.Namespace == @namespace ||
-                    type.Namespace != null &&
-                        type.Namespace.StartsWith(@namespace + ".");
+                               type.Namespace != null &&
+                               type.Namespace.StartsWith(@namespace + ".");
             }
 
             return type => type.Namespace == @namespace;
         }
 
-        public static Predicate<Type> IsInSameNamespaceAs(Type type)
+        public static Predicate<Type> IsInSameNamespaceOf(Type type)
         {
             return IsInNamespace(type.Namespace);
         }
 
-        public static Predicate<Type> IsInSameNamespaceAs(Type type, bool includeSubnamespaces)
+        public static Predicate<Type> IsInSameNamespaceOf(Type type, bool includeSubnamespaces)
         {
             return IsInNamespace(type.Namespace, includeSubnamespaces);
         }
 
-        public static Predicate<Type> IsInSameNamespaceAs<T>()
+        public static Predicate<Type> IsInSameNamespaceOf<T>()
         {
-            return IsInSameNamespaceAs(typeof(T));
+            return IsInSameNamespaceOf(typeof(T));
         }
 
-        public static Predicate<Type> IsInSameNamespaceAs<T>(bool includeSubnamespaces)
+        public static Predicate<Type> IsInSameNamespaceOf<T>(bool includeSubnamespaces)
         {
-            return IsInSameNamespaceAs(typeof(T), includeSubnamespaces);
+            return IsInSameNamespaceOf(typeof(T), includeSubnamespaces);
         }
     }
 }

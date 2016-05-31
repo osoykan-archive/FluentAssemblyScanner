@@ -25,6 +25,7 @@ namespace FluentAssemblyScanner.Extensions
         {
             if (items == null)
                 return;
+
             foreach (var obj in items)
                 action(obj);
         }
@@ -38,6 +39,7 @@ namespace FluentAssemblyScanner.Extensions
         {
             if (@this != null)
                 return !@this.GetEnumerator().MoveNext();
+
             return true;
         }
     }

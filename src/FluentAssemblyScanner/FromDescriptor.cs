@@ -48,24 +48,24 @@ namespace FluentAssemblyScanner
             return Where(Component.IsInNamespace(@namespace, includeSubnamespaces));
         }
 
-        public BasedOnDescriptor InSameNamespaceAs(Type type)
+        public BasedOnDescriptor InSameNamespaceOf(Type type)
         {
-            return Where(Component.IsInSameNamespaceAs(type));
+            return Where(Component.IsInSameNamespaceOf(type));
         }
 
-        public BasedOnDescriptor InSameNamespaceAs(Type type, bool includeSubnamespaces)
+        public BasedOnDescriptor InSameNamespaceOf(Type type, bool includeSubnamespaces)
         {
-            return Where(Component.IsInSameNamespaceAs(type, includeSubnamespaces));
+            return Where(Component.IsInSameNamespaceOf(type, includeSubnamespaces));
         }
 
-        public BasedOnDescriptor InSameNamespaceAs<T>()
+        public BasedOnDescriptor InSameNamespaceOf<T>()
         {
-            return Where(Component.IsInSameNamespaceAs<T>());
+            return Where(Component.IsInSameNamespaceOf<T>());
         }
 
-        public BasedOnDescriptor InSameNamespaceAs<T>(bool includeSubnamespaces) where T : class
+        public BasedOnDescriptor InSameNamespaceOf<T>(bool includeSubnamespaces) where T : class
         {
-            return Where(Component.IsInSameNamespaceAs<T>(includeSubnamespaces));
+            return Where(Component.IsInSameNamespaceOf<T>(includeSubnamespaces));
         }
 
         public BasedOnDescriptor PickAny()

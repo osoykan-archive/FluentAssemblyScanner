@@ -16,7 +16,7 @@ namespace FluentAssemblyScanner
         private Predicate<Assembly> assemblyFilter;
         private Predicate<AssemblyName> nameFilter;
 
-        public AssemblyFilter(string directoryName, string mask = null)
+        internal AssemblyFilter(string directoryName, string mask = null)
         {
             if (directoryName == null)
             {
@@ -77,6 +77,7 @@ namespace FluentAssemblyScanner
             {
                 throw new ArgumentNullException(nameof(publicKeyToken));
             }
+
             return FilterByName(n => IsTokenEqual(n.GetPublicKeyToken(), publicKeyToken));
         }
 
@@ -106,6 +107,7 @@ namespace FluentAssemblyScanner
                 throw new ArgumentException(
                     $"The string '{keyToken}' does not appear to be a valid public key token. It should have 16 characters, has {keyToken.Length}.");
             }
+
             try
             {
                 var tokenBytes = new byte[8];
@@ -113,6 +115,7 @@ namespace FluentAssemblyScanner
                 {
                     tokenBytes[i] = byte.Parse(keyToken.Substring(2 * i, 2), NumberStyles.HexNumber);
                 }
+
                 return tokenBytes;
             }
             catch (Exception e)
@@ -163,6 +166,7 @@ namespace FluentAssemblyScanner
             {
                 return false;
             }
+
             for (var i = 0; i < actualToken.Length; i++)
             {
                 if (actualToken[i] != expectedToken[i])
@@ -170,6 +174,7 @@ namespace FluentAssemblyScanner
                     return false;
                 }
             }
+
             return true;
         }
 
