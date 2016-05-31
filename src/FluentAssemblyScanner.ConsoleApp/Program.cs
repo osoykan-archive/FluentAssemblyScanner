@@ -8,8 +8,9 @@ namespace FluentAssemblyScanner.ConsoleApp
         {
             var assemblyDescriptor = AssemblyScanner
                 .FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
-                .BasedOn<IDummy>()
                 .IncludeNonPublicTypes()
+                .ExcludeAssemblyContaining<IDummy>()
+                .BasedOn<IDummy>()
                 .Scan();
         }
     }

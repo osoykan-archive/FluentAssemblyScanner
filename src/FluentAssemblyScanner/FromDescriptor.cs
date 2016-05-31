@@ -4,16 +4,17 @@ using System.Reflection;
 
 namespace FluentAssemblyScanner
 {
-    public class FromDescriptor
+    public abstract class FromDescriptor
     {
-        private readonly Predicate<Type> additionalFilters;
-        private readonly IEnumerable<Assembly> assemblies;
+        protected IEnumerable<Assembly> Assemblies;
+        protected Func<IEnumerable<Assembly>, IEnumerable<Assembly>> assemblyFilter;
 
-        protected FromDescriptor(Predicate<Type> additionalFilters, IEnumerable<Assembly> assemblies)
+        protected internal FromDescriptor(IEnumerable<Assembly> assemblies)
         {
-            this.additionalFilters = additionalFilters;
-            this.assemblies = assemblies;
+            Assemblies = assemblies;
         }
+
+        public abstract IEnumerable<Type> SelectedTypes();
 
         public BasedOnDescriptor BasedOn<T>()
         {
@@ -32,7 +33,7 @@ namespace FluentAssemblyScanner
 
         public BasedOnDescriptor BasedOn(IEnumerable<Type> basedOn)
         {
-            var descriptor = new BasedOnDescriptor(basedOn, additionalFilters, assemblies);
+            var descriptor = new BasedOnDescriptor(basedOn, this);
 
             return descriptor;
         }
@@ -74,8 +75,7 @@ namespace FluentAssemblyScanner
 
         public BasedOnDescriptor Where(Predicate<Type> filter)
         {
-            var descriptor = new BasedOnDescriptor(new[] {typeof(object)}, additionalFilters, assemblies)
-                .If(filter);
+            var descriptor = new BasedOnDescriptor(new[] {typeof(object)}, this).If(filter);
 
             return descriptor;
         }

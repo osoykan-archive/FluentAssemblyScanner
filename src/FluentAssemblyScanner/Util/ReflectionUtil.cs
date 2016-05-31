@@ -49,7 +49,7 @@ namespace FluentAssemblyScanner.Util
             return assemblyProvider.GetAssemblies();
         }
 
-        public static IEnumerable<Assembly> GetAssembliesMatched(string assemblyPrefix)
+        public static IEnumerable<Assembly> GetAssembliesContains(string assemblyPrefix)
         {
             throw new NotImplementedException();
         }

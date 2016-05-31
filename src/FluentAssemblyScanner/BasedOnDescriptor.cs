@@ -1,34 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace FluentAssemblyScanner
 {
     public class BasedOnDescriptor
     {
-        private readonly IEnumerable<Assembly> assemblies;
+        private readonly FromDescriptor from;
         private readonly List<Type> potentialBasedOns;
         private Predicate<Type> ifFilter;
-        private bool includeNonPublicTypes;
 
-        internal BasedOnDescriptor(IEnumerable<Type> basedOn, Predicate<Type> additionalFilters, IEnumerable<Assembly> assemblies)
+        internal BasedOnDescriptor(IEnumerable<Type> basedOn, FromDescriptor from)
         {
             potentialBasedOns = basedOn.ToList();
-            this.assemblies = assemblies;
-            If(additionalFilters);
-            If(t => t.IsPublic == false);
+            this.from = from;
+            If(DefaultFilter);
+        }
+
+        public static bool DefaultFilter(Type type)
+        {
+            return type.IsClass && type.IsAbstract == false;
         }
 
         public BasedOnDescriptor If(Predicate<Type> filter)
         {
             ifFilter += filter;
-            return this;
-        }
-
-        public BasedOnDescriptor IncludeNonPublicTypes()
-        {
-            includeNonPublicTypes = true;
             return this;
         }
 
@@ -38,24 +34,20 @@ namespace FluentAssemblyScanner
             return this;
         }
 
-        public ICollection<Type> Scan()
+        public List<Type> Scan()
         {
-            Type[] baseTypes;
-            var types = (from asm in assemblies
-                         from type in asm.GetTypes()
-                         where Accepts(type, out baseTypes)
-                         select type)
-                .ToList();
-
-            return types;
+            return from.SelectedTypes()
+                       .Where(ConsiderIfCondition)
+                       .Where(ConsiderBasedOns)
+                       .ToList();
         }
 
-        private bool Accepts(Type type, out Type[] baseTypes)
+        private bool ConsiderBasedOns(Type type)
         {
-            return IsBasedOn(type, out baseTypes) && ExecuteIfCondition(type);
+            return potentialBasedOns.Any(t => t.IsAssignableFrom(type));
         }
 
-        private bool ExecuteIfCondition(Type type)
+        private bool ConsiderIfCondition(Type type)
         {
             if (ifFilter == null)
             {
@@ -71,75 +63,6 @@ namespace FluentAssemblyScanner
             }
 
             return true;
-        }
-
-        private bool IsBasedOn(Type type, out Type[] baseTypes)
-        {
-            var actuallyBasedOn = new List<Type>();
-            foreach (var potentialBase in potentialBasedOns)
-            {
-                if (potentialBase.IsAssignableFrom(type))
-                {
-                    actuallyBasedOn.Add(potentialBase);
-                }
-                else if (potentialBase.IsGenericTypeDefinition)
-                {
-                    if (potentialBase.IsInterface)
-                    {
-                        if (IsBasedOnGenericInterface(type, potentialBase, out baseTypes))
-                        {
-                            actuallyBasedOn.AddRange(baseTypes);
-                        }
-                    }
-
-                    if (IsBasedOnGenericClass(type, potentialBase, out baseTypes))
-                    {
-                        actuallyBasedOn.AddRange(baseTypes);
-                    }
-                }
-            }
-            baseTypes = actuallyBasedOn.Distinct().ToArray();
-            return baseTypes.Length > 0;
-        }
-
-        private static bool IsBasedOnGenericClass(Type type, Type basedOn, out Type[] baseTypes)
-        {
-            while (type != null)
-            {
-                if (type.IsGenericType &&
-                    type.GetGenericTypeDefinition() == basedOn)
-                {
-                    baseTypes = new[] { type };
-                    return true;
-                }
-
-                type = type.BaseType;
-            }
-            baseTypes = null;
-            return false;
-        }
-
-        private static bool IsBasedOnGenericInterface(Type type, Type basedOn, out Type[] baseTypes)
-        {
-            var types = new List<Type>(4);
-            foreach (var @interface in type.GetInterfaces())
-            {
-                if (@interface.IsGenericType &&
-                    @interface.GetGenericTypeDefinition() == basedOn)
-                {
-                    if (@interface.ReflectedType == null &&
-                        @interface.ContainsGenericParameters)
-                    {
-                        types.Add(@interface.GetGenericTypeDefinition());
-                    }
-                    else
-                    {
-                        types.Add(@interface);
-                    }
-                }
-            }
-            baseTypes = types.ToArray();
-            return baseTypes.Length > 0;
         }
     }
 }

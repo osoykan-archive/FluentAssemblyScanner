@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -16,7 +15,8 @@ namespace FluentAssemblyScanner
             {
                 throw new ArgumentNullException(nameof(assembly));
             }
-            return new FromAssemblyDescriptor(assembly, Filter);
+
+            return new FromAssemblyDescriptor(assembly);
         }
 
         public static FromAssemblyDescriptor FromAssemblyContaining(Type type)
@@ -25,7 +25,8 @@ namespace FluentAssemblyScanner
             {
                 throw new ArgumentNullException(nameof(type));
             }
-            return new FromAssemblyDescriptor(type.Assembly, Filter);
+
+            return new FromAssemblyDescriptor(type.Assembly);
         }
 
         public static FromAssemblyDescriptor FromAssemblyContaining<T>()
@@ -39,8 +40,9 @@ namespace FluentAssemblyScanner
             {
                 throw new ArgumentNullException(nameof(filter));
             }
+
             var assemblies = ReflectionUtil.GetAssemblies(filter);
-            return new FromAssemblyDescriptor(assemblies, Filter);
+            return new FromAssemblyDescriptor(assemblies);
         }
 
         /// <summary>Scans current assembly and all refernced assemblies with the same first part of the name.</summary>
@@ -56,7 +58,7 @@ namespace FluentAssemblyScanner
         public static FromAssemblyDescriptor FromAssemblyInThisApplication()
         {
             var assemblies = new HashSet<Assembly>(ReflectionUtil.GetApplicationAssemblies(Assembly.GetCallingAssembly()));
-            return new FromAssemblyDescriptor(assemblies, Filter);
+            return new FromAssemblyDescriptor(assemblies);
         }
 
         public static FromAssemblyDescriptor FromAssemblyNamed(string assemblyName)
@@ -64,22 +66,17 @@ namespace FluentAssemblyScanner
             var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
             return FromAssembly(assembly);
         }
-        public static FromAssemblyDescriptor FromAssemblyMatched(string assemblyPrefix)
+
+        public static FromAssemblyDescriptor FromAssemblyMatchingNamed(string assemblyPrefix)
         {
-            var assemblies = ReflectionUtil.GetAssembliesMatched(assemblyPrefix);
-            return new FromAssemblyDescriptor(assemblies, Filter);
+            var assemblies = ReflectionUtil.GetAssembliesContains(assemblyPrefix);
+            return new FromAssemblyDescriptor(assemblies);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static FromAssemblyDescriptor FromThisAssembly()
         {
             return FromAssembly(Assembly.GetCallingAssembly());
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static bool Filter(Type type)
-        {
-            return type.IsClass && type.IsAbstract == false;
         }
     }
 }
