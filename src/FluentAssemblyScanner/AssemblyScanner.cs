@@ -16,7 +16,7 @@ namespace FluentAssemblyScanner
                 throw new ArgumentNullException(nameof(assembly));
             }
 
-            return new FromAssemblyDescriptor(assembly);
+            return new FromAssemblyDescriptor(assembly); 
         }
 
         public static FromAssemblyDescriptor FromAssemblyContaining(Type type)
