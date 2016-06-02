@@ -1,6 +1,6 @@
 # FluentAssemblyScanner
 
-### Assembly scanner for .NET
+### Assembly and type scanner for .NET
 
 ### Nuget Packages
 
