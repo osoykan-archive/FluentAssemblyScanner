@@ -2,16 +2,11 @@
 
 namespace FluentAssemblyScanner
 {
-    public static class Component
+    internal static class Component
     {
         public static bool HasAttribute<TAttribute>(Type type) where TAttribute : Attribute
         {
             return Attribute.IsDefined(type, typeof(TAttribute));
-        }
-
-        public static Predicate<Type> HasAttribute<TAttribute>(Predicate<TAttribute> filter) where TAttribute : Attribute
-        {
-            return type => HasAttribute<TAttribute>(type) && filter((TAttribute)Attribute.GetCustomAttribute(type, typeof(TAttribute)));
         }
 
         public static Predicate<Type> IsInNamespace(string @namespace)

@@ -7,40 +7,37 @@ using FluentAssemblyScanner.Util;
 
 namespace FluentAssemblyScanner
 {
-    public class FromAssemblyDescriptor : FromDescriptor
+    public class FromAssemblyDefiner : FromAssemblyDefinerBase
     {
         protected bool NonPublicTypes;
 
-        protected internal FromAssemblyDescriptor(Assembly assembly)
+        protected internal FromAssemblyDefiner(Assembly assembly)
             : base(new Assembly[] {assembly}) {}
 
-        protected internal FromAssemblyDescriptor(IEnumerable<Assembly> assemblies)
+        protected internal FromAssemblyDefiner(IEnumerable<Assembly> assemblies)
             : base(assemblies) {}
 
-        public FromAssemblyDescriptor IncludeNonPublicTypes()
+        public FromAssemblyDefiner IncludeNonPublicTypes()
         {
             NonPublicTypes = true;
             return this;
         }
 
-        public FromAssemblyDescriptor ExcludeAssemblyNamed(string assemblyName)
+        public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
         {
             var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
-            assemblyFilter += assemblies => assemblies.Except(new[] {assembly});
+            AssemblyFilter += assemblies => assemblies.Except(new[] {assembly});
             return this;
         }
 
-        public FromAssemblyDescriptor ExcludeAssemblyContaining<T>()
+        public FromAssemblyDefiner ExcludeAssemblyContaining<T>()
         {
             return ExcludeAssemblyNamed(typeof(T).Assembly.FullName);
         }
 
         public override IEnumerable<Type> SelectedTypes()
         {
-            if (assemblyFilter != null)
-            {
-                Assemblies = assemblyFilter(Assemblies);
-            }
+            AssemblyFilter?.Invoke(Assemblies);
 
             return Assemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
         }

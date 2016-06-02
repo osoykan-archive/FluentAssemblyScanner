@@ -1,4 +1,7 @@
 ﻿namespace FluentAssemblyScanner.ConsoleApp.Dummy
 {
-    public class DummyPublic : IDummy {}
+    internal class DummyPrivate : IDummy
+    {
+        public void DummyMethod() {}
+    }
 }

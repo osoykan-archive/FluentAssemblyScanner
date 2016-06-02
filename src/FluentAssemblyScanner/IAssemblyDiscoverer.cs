@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace FluentAssemblyScanner
 {
-    public interface IAssemblyProvider
+    public interface IAssemblyDiscoverer
     {
         IEnumerable<Assembly> GetAssemblies();
     }

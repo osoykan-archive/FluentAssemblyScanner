@@ -9,32 +9,32 @@ namespace FluentAssemblyScanner
 {
     public class AssemblyScanner
     {
-        public static FromAssemblyDescriptor FromAssembly(Assembly assembly)
+        public static FromAssemblyDefiner FromAssembly(Assembly assembly)
         {
             if (assembly == null)
             {
                 throw new ArgumentNullException(nameof(assembly));
             }
 
-            return new FromAssemblyDescriptor(assembly); 
+            return new FromAssemblyDefiner(assembly);
         }
 
-        public static FromAssemblyDescriptor FromAssemblyContaining(Type type)
+        public static FromAssemblyDefiner FromAssemblyContaining(Type type)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            return new FromAssemblyDescriptor(type.Assembly);
+            return new FromAssemblyDefiner(type.Assembly);
         }
 
-        public static FromAssemblyDescriptor FromAssemblyContaining<T>()
+        public static FromAssemblyDefiner FromAssemblyContaining<T>()
         {
             return FromAssemblyContaining(typeof(T));
         }
 
-        public static FromAssemblyDescriptor FromAssemblyInDirectory(AssemblyFilter filter)
+        public static FromAssemblyDefiner FromAssemblyInDirectory(AssemblyFilter filter)
         {
             if (filter == null)
             {
@@ -42,39 +42,39 @@ namespace FluentAssemblyScanner
             }
 
             var assemblies = ReflectionUtil.GetAssemblies(filter);
-            return new FromAssemblyDescriptor(assemblies);
+            return new FromAssemblyDefiner(assemblies);
         }
 
         /// <summary>Scans current assembly and all refernced assemblies with the same first part of the name.</summary>
         /// <returns> </returns>
         /// <remarks>
         ///     Assemblies are considered to belong to the same application based on the first part of the name. For example if the
-        ///     method is called from within <c>MyApp.exe</c> and <c>MyApp.exe</c> references
+        ///     method is called fromAssembly within <c>MyApp.exe</c> and <c>MyApp.exe</c> references
         ///     <c>MyApp.SuperFeatures.dll</c>, <c>mscorlib.dll</c> and <c>ThirdPartyCompany.UberControls.dll</c> the
         ///     <c>MyApp.exe</c> and <c>MyApp.SuperFeatures.dll</c> will be scanned for components, and other
         ///     assemblies will be ignored.
         /// </remarks>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static FromAssemblyDescriptor FromAssemblyInThisApplication()
+        public static FromAssemblyDefiner FromAssemblyInThisApplication()
         {
             var assemblies = new HashSet<Assembly>(ReflectionUtil.GetApplicationAssemblies(Assembly.GetCallingAssembly()));
-            return new FromAssemblyDescriptor(assemblies);
+            return new FromAssemblyDefiner(assemblies);
         }
 
-        public static FromAssemblyDescriptor FromAssemblyNamed(string assemblyName)
+        public static FromAssemblyDefiner FromAssemblyNamed(string assemblyName)
         {
             var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
             return FromAssembly(assembly);
         }
 
-        public static FromAssemblyDescriptor FromAssemblyMatchingNamed(string assemblyPrefix, AssemblyFilter assemblyFilter)
+        public static FromAssemblyDefiner FromAssemblyMatchingNamed(string assemblyPrefix, AssemblyFilter assemblyFilter)
         {
             var assemblies = ReflectionUtil.GetAssembliesContains(assemblyPrefix, assemblyFilter);
-            return new FromAssemblyDescriptor(assemblies);
+            return new FromAssemblyDefiner(assemblies);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static FromAssemblyDescriptor FromThisAssembly()
+        public static FromAssemblyDefiner FromThisAssembly()
         {
             return FromAssembly(Assembly.GetCallingAssembly());
         }

@@ -9,7 +9,7 @@ using FluentAssemblyScanner.Util;
 
 namespace FluentAssemblyScanner
 {
-    public class AssemblyFilter : IAssemblyProvider
+    public class AssemblyFilter : IAssemblyDiscoverer
     {
         private readonly string directoryName;
         private readonly string mask;
@@ -27,7 +27,7 @@ namespace FluentAssemblyScanner
             this.mask = mask;
         }
 
-        IEnumerable<Assembly> IAssemblyProvider.GetAssemblies()
+        IEnumerable<Assembly> IAssemblyDiscoverer.GetAssemblies()
         {
             foreach (var file in GetFiles())
             {

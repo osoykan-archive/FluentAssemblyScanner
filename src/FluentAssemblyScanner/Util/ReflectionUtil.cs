@@ -44,14 +44,14 @@ namespace FluentAssemblyScanner.Util
             return assemblies;
         }
 
-        public static IEnumerable<Assembly> GetAssemblies(IAssemblyProvider assemblyProvider)
+        public static IEnumerable<Assembly> GetAssemblies(IAssemblyDiscoverer assemblyDiscoverer)
         {
-            return assemblyProvider.GetAssemblies();
+            return assemblyDiscoverer.GetAssemblies();
         }
 
-        public static IEnumerable<Assembly> GetAssembliesContains(string assemblyPrefix, IAssemblyProvider assemblyProvider)
+        public static IEnumerable<Assembly> GetAssembliesContains(string assemblyPrefix, IAssemblyDiscoverer assemblyDiscoverer)
         {
-            return assemblyProvider.GetAssemblies().Where(assembly => assembly.FullName.Contains(assemblyPrefix));
+            return assemblyDiscoverer.GetAssemblies().Where(assembly => assembly.FullName.Contains(assemblyPrefix));
         }
 
         public static Assembly GetAssemblyNamed(string assemblyName)

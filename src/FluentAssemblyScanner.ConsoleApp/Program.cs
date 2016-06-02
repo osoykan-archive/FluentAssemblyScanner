@@ -1,4 +1,4 @@
-﻿using System;
+﻿using FluentAssemblyScanner.ConsoleApp.Dummy;
 
 namespace FluentAssemblyScanner.ConsoleApp
 {
@@ -7,11 +7,12 @@ namespace FluentAssemblyScanner.ConsoleApp
         private static void Main(string[] args)
         {
             var assemblyDescriptor = AssemblyScanner
-                .FromAssemblyMatchingNamed("Fluent", AssemblyFilterFactory.All())
+                .FromAssemblyInDirectory(AssemblyFilterFactory.All())
                 .IncludeNonPublicTypes()
-                .PickAny()
+                .BasedOn<IDummy>()
                 .NonStatic()
-                .HasAttribute<SerializableAttribute>()
+                .UseDefaultfilter()
+                .WithMethodNamed("DummyMethod")
                 .Scan();
         }
     }
