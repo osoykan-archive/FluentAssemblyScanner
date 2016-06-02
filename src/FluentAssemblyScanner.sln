@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAssemblyScanner", "FluentAssemblyScanner\FluentAssemblyScanner.csproj", "{E92D154D-F216-44C7-AFEE-2C3A8CE9E579}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAssemblyScanner.ConsoleApp", "FluentAssemblyScanner.ConsoleApp\FluentAssemblyScanner.ConsoleApp.csproj", "{7D579743-40FA-4049-8E04-A0446EC87554}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAssemblyScanner.Tests", "FluentAssemblyScanner.Tests\FluentAssemblyScanner.Tests.csproj", "{768B2079-037F-4B4F-87A7-2D2D22DF455A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7D579743-40FA-4049-8E04-A0446EC87554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D579743-40FA-4049-8E04-A0446EC87554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D579743-40FA-4049-8E04-A0446EC87554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{768B2079-037F-4B4F-87A7-2D2D22DF455A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{768B2079-037F-4B4F-87A7-2D2D22DF455A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{768B2079-037F-4B4F-87A7-2D2D22DF455A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{768B2079-037F-4B4F-87A7-2D2D22DF455A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
