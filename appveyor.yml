@@ -11,6 +11,9 @@ environment:
     secure: w73Xs1Is7iK/DtAOf0XTHg==
 before_build:
 - cmd: dotnet.exe restore
+nuget:
+  account_feed: true
+  project_feed: true
 build:
   publish_nuget: true
   publish_nuget_symbols: true
@@ -22,3 +25,4 @@ deploy:
 - provider: NuGet
   api_key:
     secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
+  artifact: /.*\.nupkg/
