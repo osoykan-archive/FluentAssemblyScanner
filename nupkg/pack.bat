@@ -1,8 +1,8 @@
 REM "..\tools\gitlink\GitLink.exe" ..\ -u https://github.com/osoykan/FluentAssemblyScanner -c release
 
-@ECHO OFF
-SET /P VERSION_SUFFIX=Please enter version-suffix (can be left empty): 
+REM @ECHO OFF
+REM SET /P VERSION_SUFFIX=Please enter version-suffix (can be left empty): 
 
-dotnet "pack" "..\src\FluentAssemblyScanner" -c "Release" -o "." --version-suffix "%VERSION_SUFFIX%"
+dotnet "pack" "..\src\FluentAssemblyScanner" -c "Release" -o "."
 
 pause
