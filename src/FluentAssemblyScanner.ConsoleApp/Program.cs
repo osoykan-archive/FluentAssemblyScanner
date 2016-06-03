@@ -1,18 +1,18 @@
-﻿using FluentAssemblyScanner.ConsoleApp.Dummy;
+﻿using FluentAssemblyScanner.ConsoleApp.Animals;
 
 namespace FluentAssemblyScanner.ConsoleApp
 {
-    internal class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var assemblyDescriptor = AssemblyScanner
                 .FromAssemblyInDirectory(AssemblyFilterFactory.All())
                 .IncludeNonPublicTypes()
-                .BasedOn<IDummy>()
+                .BasedOn<IAnimal>()
                 .NonStatic()
                 .UseDefaultfilter()
-                .WithMethodNamed("DummyMethod")
+                .WithMethodNamed("VoiceType")
                 .Scan();
         }
     }
