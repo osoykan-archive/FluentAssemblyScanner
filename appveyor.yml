@@ -20,6 +20,7 @@ build:
   include_nuget_references: true
   verbosity: minimal
 after_build:
+ cmd: dotnet.exe restore
  cmd: call "nupkg/pack.bat"
 artifacts:
 - path: FluentAssemblyScanner.*.nupkg
