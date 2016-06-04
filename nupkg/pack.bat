@@ -5,3 +5,4 @@ REM SET /P VERSION_SUFFIX=Please enter version-suffix (can be left empty):
 
 dotnet "pack" "..\src\FluentAssemblyScanner" -c "Release" -o "."
 
+pause
