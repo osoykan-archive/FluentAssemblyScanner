@@ -21,8 +21,8 @@ build:
   verbosity: minimal
 after_build:
  cmd: 
-  - dotnet.exe restore 
-  - call "nupkg/pack.bat"
+    dotnet.exe restore
+    call "nupkg/pack.bat"
 artifacts:
 - path: '**\*.nupkg'
 deploy:
