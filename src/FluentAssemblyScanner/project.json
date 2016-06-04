@@ -20,7 +20,7 @@
     }
   },
 
-  "packInclude": {
+  "files": {
     "lib/net452/": "bin/Release/net452/FluentAssemblyScanner.pdb"
   }
 }
