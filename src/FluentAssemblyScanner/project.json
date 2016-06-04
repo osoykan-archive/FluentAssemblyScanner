@@ -15,7 +15,7 @@
     "licenseUrl": "https://github.com/osoykan/FluentAssemblyScanner/blob/master/LICENCE",
     "requireLicenseAcceptance": false,
     "files": {
-      "net452": "bin/Release/net452/FluentAssemblyScanner.pdb"
+      "lib/net452": "bin/Release/net452/FluentAssemblyScanner.pdb"
     },
     "repository": {
       "type": "git",
