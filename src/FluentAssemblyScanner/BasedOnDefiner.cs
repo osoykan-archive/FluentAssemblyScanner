@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using FluentAssemblyScanner.Extensions;
 
@@ -10,57 +9,94 @@ namespace FluentAssemblyScanner
     public class BasedOnDefiner : BasedOnDefinerBase
     {
         private readonly FromAssemblyDefinerBase fromAssemblyDefinerBase;
+        private List<Type> filteredTypes;
 
         internal BasedOnDefiner(IEnumerable<Type> basedOns, FromAssemblyDefinerBase fromAssemblyDefinerBase) : base(basedOns)
         {
             this.fromAssemblyDefinerBase = fromAssemblyDefinerBase;
         }
 
-        public BasedOnDefiner UseDefaultfilter()
+        public AndConstraint<FilterDefiner> Filter()
         {
-            If(type => type.IsClass && type.IsAbstract == false);
-            return this;
-        }
-
-        public override List<Type> Scan()
-        {
-            return fromAssemblyDefinerBase.SelectedTypes()
-                                          .Where(ApplyIfFilter)
-                                          .Where(ApplyBasedOnFilter)
-                                          .Where(type => ApplyMethodFilter(type.GetMethods()))
-                                          .ToList();
-        }
-
-        public BasedOnDefiner NonStatic()
-        {
-            If(type => type.IsAbstract == false && type.IsSealed == false);
-            return this;
+            ApplyFilters();
+            return new AndConstraint<FilterDefiner>(new FilterDefiner(filteredTypes));
         }
 
         public BasedOnDefiner HasAttribute<TAttribute>() where TAttribute : Attribute
         {
-            If(Component.HasAttribute<TAttribute>);
+            Where(ComponentExtensions.HasAttribute<TAttribute>);
             return this;
         }
 
-        protected override bool ApplyBasedOnFilter(Type type)
+        public BasedOnDefiner HasAttribute(Type attributeType)
+        {
+            Where(type => ComponentExtensions.HasAttribute(type, attributeType));
+            return this;
+        }
+
+        public BasedOnDefiner InNamespace(string @namespace)
+        {
+            return Where(ComponentExtensions.IsInNamespace(@namespace, false));
+        }
+
+        public BasedOnDefiner InNamespace(string @namespace, bool includeSubnamespaces)
+        {
+            return Where(ComponentExtensions.IsInNamespace(@namespace, includeSubnamespaces));
+        }
+
+        public BasedOnDefiner InSameNamespaceOf(Type type)
+        {
+            return Where(ComponentExtensions.IsInSameNamespaceOf(type));
+        }
+
+        public BasedOnDefiner InSameNamespaceOf(Type type, bool includeSubnamespaces)
+        {
+            return Where(ComponentExtensions.IsInSameNamespaceOf(type, includeSubnamespaces));
+        }
+
+        public BasedOnDefiner InSameNamespaceOf<T>()
+        {
+            return Where(ComponentExtensions.IsInSameNamespaceOf<T>());
+        }
+
+        public BasedOnDefiner InSameNamespaceOf<T>(bool includeSubnamespaces) where T : class
+        {
+            return Where(ComponentExtensions.IsInSameNamespaceOf<T>(includeSubnamespaces));
+        }
+
+        public BasedOnDefiner OrBasedOn(Type basedOn)
+        {
+            BasedOns.Add(basedOn);
+            return this;
+        }
+
+        public BasedOnDefiner OrBasedOn<T>()
+        {
+            BasedOns.Add(typeof(T));
+            return this;
+        }
+
+        protected BasedOnDefiner Where(Predicate<Type> filter)
+        {
+            return (BasedOnDefiner)If(filter);
+        }
+
+        private bool ApplyBasedOnFilter(Type type)
         {
             return BasedOns.Any(t => t.IsAssignableFrom(type));
         }
 
-        protected override bool ApplyIfFilter(Type type)
+        private void ApplyFilters()
+        {
+            filteredTypes = fromAssemblyDefinerBase.AllTypes()
+                                                   .Where(ApplyIfFilter)
+                                                   .Where(ApplyBasedOnFilter)
+                                                   .ToList();
+        }
+
+        private bool ApplyIfFilter(Type type)
         {
             return TypeFilter.ApplyTo(type);
-        }
-
-        protected override bool ApplyMethodFilter(MethodInfo method)
-        {
-            return MethodFilter.ApplyTo(method);
-        }
-
-        private bool ApplyMethodFilter(MethodInfo[] methods)
-        {
-            return methods.Any(ApplyMethodFilter);
         }
     }
 }

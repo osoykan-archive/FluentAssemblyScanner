@@ -2,6 +2,8 @@
 {
     public interface IAnimal
     {
-        
+        bool CanFly();
+
+        bool CanWalk();
     }
 }

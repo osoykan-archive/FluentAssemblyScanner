@@ -61,16 +61,16 @@ namespace FluentAssemblyScanner
             return new FromAssemblyDefiner(assemblies);
         }
 
-        public static FromAssemblyDefiner FromAssemblyNamed(string assemblyName)
-        {
-            var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
-            return FromAssembly(assembly);
-        }
-
         public static FromAssemblyDefiner FromAssemblyMatchingNamed(string assemblyPrefix, AssemblyFilter assemblyFilter)
         {
             var assemblies = ReflectionUtil.GetAssembliesContains(assemblyPrefix, assemblyFilter);
             return new FromAssemblyDefiner(assemblies);
+        }
+
+        public static FromAssemblyDefiner FromAssemblyNamed(string assemblyName)
+        {
+            var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
+            return FromAssembly(assembly);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

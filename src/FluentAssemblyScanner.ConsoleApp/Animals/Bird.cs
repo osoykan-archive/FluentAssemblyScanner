@@ -2,6 +2,15 @@
 {
     public class Bird : IAnimal
     {
-        public void VoiceType() { }
+        [Voice]
+        public bool CanFly()
+        {
+            return true;
+        }
+
+        public bool CanWalk()
+        {
+            return true;
+        }
     }
 }

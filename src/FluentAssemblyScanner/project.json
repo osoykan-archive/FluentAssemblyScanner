@@ -8,7 +8,7 @@
 
   "packOptions": {
     "summary": "Fluent assembly and type scanner for .Net",
-    "tags": [ "asp.net", "asp.net mvc", "framework", "library", "assembly", "scanner" ],
+    "tags": ["asp.net", "asp.net mvc", "framework", "library", "assembly", "scanner"],
     "owners": ["Oğuzhan Soykan"],
     "iconUrl": "",
     "projectUrl": "https://github.com/osoykan/FluentAssemblyScanner",

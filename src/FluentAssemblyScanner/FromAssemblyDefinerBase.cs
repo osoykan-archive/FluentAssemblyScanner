@@ -14,7 +14,7 @@ namespace FluentAssemblyScanner
             Assemblies = assemblies;
         }
 
-        public abstract IEnumerable<Type> SelectedTypes();
+        public abstract IEnumerable<Type> AllTypes();
 
         public BasedOnDefiner BasedOn<T>()
         {
@@ -33,51 +33,12 @@ namespace FluentAssemblyScanner
 
         public BasedOnDefiner BasedOn(IEnumerable<Type> basedOn)
         {
-            var descriptor = new BasedOnDefiner(basedOn, this);
-
-            return descriptor;
-        }
-
-        public BasedOnDefiner InNamespace(string @namespace)
-        {
-            return Where(Component.IsInNamespace(@namespace, false));
-        }
-
-        public BasedOnDefiner InNamespace(string @namespace, bool includeSubnamespaces)
-        {
-            return Where(Component.IsInNamespace(@namespace, includeSubnamespaces));
-        }
-
-        public BasedOnDefiner InSameNamespaceOf(Type type)
-        {
-            return Where(Component.IsInSameNamespaceOf(type));
-        }
-
-        public BasedOnDefiner InSameNamespaceOf(Type type, bool includeSubnamespaces)
-        {
-            return Where(Component.IsInSameNamespaceOf(type, includeSubnamespaces));
-        }
-
-        public BasedOnDefiner InSameNamespaceOf<T>()
-        {
-            return Where(Component.IsInSameNamespaceOf<T>());
-        }
-
-        public BasedOnDefiner InSameNamespaceOf<T>(bool includeSubnamespaces) where T : class
-        {
-            return Where(Component.IsInSameNamespaceOf<T>(includeSubnamespaces));
+            return new BasedOnDefiner(basedOn, this);
         }
 
         public BasedOnDefiner PickAny()
         {
             return BasedOn<object>();
-        }
-
-        public BasedOnDefiner Where(Predicate<Type> filter)
-        {
-            var descriptor = new BasedOnDefiner(new[] {typeof(object)}, this).If(filter);
-
-            return (BasedOnDefiner)descriptor;
         }
     }
 }

@@ -17,10 +17,16 @@ namespace FluentAssemblyScanner
         protected internal FromAssemblyDefiner(IEnumerable<Assembly> assemblies)
             : base(assemblies) {}
 
-        public FromAssemblyDefiner IncludeNonPublicTypes()
+        public override IEnumerable<Type> AllTypes()
         {
-            NonPublicTypes = true;
-            return this;
+            AssemblyFilter?.Invoke(Assemblies);
+
+            return Assemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
+        }
+
+        public FromAssemblyDefiner ExcludeAssemblyContaining<T>()
+        {
+            return ExcludeAssemblyNamed(typeof(T).Assembly.FullName);
         }
 
         public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
@@ -30,16 +36,10 @@ namespace FluentAssemblyScanner
             return this;
         }
 
-        public FromAssemblyDefiner ExcludeAssemblyContaining<T>()
+        public FromAssemblyDefiner IncludeNonPublicTypes()
         {
-            return ExcludeAssemblyNamed(typeof(T).Assembly.FullName);
-        }
-
-        public override IEnumerable<Type> SelectedTypes()
-        {
-            AssemblyFilter?.Invoke(Assemblies);
-
-            return Assemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
+            NonPublicTypes = true;
+            return this;
         }
     }
 }
