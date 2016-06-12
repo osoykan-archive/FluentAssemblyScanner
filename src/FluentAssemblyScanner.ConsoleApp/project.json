@@ -1,11 +1,11 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "1.0.1-*",
   "buildOptions": {
     "emitEntryPoint": true
   },
 
   "dependencies": {
-    "FluentAssemblyScanner": "1.0.0-*"
+    "FluentAssemblyScanner": "1.0.1-*"
   },
 
   "frameworks": {
