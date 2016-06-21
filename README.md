@@ -10,7 +10,6 @@
 ```csharp
 public static void Program()
 {
-  // With method name                                         
   IEnumerable<Type> types = AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
                                            .IncludeNonPublicTypes()
                                            .BasedOn<IAnimal>()
