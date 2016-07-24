@@ -16,10 +16,10 @@ namespace FluentAssemblyScanner
             this.fromAssemblyDefinerBase = fromAssemblyDefinerBase;
         }
 
-        public AndConstraint<FilterDefiner> Filter()
+        public FilterDefiner Filter()
         {
             ApplyFilters();
-            return new AndConstraint<FilterDefiner>(new FilterDefiner(filteredTypes));
+            return new FilterDefiner(filteredTypes);
         }
 
         public BasedOnDefiner HasAttribute<TAttribute>() where TAttribute : Attribute

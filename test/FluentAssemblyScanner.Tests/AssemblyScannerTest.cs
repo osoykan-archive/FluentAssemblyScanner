@@ -9,7 +9,7 @@ namespace FluentAssemblyScanner.Tests
         [Fact]
         public void FromAssembly_IfAssemblyIsNull_ThrowsArgumentNullException()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => AssemblyScanner.FromAssembly(null));
+            Assert.Throws(typeof(ArgumentNullException), () => FluentAssemblyScanner.FromAssembly(null));
         }
     }
 }

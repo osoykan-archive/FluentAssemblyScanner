@@ -24,39 +24,39 @@ namespace FluentAssemblyScanner
                 .ToList();
         }
 
-        public AndConstraint<FilterDefiner> Classes()
+        public FilterDefiner Classes()
         {
             Where(type => type.IsClass && type.IsAbstract == false);
-            return new AndConstraint<FilterDefiner>(this);
+            return this;
         }
 
-        public AndConstraint<FilterDefiner> MethodHasAttribute<TAttribute>() where TAttribute : Attribute
+        public FilterDefiner MethodHasAttribute<TAttribute>() where TAttribute : Attribute
         {
             return MethodHasAttribute(typeof(TAttribute));
         }
 
-        public AndConstraint<FilterDefiner> MethodHasAttribute(Type attributeType)
+        public FilterDefiner MethodHasAttribute(Type attributeType)
         {
             MethodFilter += method => method.GetCustomAttributes(attributeType).Any();
-            return new AndConstraint<FilterDefiner>(this);
+            return this;
         }
 
-        public AndConstraint<FilterDefiner> MethodName(string methodName)
+        public FilterDefiner MethodName(string methodName)
         {
             MethodFilter += method => method.Name == methodName;
-            return new AndConstraint<FilterDefiner>(this);
+            return this;
         }
 
-        public AndConstraint<FilterDefiner> MethodNameContains(string methodText)
+        public FilterDefiner MethodNameContains(string methodText)
         {
             MethodFilter += method => method.Name.Contains(methodText);
-            return new AndConstraint<FilterDefiner>(this);
+            return this;
         }
 
-        public AndConstraint<FilterDefiner> NonStatic()
+        public FilterDefiner NonStatic()
         {
             Where(type => type.IsAbstract == false && type.IsSealed == false);
-            return new AndConstraint<FilterDefiner>(this);
+            return this;
         }
 
         private bool ApplyMethodFilter(MethodInfo method)

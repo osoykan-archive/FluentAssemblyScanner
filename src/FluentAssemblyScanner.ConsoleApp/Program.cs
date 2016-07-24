@@ -6,13 +6,13 @@ namespace FluentAssemblyScanner.ConsoleApp
     {
         public static void Main(string[] args)
         {
-            var types = AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
-                                       .IncludeNonPublicTypes()
-                                       .BasedOn<IAnimal>()
-                                       .InNamespace("FluentAssemblyScanner.ConsoleApp.Animals")
-                                       .Filter()
-                                       .Then()
-                                       .Scan();
+            var types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
+                                             .IncludeNonPublicTypes()
+                                             .BasedOn<IAnimal>()
+                                             .Filter()
+                                             .Classes()
+                                             .MethodHasAttribute<VoiceAttribute>()
+                                             .Scan();
         }
     }
 }

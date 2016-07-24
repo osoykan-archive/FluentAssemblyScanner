@@ -4,10 +4,10 @@ using System.Reflection;
 
 namespace FluentAssemblyScanner
 {
-    public abstract class FilterDefinerBase : IAfterFilter
+    public abstract class FilterDefinerBase
     {
-        protected Predicate<MethodInfo> MethodFilter;
         protected Predicate<Type> AndFilter;
+        protected Predicate<MethodInfo> MethodFilter;
 
         protected FilterDefinerBase(List<Type> types)
         {

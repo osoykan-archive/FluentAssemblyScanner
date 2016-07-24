@@ -7,7 +7,7 @@ using FluentAssemblyScanner.Util;
 
 namespace FluentAssemblyScanner
 {
-    public class AssemblyScanner
+    public class FluentAssemblyScanner
     {
         public static FromAssemblyDefiner FromAssembly(Assembly assembly)
         {
