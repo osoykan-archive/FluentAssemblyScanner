@@ -6,13 +6,13 @@ namespace FluentAssemblyScanner
 {
     public abstract class FromAssemblyDefinerBase
     {
-        protected IEnumerable<Assembly> Assemblies;
-        protected Action<IEnumerable<Assembly>> AssemblyFilter;
-
         protected internal FromAssemblyDefinerBase(IEnumerable<Assembly> assemblies)
         {
             Assemblies = assemblies;
         }
+
+        protected IEnumerable<Assembly> Assemblies;
+        protected Action<IEnumerable<Assembly>> AssemblyFilter;
 
         public abstract IEnumerable<Type> AllTypes();
 

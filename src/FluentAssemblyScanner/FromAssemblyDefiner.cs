@@ -9,13 +9,13 @@ namespace FluentAssemblyScanner
 {
     public class FromAssemblyDefiner : FromAssemblyDefinerBase
     {
-        protected bool NonPublicTypes;
-
         protected internal FromAssemblyDefiner(Assembly assembly)
             : base(new Assembly[] {assembly}) {}
 
         protected internal FromAssemblyDefiner(IEnumerable<Assembly> assemblies)
             : base(assemblies) {}
+
+        protected bool NonPublicTypes;
 
         public override IEnumerable<Type> AllTypes()
         {

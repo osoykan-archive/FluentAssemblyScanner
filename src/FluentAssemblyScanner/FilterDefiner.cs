@@ -16,14 +16,6 @@ namespace FluentAssemblyScanner
             this.types = types;
         }
 
-        public override List<Type> Scan()
-        {
-            return types
-                .Where(type => AndFilter.Invoke(type))
-                .Where(ApplyMethodFilter)
-                .ToList();
-        }
-
         public FilterDefiner Classes()
         {
             Where(type => type.IsClass && type.IsAbstract == false);
@@ -57,6 +49,14 @@ namespace FluentAssemblyScanner
         {
             Where(type => type.IsAbstract == false && type.IsSealed == false);
             return this;
+        }
+
+        public override List<Type> Scan()
+        {
+            return types
+                .Where(type => AndFilter.Invoke(type))
+                .Where(ApplyMethodFilter)
+                .ToList();
         }
 
         private bool ApplyMethodFilter(MethodInfo method)

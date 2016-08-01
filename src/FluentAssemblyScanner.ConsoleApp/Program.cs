@@ -1,4 +1,7 @@
-﻿using FluentAssemblyScanner.ConsoleApp.Animals;
+﻿using System;
+using System.Collections.Generic;
+
+using FluentAssemblyScanner.ConsoleApp.Animals;
 
 namespace FluentAssemblyScanner.ConsoleApp
 {
@@ -6,13 +9,19 @@ namespace FluentAssemblyScanner.ConsoleApp
     {
         public static void Main(string[] args)
         {
-            var types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
-                                             .IncludeNonPublicTypes()
-                                             .BasedOn<IAnimal>()
-                                             .Filter()
-                                             .Classes()
-                                             .MethodHasAttribute<VoiceAttribute>()
-                                             .Scan();
+            IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
+                                                           .IncludeNonPublicTypes()
+                                                           .BasedOn<IAnimal>()
+                                                           .InSameNamespaceOf(typeof(IAnimal))
+                                                           .HasAttribute<VoiceAttribute>()
+                                                           .OrBasedOn<Human>()
+                                                           .Filter()
+                                                           .Classes()
+                                                           .NonStatic()
+                                                           .MethodName("Run")
+                                                           .MethodNameContains("n")
+                                                           .MethodHasAttribute<VoiceAttribute>()
+                                                           .Scan();
         }
     }
 }

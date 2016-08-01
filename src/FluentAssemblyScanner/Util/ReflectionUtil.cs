@@ -14,13 +14,13 @@ namespace FluentAssemblyScanner.Util
 {
     public static class ReflectionUtil
     {
+        private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> Factories =
+            new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
+
         public static readonly Type[] OpenGenericArrayInterfaces = typeof(object[]).GetInterfaces()
                                                                                    .Where(i => i.IsGenericType)
                                                                                    .Select(i => i.GetGenericTypeDefinition())
                                                                                    .ToArray();
-
-        private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> Factories =
-            new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
 
         public static TBase CreateInstance<TBase>(this Type subtypeofTBase, params object[] ctorArgs)
         {
