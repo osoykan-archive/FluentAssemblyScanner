@@ -9,15 +9,18 @@
 ```csharp
 public static void Program()
 {
-  IEnumerable<Type> types = AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
-                                           .IncludeNonPublicTypes()
-                                           .BasedOn<IAnimal>()
-                                           .Filter()
-                                           .And.MethodHasAttribute<VoiceAttribute>()
-                                           .And.MethodName("Sleep")
-                                           .And.Classes()
-                                           .And.NonStatic()
-                                           .Then()
-                                           .Scan();
+  IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
+                                                 .IncludeNonPublicTypes()
+                                                 .BasedOn<IAnimal>()
+                                                 .InSameNamespaceOf(typeof(IAnimal))
+                                                 .HasAttribute<VoiceAttribute>()
+                                                 .OrBasedOn<Human>()
+                                                 .Filter()
+                                                 .Classes()
+                                                 .NonStatic()
+                                                 .MethodName("Run")
+                                                 .MethodNameContains("n")
+                                                 .MethodHasAttribute<VoiceAttribute>()
+                                                 .Scan();
 }
 ```
