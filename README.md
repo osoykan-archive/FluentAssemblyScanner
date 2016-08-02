@@ -6,7 +6,7 @@
 
 ### Examples
 
-```csharp
+```c#
 public static void Program()
 {
   IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
