@@ -9,7 +9,6 @@ namespace FluentAssemblyScanner
     public class BasedOnDefiner : BasedOnDefinerBase
     {
         private readonly FromAssemblyDefinerBase fromAssemblyDefinerBase;
-        private List<Type> filteredTypes;
 
         internal BasedOnDefiner(IEnumerable<Type> basedOns, FromAssemblyDefinerBase fromAssemblyDefinerBase) : base(basedOns)
         {
@@ -18,8 +17,13 @@ namespace FluentAssemblyScanner
 
         public FilterDefiner Filter()
         {
-            ApplyFilters();
-            return new FilterDefiner(filteredTypes);
+            return new FilterDefiner(
+                fromAssemblyDefinerBase.AllTypes().ToList(),
+                new List<Func<Type, bool>>
+                {
+                    type => BasedOns.Any(t => t.IsAssignableFrom(type)),
+                    type => TypeFilter.ApplyTo(type)
+                });
         }
 
         public BasedOnDefiner HasAttribute<TAttribute>() where TAttribute : Attribute
@@ -78,25 +82,7 @@ namespace FluentAssemblyScanner
 
         protected BasedOnDefiner Where(Predicate<Type> filter)
         {
-            return (BasedOnDefiner)If(filter);
-        }
-
-        private bool ApplyBasedOnFilter(Type type)
-        {
-            return BasedOns.Any(t => t.IsAssignableFrom(type));
-        }
-
-        private void ApplyFilters()
-        {
-            filteredTypes = fromAssemblyDefinerBase.AllTypes()
-                                                   .Where(ApplyIfFilter)
-                                                   .Where(ApplyBasedOnFilter)
-                                                   .ToList();
-        }
-
-        private bool ApplyIfFilter(Type type)
-        {
-            return TypeFilter.ApplyTo(type);
+            return If(filter).As<BasedOnDefiner>();
         }
     }
 }

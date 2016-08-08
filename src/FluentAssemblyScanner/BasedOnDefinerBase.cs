@@ -6,14 +6,14 @@ namespace FluentAssemblyScanner
 {
     public abstract class BasedOnDefinerBase
     {
+        protected readonly List<Type> BasedOns;
+        protected Predicate<Type> TypeFilter;
+
         protected BasedOnDefinerBase(IEnumerable<Type> basedOns)
         {
             BasedOns = basedOns.ToList();
             TypeFilter = type => true;
         }
-
-        protected readonly List<Type> BasedOns;
-        protected Predicate<Type> TypeFilter;
 
         protected BasedOnDefinerBase If(Predicate<Type> filter)
         {

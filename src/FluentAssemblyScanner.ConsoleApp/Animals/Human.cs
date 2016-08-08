@@ -3,6 +3,12 @@
     [Smokes]
     public class Human : IAnimal
     {
+        [Voice]
+        public bool CanFly()
+        {
+            return false;
+        }
+
         public bool CanWalk()
         {
             if (IsInjured())
@@ -11,11 +17,6 @@
             }
 
             return true;
-        }
-
-        public bool CanFly()
-        {
-            return false;
         }
 
         private bool IsInjured()

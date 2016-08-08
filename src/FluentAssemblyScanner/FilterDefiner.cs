@@ -4,16 +4,28 @@ using System.Linq;
 using System.Reflection;
 
 using FluentAssemblyScanner.Extensions;
+using FluentAssemblyScanner.ExtensionsF;
 
 namespace FluentAssemblyScanner
 {
     public class FilterDefiner : FilterDefinerBase
     {
+        private readonly List<Func<Type, bool>> filterActions;
         private readonly List<Type> types;
 
-        public FilterDefiner(List<Type> types) : base(types)
+        public FilterDefiner(List<Type> types, List<Func<Type, bool>> filterActions) : base(types)
         {
             this.types = types;
+            this.filterActions = filterActions;
+
+            filterActions.Add(type => AndFilter(type));
+            filterActions.Add(type => type.GetMethods().Any(method => MethodFilters.ApplyTo(method)));
+        }
+
+        public override List<Type> Scan()
+        {
+            return types.Whereify(filterActions)
+                        .ToList();
         }
 
         public FilterDefiner Classes()
@@ -29,19 +41,19 @@ namespace FluentAssemblyScanner
 
         public FilterDefiner MethodHasAttribute(Type attributeType)
         {
-            MethodFilter += method => method.GetCustomAttributes(attributeType).Any();
+            MethodFilters += method => method.GetCustomAttributes(attributeType).Any();
             return this;
         }
 
         public FilterDefiner MethodName(string methodName)
         {
-            MethodFilter += method => method.Name == methodName;
+            MethodFilters += method => method.Name == methodName;
             return this;
         }
 
         public FilterDefiner MethodNameContains(string methodText)
         {
-            MethodFilter += method => method.Name.Contains(methodText);
+            MethodFilters += method => method.Name.Contains(methodText);
             return this;
         }
 
@@ -49,24 +61,6 @@ namespace FluentAssemblyScanner
         {
             Where(type => type.IsAbstract == false && type.IsSealed == false);
             return this;
-        }
-
-        public override List<Type> Scan()
-        {
-            return types
-                .Where(type => AndFilter.Invoke(type))
-                .Where(ApplyMethodFilter)
-                .ToList();
-        }
-
-        private bool ApplyMethodFilter(MethodInfo method)
-        {
-            return MethodFilter.ApplyTo(method);
-        }
-
-        private bool ApplyMethodFilter(Type type)
-        {
-            return type.GetMethods().Any(ApplyMethodFilter);
         }
     }
 }

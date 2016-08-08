@@ -11,15 +11,10 @@ namespace FluentAssemblyScanner.ConsoleApp
         {
             IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
                                                            .IncludeNonPublicTypes()
+                                                           .ExcludeAssemblyContaining<IAnimal>()
                                                            .BasedOn<IAnimal>()
-                                                           .InSameNamespaceOf(typeof(IAnimal))
-                                                           .HasAttribute<VoiceAttribute>()
-                                                           .OrBasedOn<Human>()
                                                            .Filter()
-                                                           .Classes()
                                                            .NonStatic()
-                                                           .MethodName("Run")
-                                                           .MethodNameContains("n")
                                                            .MethodHasAttribute<VoiceAttribute>()
                                                            .Scan();
         }

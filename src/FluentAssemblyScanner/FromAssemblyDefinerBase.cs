@@ -12,7 +12,7 @@ namespace FluentAssemblyScanner
         }
 
         protected IEnumerable<Assembly> Assemblies;
-        protected Action<IEnumerable<Assembly>> AssemblyFilter;
+        protected Action<IEnumerable<Assembly>> AssemblyFilters;
 
         public abstract IEnumerable<Type> AllTypes();
 

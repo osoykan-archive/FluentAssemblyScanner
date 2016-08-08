@@ -19,7 +19,7 @@ namespace FluentAssemblyScanner
 
         public override IEnumerable<Type> AllTypes()
         {
-            AssemblyFilter?.Invoke(Assemblies);
+            AssemblyFilters?.Invoke(Assemblies);
 
             return Assemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
         }
@@ -32,7 +32,7 @@ namespace FluentAssemblyScanner
         public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
         {
             var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
-            AssemblyFilter += assemblies => assemblies.Except(new[] {assembly});
+            AssemblyFilters += assemblies => assemblies.Except(new[] {assembly});
             return this;
         }
 

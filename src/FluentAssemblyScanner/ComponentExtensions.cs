@@ -24,8 +24,8 @@ namespace FluentAssemblyScanner
             if (includeSubnamespaces)
             {
                 return type => type.Namespace == @namespace ||
-                    type.Namespace != null &&
-                        type.Namespace.StartsWith(@namespace + ".");
+                               type.Namespace != null &&
+                               type.Namespace.StartsWith(@namespace + ".");
             }
 
             return type => type.Namespace == @namespace;

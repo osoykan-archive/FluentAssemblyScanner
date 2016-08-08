@@ -9,11 +9,11 @@ namespace FluentAssemblyScanner
         protected FilterDefinerBase(List<Type> types)
         {
             AndFilter = type => true;
-            MethodFilter = info => true;
+            MethodFilters = info => true;
         }
 
         protected Predicate<Type> AndFilter;
-        protected Predicate<MethodInfo> MethodFilter;
+        protected Predicate<MethodInfo> MethodFilters;
 
         public abstract List<Type> Scan();
 
