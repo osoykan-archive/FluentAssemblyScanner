@@ -16,7 +16,7 @@ namespace FluentAssemblyScanner
         private Predicate<Assembly> assemblyFilter;
         private Predicate<AssemblyName> nameFilter;
 
-        internal AssemblyFilter(string directoryName, string mask = null)
+        public AssemblyFilter(string directoryName, string mask = null)
         {
             if (directoryName == null)
             {
@@ -96,6 +96,37 @@ namespace FluentAssemblyScanner
             return WithKeyToken(assembly.GetName().GetPublicKeyToken());
         }
 
+        private static string GetFullPath(string path)
+        {
+            if (Path.IsPathRooted(path) == false)
+            {
+                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+            }
+            return Path.GetFullPath(path);
+        }
+
+        private static bool IsTokenEqual(byte[] actualToken, byte[] expectedToken)
+        {
+            if (actualToken == null)
+            {
+                return false;
+            }
+            if (actualToken.Length != expectedToken.Length)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < actualToken.Length; i++)
+            {
+                if (actualToken[i] != expectedToken[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private byte[] ExtractKeyToken(string keyToken)
         {
             if (keyToken == null)
@@ -145,37 +176,6 @@ namespace FluentAssemblyScanner
             {
                 throw new ArgumentException("Could not resolve assemblies.", e);
             }
-        }
-
-        private static string GetFullPath(string path)
-        {
-            if (Path.IsPathRooted(path) == false)
-            {
-                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-            }
-            return Path.GetFullPath(path);
-        }
-
-        private static bool IsTokenEqual(byte[] actualToken, byte[] expectedToken)
-        {
-            if (actualToken == null)
-            {
-                return false;
-            }
-            if (actualToken.Length != expectedToken.Length)
-            {
-                return false;
-            }
-
-            for (var i = 0; i < actualToken.Length; i++)
-            {
-                if (actualToken[i] != expectedToken[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         private Assembly LoadAssemblyIgnoringErrors(string file)

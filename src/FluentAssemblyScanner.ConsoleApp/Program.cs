@@ -9,7 +9,7 @@ namespace FluentAssemblyScanner.ConsoleApp
     {
         public static void Main(string[] args)
         {
-            IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
+            IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
                                                            .IncludeNonPublicTypes()
                                                            .ExcludeAssemblyContaining<IAnimal>()
                                                            .BasedOn<IAnimal>()
