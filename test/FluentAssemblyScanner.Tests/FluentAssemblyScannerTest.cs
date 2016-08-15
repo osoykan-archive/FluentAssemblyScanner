@@ -16,11 +16,11 @@ namespace FluentAssemblyScanner.Tests
         public void FromAssembly_ShouldReturnOneType()
         {
             var types = FluentAssemblyScanner.FromThisAssembly()
-                                  .IncludeNonPublicTypes()
-                                  .BasedOn<IAnimal>()
-                                  .Filter()
-                                  .MethodHasAttribute<Voice>()
-                                  .Scan();
+                                             .IncludeNonPublicTypes()
+                                             .BasedOn<IAnimal>()
+                                             .Filter()
+                                             .MethodHasAttribute<Voice>()
+                                             .Scan();
 
             Assert.Equal(types.Count, 1);
         }

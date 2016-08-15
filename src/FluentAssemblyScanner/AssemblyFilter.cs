@@ -1,11 +1,11 @@
-﻿using System;
+﻿using FluentAssemblyScanner.Util;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
-using FluentAssemblyScanner.Util;
+using System.Reflection;
 
 namespace FluentAssemblyScanner
 {
@@ -19,9 +19,7 @@ namespace FluentAssemblyScanner
         public AssemblyFilter(string directoryName, string mask = null)
         {
             if (directoryName == null)
-            {
                 throw new ArgumentNullException(nameof(directoryName));
-            }
 
             this.directoryName = GetFullPath(directoryName);
             this.mask = mask;
@@ -32,24 +30,18 @@ namespace FluentAssemblyScanner
             foreach (var file in GetFiles())
             {
                 if (!ReflectionUtil.IsAssemblyFile(file))
-                {
                     continue;
-                }
 
                 var assembly = LoadAssemblyIgnoringErrors(file);
                 if (assembly != null)
-                {
                     yield return assembly;
-                }
             }
         }
 
         public AssemblyFilter FilterByAssembly(Predicate<Assembly> filter)
         {
             if (filter == null)
-            {
                 throw new ArgumentNullException(nameof(filter));
-            }
 
             assemblyFilter += filter;
             return this;
@@ -58,9 +50,7 @@ namespace FluentAssemblyScanner
         public AssemblyFilter FilterByName(Predicate<AssemblyName> filter)
         {
             if (filter == null)
-            {
                 throw new ArgumentNullException(nameof(filter));
-            }
 
             nameFilter += filter;
             return this;
@@ -74,9 +64,7 @@ namespace FluentAssemblyScanner
         public AssemblyFilter WithKeyToken(byte[] publicKeyToken)
         {
             if (publicKeyToken == null)
-            {
                 throw new ArgumentNullException(nameof(publicKeyToken));
-            }
 
             return FilterByName(n => IsTokenEqual(n.GetPublicKeyToken(), publicKeyToken));
         }
@@ -99,30 +87,20 @@ namespace FluentAssemblyScanner
         private static string GetFullPath(string path)
         {
             if (Path.IsPathRooted(path) == false)
-            {
                 path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-            }
             return Path.GetFullPath(path);
         }
 
         private static bool IsTokenEqual(byte[] actualToken, byte[] expectedToken)
         {
             if (actualToken == null)
-            {
                 return false;
-            }
             if (actualToken.Length != expectedToken.Length)
-            {
                 return false;
-            }
 
             for (var i = 0; i < actualToken.Length; i++)
-            {
                 if (actualToken[i] != expectedToken[i])
-                {
                     return false;
-                }
-            }
 
             return true;
         }
@@ -130,22 +108,16 @@ namespace FluentAssemblyScanner
         private byte[] ExtractKeyToken(string keyToken)
         {
             if (keyToken == null)
-            {
                 throw new ArgumentNullException(nameof(keyToken));
-            }
             if (keyToken.Length != 16)
-            {
                 throw new ArgumentException(
                     $"The string '{keyToken}' does not appear to be a valid public key token. It should have 16 characters, has {keyToken.Length}.");
-            }
 
             try
             {
                 var tokenBytes = new byte[8];
                 for (var i = 0; i < 8; i++)
-                {
                     tokenBytes[i] = byte.Parse(keyToken.Substring(2 * i, 2), NumberStyles.HexNumber);
-                }
 
                 return tokenBytes;
             }
@@ -162,13 +134,9 @@ namespace FluentAssemblyScanner
             try
             {
                 if (Directory.Exists(directoryName) == false)
-                {
                     return Enumerable.Empty<string>();
-                }
                 if (string.IsNullOrEmpty(mask))
-                {
                     return Directory.EnumerateFiles(directoryName);
-                }
 
                 return Directory.EnumerateFiles(directoryName, mask);
             }
@@ -185,7 +153,7 @@ namespace FluentAssemblyScanner
             {
                 return ReflectionUtil.GetAssemblyNamed(file, nameFilter, assemblyFilter);
             }
-            catch (FileNotFoundException) {}
+            catch (FileNotFoundException) { }
             catch (FileLoadException)
             {
                 // File was found but could not be loaded

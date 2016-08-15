@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 
 using FluentAssemblyScanner.Extensions;
-using FluentAssemblyScanner.ExtensionsF;
 
 namespace FluentAssemblyScanner
 {
