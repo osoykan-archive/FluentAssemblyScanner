@@ -12,8 +12,7 @@ environment:
 before_build:
 - cmd: dotnet.exe restore
 test:
-  assemblies:
-  - test\FluentAssemblyScanner.Tests\bin\Debug\net452\FluentAssemblyScanner.Tests.dll
+ assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net452\FluentAssemblyScanner.Tests.dll
 nuget:
   account_feed: true
   project_feed: true
