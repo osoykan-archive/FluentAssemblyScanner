@@ -9,7 +9,7 @@
 ```c#
 public static void Program()
 {
-  IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
+  IEnumerable<Type> types = AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
                                                  .IncludeNonPublicTypes()
                                                  .BasedOn<IAnimal>()
                                                  .InSameNamespaceOf(typeof(IAnimal))
