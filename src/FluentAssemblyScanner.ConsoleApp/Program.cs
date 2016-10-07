@@ -9,14 +9,14 @@ namespace FluentAssemblyScanner.ConsoleApp
     {
         public static void Main(string[] args)
         {
-            IEnumerable<Type> types = FluentAssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
-                                                           .IncludeNonPublicTypes()
-                                                           .ExcludeAssemblyContaining<IAnimal>()
-                                                           .BasedOn<IAnimal>()
-                                                           .Filter()
-                                                           .NonStatic()
-                                                           .MethodHasAttribute<VoiceAttribute>()
-                                                           .Scan();
+            IEnumerable<Type> types = AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter(string.Empty))
+                                                      .IncludeNonPublicTypes()
+                                                      .ExcludeAssemblyContaining<IAnimal>()
+                                                      .BasedOn<IAnimal>()
+                                                      .Filter()
+                                                      .NonStatic()
+                                                      .MethodHasAttribute<VoiceAttribute>()
+                                                      .Scan();
         }
     }
 }

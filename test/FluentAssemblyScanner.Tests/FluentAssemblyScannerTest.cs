@@ -9,13 +9,13 @@ namespace FluentAssemblyScanner.Tests
         [Fact]
         public void FromAssembly_IfAssemblyIsNull_ThrowsArgumentNullException()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => FluentAssemblyScanner.FromAssembly(null));
+            Assert.Throws(typeof(ArgumentNullException), () => AssemblyScanner.FromAssembly(null));
         }
 
         [Fact]
         public void FromAssembly_ShouldReturnOneType()
         {
-            var types = FluentAssemblyScanner.FromThisAssembly()
+            var types = AssemblyScanner.FromThisAssembly()
                                              .IncludeNonPublicTypes()
                                              .BasedOn<IAnimal>()
                                              .Filter()
@@ -28,13 +28,13 @@ namespace FluentAssemblyScanner.Tests
         [Fact]
         public void FromAssemblyContaining_IfAssemblyIsNull_ThrowsArgumentNullException()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => FluentAssemblyScanner.FromAssemblyContaining(null));
+            Assert.Throws(typeof(ArgumentNullException), () => AssemblyScanner.FromAssemblyContaining(null));
         }
 
         [Fact]
         public void FromAssemblyInDirectory_IfFilterIsNull_ThrowsArgumentNullException()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => FluentAssemblyScanner.FromAssemblyInDirectory(null));
+            Assert.Throws(typeof(ArgumentNullException), () => AssemblyScanner.FromAssemblyInDirectory(null));
         }
     }
 
