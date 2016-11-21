@@ -9,18 +9,18 @@
 ```c#
 public static void Program()
 {
-  IEnumerable<Type> types = AssemblyScanner.FromAssemblyInDirectory(AssemblyFilterFactory.All())
-                                                 .IncludeNonPublicTypes()
-                                                 .BasedOn<IAnimal>()
-                                                 .InSameNamespaceOf(typeof(IAnimal))
-                                                 .HasAttribute<VoiceAttribute>()
-                                                 .OrBasedOn<Human>()
-                                                 .Filter()
-                                                 .Classes()
-                                                 .NonStatic()
-                                                 .MethodName("Run")
-                                                 .MethodNameContains("n")
-                                                 .MethodHasAttribute<VoiceAttribute>()
-                                                 .Scan();
+  IEnumerable<Type> types = AssemblyScanner.FromAssemblyInDirectory(new AssemblyFilter("bin"))
+                                           .IncludeNonPublicTypes()
+                                           .BasedOn<IAnimal>()
+                                           .InSameNamespaceOf(typeof(IAnimal))
+                                           .HasAttribute<VoiceAttribute>()
+                                           .OrBasedOn<Human>()
+                                           .Filter()
+                                           .Classes()
+                                           .NonStatic()
+                                           .MethodName("Run")
+                                           .MethodNameContains("n")
+                                           .MethodHasAttribute<VoiceAttribute>()
+                                           .Scan();
 }
 ```
