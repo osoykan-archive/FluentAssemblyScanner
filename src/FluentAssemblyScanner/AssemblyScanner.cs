@@ -41,7 +41,7 @@ namespace FluentAssemblyScanner
                 throw new ArgumentNullException(nameof(filter));
             }
 
-            var assemblies = ReflectionUtil.GetAssemblies(filter);
+            IEnumerable<Assembly> assemblies = ReflectionUtil.GetAssemblies(filter);
             return new FromAssemblyDefiner(assemblies);
         }
 
@@ -63,14 +63,24 @@ namespace FluentAssemblyScanner
 
         public static FromAssemblyDefiner FromAssemblyMatchingNamed(string assemblyPrefix, AssemblyFilter assemblyFilter)
         {
-            var assemblies = ReflectionUtil.GetAssembliesContains(assemblyPrefix, assemblyFilter);
+            IEnumerable<Assembly> assemblies = ReflectionUtil.GetAssembliesContains(assemblyPrefix, assemblyFilter);
             return new FromAssemblyDefiner(assemblies);
         }
 
         public static FromAssemblyDefiner FromAssemblyNamed(string assemblyName)
         {
-            var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
+            Assembly assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
             return FromAssembly(assembly);
+        }
+
+        public static FromAssemblyDefiner FromAssemblies(IEnumerable<Assembly> assemblies)
+        {
+            if (assemblies == null)
+            {
+                throw new ArgumentNullException(nameof(assemblies));
+            }
+
+            return new FromAssemblyDefiner(assemblies);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
