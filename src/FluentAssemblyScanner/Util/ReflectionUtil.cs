@@ -12,7 +12,7 @@ using FluentAssemblyScanner.Extensions;
 
 namespace FluentAssemblyScanner.Util
 {
-    public static class ReflectionUtil
+    internal static class ReflectionUtil
     {
         private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> Factories =
             new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();

@@ -2,7 +2,7 @@
 
 namespace FluentAssemblyScanner.Extensions
 {
-    public static class PredicateExtensions
+    internal static class PredicateExtensions
     {
         public static bool ApplyTo<T>(this Predicate<T> predicate, T itemToFilter)
         {

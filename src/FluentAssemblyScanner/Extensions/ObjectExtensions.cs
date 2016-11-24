@@ -1,6 +1,6 @@
 ﻿namespace FluentAssemblyScanner.Extensions
 {
-    public static class ObjectExtensions
+    internal static class ObjectExtensions
     {
         public static T As<T>(this object @this) where T : class
         {

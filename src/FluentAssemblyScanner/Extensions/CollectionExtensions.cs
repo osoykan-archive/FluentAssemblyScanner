@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FluentAssemblyScanner.Extensions
 {
-    public static class CollectionExtensions
+    internal static class CollectionExtensions
     {
         public static TResult[] ConvertAll<T, TResult>(this T[] items, Converter<T, TResult> transformation)
         {

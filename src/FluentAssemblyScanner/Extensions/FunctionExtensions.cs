@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FluentAssemblyScanner.Extensions
 {
-    public static class FunctionExtensions
+    internal static class FunctionExtensions
     {
         public static IEnumerable<T> Whereify<T>(this IEnumerable<T> @this, IEnumerable<Func<T, bool>> predicateFuncs)
         {
