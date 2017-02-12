@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 namespace FluentAssemblyScanner
 {
-    /// <summary>
-    /// </summary>
     public abstract class FromAssemblyDefinerBase
     {
         /// <summary>
@@ -31,6 +31,7 @@ namespace FluentAssemblyScanner
         ///     Alls the types.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public abstract IEnumerable<Type> GetAllTypes();
 
         /// <summary>
@@ -38,6 +39,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner BasedOn<T>()
         {
             return BasedOn(typeof(T));
@@ -48,6 +50,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="basedOn">The based on.</param>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner BasedOn(Type basedOn)
         {
             return BasedOn((IEnumerable<Type>)new[] { basedOn });
@@ -58,6 +61,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="basedOn">The based on.</param>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner BasedOn(params Type[] basedOn)
         {
             return BasedOn((IEnumerable<Type>)basedOn);
@@ -68,6 +72,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="basedOn">The based on.</param>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner BasedOn(IEnumerable<Type> basedOn)
         {
             return new BasedOnDefiner(basedOn, this);
@@ -77,6 +82,7 @@ namespace FluentAssemblyScanner
         ///     Picks any.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner PickAny()
         {
             return BasedOn<object>();

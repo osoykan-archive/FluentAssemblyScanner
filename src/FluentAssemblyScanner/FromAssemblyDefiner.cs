@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 namespace FluentAssemblyScanner
 {
     /// <seealso cref="FluentAssemblyScanner.FromAssemblyDefinerBase" />
@@ -17,7 +19,7 @@ namespace FluentAssemblyScanner
         ///     Initializes a new instance of the <see cref="FromAssemblyDefiner" /> class.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
-        protected internal FromAssemblyDefiner(Assembly assembly)
+        protected internal FromAssemblyDefiner([NotNull] Assembly assembly)
             : base(new Assembly[] { assembly })
         {
         }
@@ -26,7 +28,7 @@ namespace FluentAssemblyScanner
         ///     Initializes a new instance of the <see cref="FromAssemblyDefiner" /> class.
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
-        protected internal FromAssemblyDefiner(IEnumerable<Assembly> assemblies)
+        protected internal FromAssemblyDefiner([NotNull] IEnumerable<Assembly> assemblies)
             : base(assemblies)
         {
         }
@@ -46,6 +48,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        [NotNull]
         public FromAssemblyDefiner ExcludeAssemblyContaining<T>()
         {
             return ExcludeAssemblyNamed(typeof(T).Assembly.FullName);
@@ -56,6 +59,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
+        [NotNull]
         public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
         {
             AssemblyFilter += assembly => assembly.FullName != assemblyName;
@@ -66,6 +70,7 @@ namespace FluentAssemblyScanner
         ///     Includes the non public types.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public FromAssemblyDefiner IncludeNonPublicTypes()
         {
             NonPublicTypes = true;
@@ -76,6 +81,7 @@ namespace FluentAssemblyScanner
         ///     Ignores the dynamic assemblies.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public FromAssemblyDefiner IgnoreDynamicAssemblies()
         {
             AssemblyFilter += assembly => assembly.IsDynamic == false;

@@ -28,6 +28,7 @@ namespace FluentAssemblyScanner
         ///     Gets the assemblies.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public IEnumerable<Assembly> GetAssemblies()
         {
             foreach (string file in GetFiles())
@@ -50,7 +51,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        public AssemblyFilter FilterByAssembly(Predicate<Assembly> filter)
+        [NotNull]
+        public AssemblyFilter FilterByAssembly([NotNull] Predicate<Assembly> filter)
         {
             Check.NotNull(filter, nameof(filter));
 
@@ -63,7 +65,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        public AssemblyFilter FilterByName(Predicate<AssemblyName> filter)
+        [NotNull]
+        public AssemblyFilter FilterByName([NotNull] Predicate<AssemblyName> filter)
         {
             Check.NotNull(filter, nameof(filter));
 
@@ -76,7 +79,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="publicKeyToken">The public key token.</param>
         /// <returns></returns>
-        public AssemblyFilter WithKeyToken(string publicKeyToken)
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] string publicKeyToken)
         {
             return WithKeyToken(ExtractKeyToken(publicKeyToken));
         }
@@ -86,7 +90,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="publicKeyToken">The public key token.</param>
         /// <returns></returns>
-        public AssemblyFilter WithKeyToken(byte[] publicKeyToken)
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] byte[] publicKeyToken)
         {
             Check.NotNull(publicKeyToken, nameof(publicKeyToken));
 
@@ -98,7 +103,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="typeFromAssemblySignedWithKey">The type from assembly signed with key.</param>
         /// <returns></returns>
-        public AssemblyFilter WithKeyToken(Type typeFromAssemblySignedWithKey)
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] Type typeFromAssemblySignedWithKey)
         {
             return WithKeyToken(typeFromAssemblySignedWithKey.Assembly);
         }
@@ -108,6 +114,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="TTypeFromAssemblySignedWithKey">The type of the type from assembly signed with key.</typeparam>
         /// <returns></returns>
+        [NotNull]
         public AssemblyFilter WithKeyToken<TTypeFromAssemblySignedWithKey>()
         {
             return WithKeyToken(typeof(TTypeFromAssemblySignedWithKey).Assembly);
@@ -118,7 +125,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns></returns>
-        public AssemblyFilter WithKeyToken(Assembly assembly)
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] Assembly assembly)
         {
             return WithKeyToken(assembly.GetName().GetPublicKeyToken());
         }

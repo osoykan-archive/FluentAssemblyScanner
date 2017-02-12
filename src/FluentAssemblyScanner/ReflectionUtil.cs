@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -47,7 +46,7 @@ namespace FluentAssemblyScanner
         /// <param name="rootAssembly">The root assembly.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentException"></exception>
-        public static IEnumerable<Assembly> GetApplicationAssemblies(Assembly rootAssembly)
+        public static IEnumerable<Assembly> GetApplicationAssemblies([NotNull] Assembly rootAssembly)
         {
             int index = rootAssembly.FullName.IndexOfAny(new[] { '.', ',' });
             if (index < 0)
@@ -67,7 +66,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblyFilter">The assembly filter.</param>
         /// <returns></returns>
-        public static IEnumerable<Assembly> GetAssemblies(AssemblyFilter assemblyFilter)
+        public static IEnumerable<Assembly> GetAssemblies([NotNull] AssemblyFilter assemblyFilter)
         {
             return assemblyFilter.GetAssemblies();
         }
@@ -91,10 +90,8 @@ namespace FluentAssemblyScanner
         /// <exception cref="Exception"></exception>
         /// <returns></returns>
         /// <exception cref="System.Exception"></exception>
-        public static Assembly GetAssemblyNamed(string assemblyName)
+        public static Assembly GetAssemblyNamed([NotNull] string assemblyName)
         {
-            Debug.Assert(string.IsNullOrEmpty(assemblyName) == false);
-
             try
             {
                 Assembly assembly;
@@ -141,7 +138,7 @@ namespace FluentAssemblyScanner
         /// <param name="nameFilter">The name filter.</param>
         /// <param name="assemblyFilter">The assembly filter.</param>
         /// <returns></returns>
-        public static Assembly GetAssemblyNamed(string filePath, Predicate<AssemblyName> nameFilter, Predicate<Assembly> assemblyFilter)
+        public static Assembly GetAssemblyNamed([NotNull] string filePath, [CanBeNull] Predicate<AssemblyName> nameFilter, [CanBeNull] Predicate<Assembly> assemblyFilter)
         {
             AssemblyName assemblyName = GetAssemblyName(filePath);
             if (nameFilter != null)
@@ -176,7 +173,8 @@ namespace FluentAssemblyScanner
         /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        public static TAttribute[] GetAttributes<TAttribute>(this MemberInfo item) where TAttribute : Attribute
+        [CanBeNull]
+        public static TAttribute[] GetAttributes<TAttribute>([NotNull] this MemberInfo item) where TAttribute : Attribute
         {
             return (TAttribute[])Attribute.GetCustomAttributes(item, typeof(TAttribute), true);
         }
@@ -187,7 +185,8 @@ namespace FluentAssemblyScanner
         /// <param name="assembly">The assembly.</param>
         /// <param name="includeNonExported">if set to <c>true</c> [include non exported].</param>
         /// <returns></returns>
-        public static Type[] GetAvailableTypes(this Assembly assembly, bool includeNonExported = false)
+        [NotNull]
+        public static Type[] GetAvailableTypes([NotNull] this Assembly assembly, bool includeNonExported = false)
         {
             try
             {
@@ -202,7 +201,7 @@ namespace FluentAssemblyScanner
             {
                 return e.Types.FindAll(t => t != null);
 
-                // NOTE: perhaps we should not ignore the exceptions here, and log them?
+                // NOTE: perhaps we should not ignore the exceptions here.
             }
         }
 
@@ -212,7 +211,8 @@ namespace FluentAssemblyScanner
         /// <param name="assembly">The assembly.</param>
         /// <param name="includeNonExported">if set to <c>true</c> [include non exported].</param>
         /// <returns></returns>
-        public static Type[] GetAvailableTypesOrdered(this Assembly assembly, bool includeNonExported = false)
+        [NotNull]
+        public static Type[] GetAvailableTypesOrdered([NotNull] this Assembly assembly, bool includeNonExported = false)
         {
             return assembly.GetAvailableTypes(includeNonExported).OrderBy(t => t.FullName).ToArray();
         }
@@ -224,7 +224,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        public static Type GetCompatibleArrayItemType(this Type type)
+        [CanBeNull]
+        public static Type GetCompatibleArrayItemType([NotNull] this Type type)
         {
             if (type == null)
             {
@@ -252,6 +253,7 @@ namespace FluentAssemblyScanner
         ///     Gets the loaded assemblies.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public static Assembly[] GetLoadedAssemblies()
         {
             return AppDomain.CurrentDomain.GetAssemblies();
@@ -275,7 +277,7 @@ namespace FluentAssemblyScanner
         /// <param name="ctor">The ctor.</param>
         /// <param name="ctorArgs">The ctor arguments.</param>
         /// <returns></returns>
-        public static object Instantiate(this ConstructorInfo ctor, object[] ctorArgs)
+        public static object Instantiate([NotNull] this ConstructorInfo ctor, object[] ctorArgs)
         {
             Func<object[], object> factory;
 
@@ -305,12 +307,9 @@ namespace FluentAssemblyScanner
         ///     <c>true</c> if [is assembly file] [the specified file path]; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">filePath</exception>
-        public static bool IsAssemblyFile(string filePath)
+        public static bool IsAssemblyFile([NotNull] string filePath)
         {
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
+            Check.NotNull(filePath, nameof(filePath));
 
             string extension;
             try
@@ -383,8 +382,8 @@ namespace FluentAssemblyScanner
                 return;
             }
 
-            string message = typeof(TBase).IsInterface 
-                ? $"Type {subtypeofTBase.FullName} does not implement the interface {typeof(TBase).FullName}." 
+            string message = typeof(TBase).IsInterface
+                ? $"Type {subtypeofTBase.FullName} does not implement the interface {typeof(TBase).FullName}."
                 : $"Type {subtypeofTBase.FullName} does not inherit from {typeof(TBase).FullName}.";
 
             throw new InvalidCastException(message);

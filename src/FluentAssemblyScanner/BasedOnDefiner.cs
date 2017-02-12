@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 namespace FluentAssemblyScanner
 {
     public class BasedOnDefiner : BasedOnDefinerBase
     {
         private readonly FromAssemblyDefinerBase _fromAssemblyDefinerBase;
 
-        internal BasedOnDefiner(IEnumerable<Type> basedOns, FromAssemblyDefinerBase fromAssemblyDefinerBase) : base(basedOns)
+        internal BasedOnDefiner([NotNull] IEnumerable<Type> basedOns, [NotNull] FromAssemblyDefinerBase fromAssemblyDefinerBase)
+            : base(basedOns)
         {
             _fromAssemblyDefinerBase = fromAssemblyDefinerBase;
         }
@@ -17,6 +20,7 @@ namespace FluentAssemblyScanner
         ///     Filters this instance.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public FilterDefiner Filter()
         {
             return new FilterDefiner(
@@ -33,6 +37,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner HasAttribute<TAttribute>() where TAttribute : Attribute
         {
             Where(ComponentExtensions.HasAttribute<TAttribute>);
@@ -44,7 +49,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="attributeType">Type of the attribute.</param>
         /// <returns></returns>
-        public BasedOnDefiner HasAttribute(Type attributeType)
+        [NotNull]
+        public BasedOnDefiner HasAttribute([NotNull] Type attributeType)
         {
             Where(type => ComponentExtensions.HasAttribute(type, attributeType));
             return this;
@@ -55,7 +61,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="namespace">The namespace.</param>
         /// <returns></returns>
-        public BasedOnDefiner InNamespace(string @namespace)
+        [NotNull]
+        public BasedOnDefiner InNamespace([NotNull] string @namespace)
         {
             return Where(ComponentExtensions.IsInNamespace(@namespace, false));
         }
@@ -66,7 +73,8 @@ namespace FluentAssemblyScanner
         /// <param name="namespace">The namespace.</param>
         /// <param name="includeSubnamespaces">if set to <c>true</c> [include subnamespaces].</param>
         /// <returns></returns>
-        public BasedOnDefiner InNamespace(string @namespace, bool includeSubnamespaces)
+        [NotNull]
+        public BasedOnDefiner InNamespace([NotNull] string @namespace, bool includeSubnamespaces)
         {
             return Where(ComponentExtensions.IsInNamespace(@namespace, includeSubnamespaces));
         }
@@ -76,7 +84,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        public BasedOnDefiner InSameNamespaceOf(Type type)
+        [NotNull]
+        public BasedOnDefiner InSameNamespaceOf([NotNull] Type type)
         {
             return Where(ComponentExtensions.IsInSameNamespaceOf(type));
         }
@@ -87,7 +96,8 @@ namespace FluentAssemblyScanner
         /// <param name="type">The type.</param>
         /// <param name="includeSubnamespaces">if set to <c>true</c> [include subnamespaces].</param>
         /// <returns></returns>
-        public BasedOnDefiner InSameNamespaceOf(Type type, bool includeSubnamespaces)
+        [NotNull]
+        public BasedOnDefiner InSameNamespaceOf([NotNull] Type type, bool includeSubnamespaces)
         {
             return Where(ComponentExtensions.IsInSameNamespaceOf(type, includeSubnamespaces));
         }
@@ -97,6 +107,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner InSameNamespaceOf<T>()
         {
             return Where(ComponentExtensions.IsInSameNamespaceOf<T>());
@@ -108,6 +119,7 @@ namespace FluentAssemblyScanner
         /// <typeparam name="T"></typeparam>
         /// <param name="includeSubnamespaces">if set to <c>true</c> [include subnamespaces].</param>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner InSameNamespaceOf<T>(bool includeSubnamespaces) where T : class
         {
             return Where(ComponentExtensions.IsInSameNamespaceOf<T>(includeSubnamespaces));
@@ -118,7 +130,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="basedOn">The based on.</param>
         /// <returns></returns>
-        public BasedOnDefiner OrBasedOn(Type basedOn)
+        [NotNull]
+        public BasedOnDefiner OrBasedOn([NotNull] Type basedOn)
         {
             BasedOns.Add(basedOn);
             return this;
@@ -129,6 +142,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        [NotNull]
         public BasedOnDefiner OrBasedOn<T>()
         {
             BasedOns.Add(typeof(T));
@@ -140,7 +154,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        protected BasedOnDefiner Where(Predicate<Type> filter)
+        [NotNull]
+        protected BasedOnDefiner Where([NotNull] Predicate<Type> filter)
         {
             return If(filter).As<BasedOnDefiner>();
         }

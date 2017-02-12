@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 namespace FluentAssemblyScanner
 {
     public class FilterDefiner : FilterDefinerBase
@@ -22,7 +24,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="types">The types.</param>
         /// <param name="filterActions">The filter actions.</param>
-        public FilterDefiner(List<Type> types, List<Func<Type, bool>> filterActions) : base(types)
+        public FilterDefiner([NotNull] List<Type> types, [NotNull] List<Func<Type, bool>> filterActions) 
+            : base(types)
         {
             _types = types;
             _filterActions = filterActions;
@@ -45,6 +48,7 @@ namespace FluentAssemblyScanner
         ///     Classeses this instance.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public FilterDefiner Classes()
         {
             Where(type => type.IsClass && type.IsAbstract == false);
@@ -56,6 +60,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
         /// <returns></returns>
+        [NotNull]
         public FilterDefiner MethodHasAttribute<TAttribute>() where TAttribute : Attribute
         {
             return MethodHasAttribute(typeof(TAttribute));
@@ -66,6 +71,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="attributeType">Type of the attribute.</param>
         /// <returns></returns>
+        [NotNull]
         public FilterDefiner MethodHasAttribute(Type attributeType)
         {
             MethodFilters += method => method.GetCustomAttributes(attributeType).Any();
@@ -77,6 +83,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="methodName">Name of the method.</param>
         /// <returns></returns>
+        [NotNull]
         public FilterDefiner MethodName(string methodName)
         {
             MethodFilters += method => method.Name == methodName;
@@ -88,6 +95,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="methodText">The method text.</param>
         /// <returns></returns>
+        [NotNull]
         public FilterDefiner MethodNameContains(string methodText)
         {
             MethodFilters += method => method.Name.Contains(methodText);
@@ -98,6 +106,7 @@ namespace FluentAssemblyScanner
         ///     Nons the static.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         public FilterDefiner NonStatic()
         {
             Where(type => type.IsAbstract == false && type.IsSealed == false);

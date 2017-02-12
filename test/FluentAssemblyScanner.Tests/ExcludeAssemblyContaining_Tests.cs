@@ -144,6 +144,29 @@ namespace FluentAssemblyScanner.Tests
                     .Count.Should().Be(0);
         }
 
+        [Fact]
+        public void sometest()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            instance.ExcludeAssemblyNamed("FluentAssemblyScanner.Tests.AdditionalAssembly, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")
+                    .BasedOn<IAdditionalService>()
+                    .Filter()
+                    .Scan()
+                    .Count.Should().Be(0);
+        }
+
         private class SomePrivateClass
         {
         }
