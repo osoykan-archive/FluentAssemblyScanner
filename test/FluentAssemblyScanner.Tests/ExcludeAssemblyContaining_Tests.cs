@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Linq;
 
+using FluentAssemblyScanner.Tests.AdditionalAssembly;
 using FluentAssemblyScanner.Tests.SpecClasses;
 
 using FluentAssertions;
@@ -10,68 +9,10 @@ using Xunit;
 
 namespace FluentAssemblyScanner.Tests
 {
-    public class Instantiatable_Test
+    public class ExcludeAssemblyContaining_Tests
     {
         [Fact]
-        public void FromAssembly_should_be_instantiatable_by_passing_an_assembly()
-        {
-            //-----------------------------------------------------------------------------------------------------------
-            // Arrange
-            //-----------------------------------------------------------------------------------------------------------
-            Assembly thisAssembly = Assembly.GetExecutingAssembly();
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Act
-            //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssembly(thisAssembly);
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Assert
-            //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void FromAssemblyContaining_should_be_instantiatable_by_given_type()
-        {
-            //-----------------------------------------------------------------------------------------------------------
-            // Arrange
-            //-----------------------------------------------------------------------------------------------------------
-            Type type = typeof(ISecurityService);
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Act
-            //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyContaining(type);
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Assert
-            //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void FromAssemblyContaining_should_be_instantiatable_by_given_t_generic()
-        {
-            //-----------------------------------------------------------------------------------------------------------
-            // Arrange
-            //-----------------------------------------------------------------------------------------------------------
-
-            // None
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Act
-            //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyContaining<ISecurityService>();
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Assert
-            //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void FromAssemblyInDirectory_should_be_instantiatable_by_given_AssemblyFilter()
+        public void AllTypes_should_return_count_greater_than_zero()
         {
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
@@ -86,108 +27,125 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
+            instance.ExcludeAssemblyContaining<IAdditionalService>()
+                    .GetAllTypes()
+                    .Count()
+                    .Should()
+                    .BeGreaterThan(0);
         }
 
         [Fact]
-        public void FromAssemblyInThisApplication_should_be_instantiatable()
+        public void should_work_as_expected()
         {
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-
-            // None
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Act
-            //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplication();
-
-            //-----------------------------------------------------------------------------------------------------------
-            // Assert
-            //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void FromAssemblyMatchingNamed_should_be_instantiatable_with_assemblyPrefix_and_assemblyFilter()
-        {
-            //-----------------------------------------------------------------------------------------------------------
-            // Arrange
-            //-----------------------------------------------------------------------------------------------------------
-            const string assemblyPrefix = "Fluent";
             var assemblyFilter = new AssemblyFilter(string.Empty);
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyMatchingNamed(assemblyPrefix, assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
+            instance.ExcludeAssemblyContaining<IAdditionalService>()
+                    .GetAllTypes()
+                    .Should()
+                    .Contain(typeof(AbstractDbContext));
         }
 
         [Fact]
-        public void FromAssemblyNamed_should_be_instantiatable_with_assemblyName()
+        public void should_work_on_not_wanted_assemblies()
         {
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            const string assemblyName = "FluentAssemblyScanner.Tests";
+            var assemblyFilter = new AssemblyFilter(string.Empty);
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyNamed(assemblyName);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
+            instance.ExcludeAssemblyContaining<IAdditionalService>()
+                    .GetAllTypes()
+                    .Should()
+                    .NotContain(typeof(AdditionalService));
         }
 
         [Fact]
-        public void FromAssemblies_should_be_instantiatable_with_given_assemblies()
+        public void should_not_contains_private_classes_when_nonpublictypes_is_not_included()
         {
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            IEnumerable<Assembly> assemblies = new Assembly[]
-            {
-                Assembly.GetExecutingAssembly()
-            };
+            var assemblyFilter = new AssemblyFilter(string.Empty);
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblies(assemblies);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
+            instance.ExcludeAssemblyContaining<IAdditionalService>()
+                    .GetAllTypes()
+                    .Should().NotContain(typeof(SomePrivateClass));
         }
 
         [Fact]
-        public void FromThisAssembly_should_be_instantiatable()
+        public void should_contains_private_classes_when_nonpublictypes_included()
         {
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-
-            // None
+            var assemblyFilter = new AssemblyFilter(string.Empty);
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromThisAssembly();
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.Should().NotBeNull();
+            instance.ExcludeAssemblyContaining<IAdditionalService>()
+                    .IncludeNonPublicTypes()
+                    .GetAllTypes()
+                    .Should().Contain(typeof(SomePrivateClass));
+        }
+
+        [Fact]
+        public void should_not_find_any_type_from_excluded_assembly()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            instance.ExcludeAssemblyContaining<IAdditionalService>()
+                    .BasedOn<AdditionalService>()
+                    .Filter()
+                    .Scan()
+                    .Count.Should().Be(0);
+        }
+
+        private class SomePrivateClass
+        {
         }
     }
 }

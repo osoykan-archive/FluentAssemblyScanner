@@ -35,11 +35,10 @@ namespace FluentAssemblyScanner
         ///     Alls the types.
         /// </summary>
         /// <returns></returns>
-        public override IEnumerable<Type> AllTypes()
+        public override IEnumerable<Type> GetAllTypes()
         {
-            AssemblyFilters?.Invoke(Assemblies);
-
-            return Assemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
+            IEnumerable<Assembly> filteredAssemblies = Assemblies.Where(AssemblyFilter.ApplyTo);
+            return filteredAssemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
         }
 
         /// <summary>
@@ -59,8 +58,7 @@ namespace FluentAssemblyScanner
         /// <returns></returns>
         public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
         {
-            Assembly assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
-            AssemblyFilters += assemblies => assemblies.Except(new[] { assembly });
+            AssemblyFilter += assembly => assembly.FullName != assemblyName;
             return this;
         }
 
@@ -71,6 +69,16 @@ namespace FluentAssemblyScanner
         public FromAssemblyDefiner IncludeNonPublicTypes()
         {
             NonPublicTypes = true;
+            return this;
+        }
+
+        /// <summary>
+        ///     Ignores the dynamic assemblies.
+        /// </summary>
+        /// <returns></returns>
+        public FromAssemblyDefiner IgnoreDynamicAssemblies()
+        {
+            AssemblyFilter += assembly => assembly.IsDynamic == false;
             return this;
         }
     }

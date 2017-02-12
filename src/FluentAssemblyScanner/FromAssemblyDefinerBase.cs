@@ -16,7 +16,7 @@ namespace FluentAssemblyScanner
         /// <summary>
         ///     The assembly filters
         /// </summary>
-        protected Action<IEnumerable<Assembly>> AssemblyFilters;
+        protected Predicate<Assembly> AssemblyFilter;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="FromAssemblyDefinerBase" /> class.
@@ -31,7 +31,7 @@ namespace FluentAssemblyScanner
         ///     Alls the types.
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerable<Type> AllTypes();
+        public abstract IEnumerable<Type> GetAllTypes();
 
         /// <summary>
         ///     Baseds the on.

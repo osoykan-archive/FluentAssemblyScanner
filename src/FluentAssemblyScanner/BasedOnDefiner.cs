@@ -20,7 +20,7 @@ namespace FluentAssemblyScanner
         public FilterDefiner Filter()
         {
             return new FilterDefiner(
-                _fromAssemblyDefinerBase.AllTypes().ToList(),
+                _fromAssemblyDefinerBase.GetAllTypes().ToList(),
                 new List<Func<Type, bool>>
                 {
                     type => BasedOns.Any(t => t.IsAssignableFrom(type)),
