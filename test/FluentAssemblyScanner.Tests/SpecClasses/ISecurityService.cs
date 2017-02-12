@@ -1,4 +1,4 @@
-﻿namespace FluentAssemblyScanner.Tests.Specs
+﻿namespace FluentAssemblyScanner.Tests.SpecClasses
 {
     public interface ISecurityService
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FluentAssemblyScanner.Tests.Specs
+namespace FluentAssemblyScanner.Tests.SpecClasses
 {
     public class MultitenantAttribute : Attribute
     {

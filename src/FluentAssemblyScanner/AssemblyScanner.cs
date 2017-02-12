@@ -97,7 +97,8 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        public static FromAssemblyDefiner FromAssemblyNamed(string assemblyName)
+        [NotNull]
+        public static FromAssemblyDefiner FromAssemblyNamed([NotNull] string assemblyName)
         {
             Assembly assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
             return FromAssembly(assembly);
@@ -108,6 +109,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <returns></returns>
+        [NotNull]
         public static FromAssemblyDefiner FromAssemblies([NotNull] IEnumerable<Assembly> assemblies)
         {
             Check.NotNull(assemblies, nameof(assemblies));
@@ -119,6 +121,7 @@ namespace FluentAssemblyScanner
         ///     Froms the this assembly.
         /// </summary>
         /// <returns></returns>
+        [NotNull]
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static FromAssemblyDefiner FromThisAssembly()
         {
