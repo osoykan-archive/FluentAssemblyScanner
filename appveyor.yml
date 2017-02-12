@@ -5,6 +5,7 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+ 
 environment:
   nuget_user: oguzhansoykan@outlook.com
   nuget_password:
@@ -12,7 +13,7 @@ environment:
 before_build:
 - cmd: dotnet.exe restore
 test:
- assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net452\FluentAssemblyScanner.Tests.dll
+ assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net452\win7-x64\FluentAssemblyScanner.Tests.dll
 nuget:
   account_feed: true
   project_feed: true
