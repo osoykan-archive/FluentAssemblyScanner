@@ -145,7 +145,7 @@ namespace FluentAssemblyScanner.Tests
         }
 
         [Fact]
-        public void sometest()
+        public void should_not_find_any_type_from_excluded_assembly_with_named()
         {
             //-----------------------------------------------------------------------------------------------------------
             // Arrange

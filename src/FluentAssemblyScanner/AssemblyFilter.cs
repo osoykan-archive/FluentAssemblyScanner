@@ -131,7 +131,8 @@ namespace FluentAssemblyScanner
             return WithKeyToken(assembly.GetName().GetPublicKeyToken());
         }
 
-        private string GetFullPath(string path)
+        [NotNull]
+        private string GetFullPath([NotNull] string path)
         {
             if (Path.IsPathRooted(path) == false)
             {
@@ -140,7 +141,7 @@ namespace FluentAssemblyScanner
             return Path.GetFullPath(path);
         }
 
-        private bool IsTokenEqual(byte[] actualToken, byte[] expectedToken)
+        private bool IsTokenEqual([CanBeNull] byte[] actualToken, [NotNull] byte[] expectedToken)
         {
             if (actualToken?.Length != expectedToken.Length)
             {
@@ -158,12 +159,11 @@ namespace FluentAssemblyScanner
             return true;
         }
 
-        private byte[] ExtractKeyToken(string keyToken)
+        [NotNull]
+        private byte[] ExtractKeyToken([NotNull] string keyToken)
         {
-            if (keyToken == null)
-            {
-                throw new ArgumentNullException(nameof(keyToken));
-            }
+            Check.NotNull(keyToken, nameof(keyToken));
+
             if (keyToken.Length != 16)
             {
                 throw new ArgumentException(
@@ -188,6 +188,7 @@ namespace FluentAssemblyScanner
             }
         }
 
+        [NotNull]
         private IEnumerable<string> GetFiles()
         {
             try
@@ -209,7 +210,8 @@ namespace FluentAssemblyScanner
             }
         }
 
-        private Assembly LoadAssemblyIgnoringErrors(string file)
+        [CanBeNull]
+        private Assembly LoadAssemblyIgnoringErrors([NotNull] string file)
         {
             // based on MEF DirectoryCatalog
             try

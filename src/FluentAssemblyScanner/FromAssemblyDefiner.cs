@@ -11,9 +11,9 @@ namespace FluentAssemblyScanner
     public class FromAssemblyDefiner : FromAssemblyDefinerBase
     {
         /// <summary>
-        ///     The non public types
+        ///     Include non public types.
         /// </summary>
-        protected bool NonPublicTypes;
+        private bool _nonPublicTypes;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="FromAssemblyDefiner" /> class.
@@ -40,7 +40,7 @@ namespace FluentAssemblyScanner
         public override IEnumerable<Type> GetAllTypes()
         {
             IEnumerable<Assembly> filteredAssemblies = Assemblies.Where(AssemblyFilter.ApplyTo);
-            return filteredAssemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
+            return filteredAssemblies.SelectMany(a => a.GetAvailableTypesOrdered(_nonPublicTypes));
         }
 
         /// <summary>
@@ -67,13 +67,49 @@ namespace FluentAssemblyScanner
         }
 
         /// <summary>
+        ///     Excludes the assembly name starts with.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        [NotNull]
+        public FromAssemblyDefiner ExcludeAssemblyNameStartsWith([NotNull] string text)
+        {
+            AssemblyFilter += assembly => !assembly.FullName.StartsWith(text);
+            return this;
+        }
+
+        /// <summary>
+        ///     Excludes the assembly name ends with.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        [NotNull]
+        public FromAssemblyDefiner ExcludeAssemblyNameEndsWith([NotNull] string text)
+        {
+            AssemblyFilter += assembly => !assembly.FullName.EndsWith(text);
+            return this;
+        }
+
+        /// <summary>
+        ///     Excludes the assembly name contains.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        [NotNull]
+        public FromAssemblyDefiner ExcludeAssemblyNameContains([NotNull] string text)
+        {
+            AssemblyFilter += assembly => !assembly.FullName.Contains(text);
+            return this;
+        }
+
+        /// <summary>
         ///     Includes the non public types.
         /// </summary>
         /// <returns></returns>
         [NotNull]
         public FromAssemblyDefiner IncludeNonPublicTypes()
         {
-            NonPublicTypes = true;
+            _nonPublicTypes = true;
             return this;
         }
 

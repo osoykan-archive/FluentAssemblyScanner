@@ -28,7 +28,7 @@ namespace FluentAssemblyScanner
         /// <param name="type">The type.</param>
         /// <returns></returns>
         [NotNull]
-        public static FromAssemblyDefiner FromAssemblyContaining(Type type)
+        public static FromAssemblyDefiner FromAssemblyContaining([NotNull] Type type)
         {
             Check.NotNull(type, nameof(type));
 
@@ -76,6 +76,17 @@ namespace FluentAssemblyScanner
         public static FromAssemblyDefiner FromAssemblyInThisApplication()
         {
             var assemblies = new HashSet<Assembly>(ReflectionUtil.GetApplicationAssemblies(Assembly.GetCallingAssembly()));
+            return new FromAssemblyDefiner(assemblies);
+        }
+
+        /// <summary>
+        ///     Froms the assembly in this application directory.
+        /// </summary>
+        /// <returns></returns>
+        [NotNull]
+        public static FromAssemblyDefiner FromAssemblyInThisApplicationDirectory()
+        {
+            IEnumerable<Assembly> assemblies = ReflectionUtil.GetAssemblies(new AssemblyFilter(AppDomain.CurrentDomain.GetActualDomainPath()));
             return new FromAssemblyDefiner(assemblies);
         }
 

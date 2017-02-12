@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 namespace FluentAssemblyScanner
 {
     internal static class FunctionExtensions
@@ -13,16 +15,19 @@ namespace FluentAssemblyScanner
         /// <param name="this">The this.</param>
         /// <param name="predicateFuncs">The predicate funcs.</param>
         /// <returns></returns>
-        public static IEnumerable<T> Whereify<T>(this IEnumerable<T> @this, IEnumerable<Func<T, bool>> predicateFuncs)
+        [NotNull]
+        public static IEnumerable<T> Whereify<T>([NotNull] this IEnumerable<T> @this, IEnumerable<Func<T, bool>> predicateFuncs)
         {
-            IEnumerator<T> enumerator = @this.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (IEnumerator<T> enumerator = @this.GetEnumerator())
             {
-                T currentObject = enumerator.Current;
-
-                if (predicateFuncs.As<IEnumerable<Func<T, bool>>>().All(x => x.Invoke(currentObject)))
+                while (enumerator.MoveNext())
                 {
-                    yield return currentObject;
+                    T currentObject = enumerator.Current;
+
+                    if (predicateFuncs.As<IEnumerable<Func<T, bool>>>().All(x => x.Invoke(currentObject)))
+                    {
+                        yield return currentObject;
+                    }
                 }
             }
         }

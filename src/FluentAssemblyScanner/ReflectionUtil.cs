@@ -8,6 +8,9 @@ using System.Reflection;
 using System.Text;
 
 using JetBrains.Annotations;
+// ReSharper disable UncatchableException
+
+// ReSharper disable UnthrowableException
 
 namespace FluentAssemblyScanner
 {
@@ -77,7 +80,7 @@ namespace FluentAssemblyScanner
         /// <param name="assemblyPrefix">The assembly prefix.</param>
         /// <param name="assemblyFilter">The assembly filter.</param>
         /// <returns></returns>
-        [CanBeNull]
+        [NotNull]
         public static IEnumerable<Assembly> GetAssembliesContains([NotNull] string assemblyPrefix, [NotNull] AssemblyFilter assemblyFilter)
         {
             return assemblyFilter.GetAssemblies().Where(assembly => assembly.FullName.Contains(assemblyPrefix));
@@ -143,8 +146,9 @@ namespace FluentAssemblyScanner
             AssemblyName assemblyName = GetAssemblyName(filePath);
             if (nameFilter != null)
             {
-                foreach (Predicate<AssemblyName> predicate in nameFilter.GetInvocationList())
+                foreach (Delegate @delegate in nameFilter.GetInvocationList())
                 {
+                    var predicate = (Predicate<AssemblyName>)@delegate;
                     if (predicate(assemblyName) == false)
                     {
                         return null;
@@ -155,8 +159,9 @@ namespace FluentAssemblyScanner
             Assembly assembly = LoadAssembly(assemblyName);
             if (assemblyFilter != null)
             {
-                foreach (Predicate<Assembly> predicate in assemblyFilter.GetInvocationList())
+                foreach (Delegate @delegate in assemblyFilter.GetInvocationList())
                 {
+                    var predicate = (Predicate<Assembly>)@delegate;
                     if (predicate(assembly) == false)
                     {
                         return null;
@@ -225,7 +230,7 @@ namespace FluentAssemblyScanner
         /// <param name="type">The type.</param>
         /// <returns></returns>
         [CanBeNull]
-        public static Type GetCompatibleArrayItemType([NotNull] this Type type)
+        public static Type GetCompatibleArrayItemType([CanBeNull] this Type type)
         {
             if (type == null)
             {
