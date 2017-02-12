@@ -8,9 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-using FluentAssemblyScanner.Extensions;
-
-namespace FluentAssemblyScanner.Util
+namespace FluentAssemblyScanner
 {
     internal static class ReflectionUtil
     {

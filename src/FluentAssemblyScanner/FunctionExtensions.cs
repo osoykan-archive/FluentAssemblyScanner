@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FluentAssemblyScanner.Extensions
+namespace FluentAssemblyScanner
 {
     internal static class FunctionExtensions
     {

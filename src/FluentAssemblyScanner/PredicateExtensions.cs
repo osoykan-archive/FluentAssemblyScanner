@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FluentAssemblyScanner.Extensions
+namespace FluentAssemblyScanner
 {
     internal static class PredicateExtensions
     {

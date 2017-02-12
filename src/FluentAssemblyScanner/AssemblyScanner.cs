@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-using FluentAssemblyScanner.Util;
-
 namespace FluentAssemblyScanner
 {
     public class AssemblyScanner

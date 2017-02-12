@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using FluentAssemblyScanner.Extensions;
-
 namespace FluentAssemblyScanner
 {
     public class FilterDefiner : FilterDefinerBase

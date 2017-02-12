@@ -1,4 +1,4 @@
-﻿namespace FluentAssemblyScanner.Extensions
+﻿namespace FluentAssemblyScanner
 {
     internal static class ObjectExtensions
     {
