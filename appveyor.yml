@@ -15,6 +15,7 @@ before_build:
 test:
  assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net452\win7-x64\FluentAssemblyScanner.Tests.dll
 nuget:
+  disable_publish_on_pr: true
   account_feed: true
   project_feed: true
 build:
