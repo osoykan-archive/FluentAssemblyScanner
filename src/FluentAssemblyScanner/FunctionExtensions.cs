@@ -6,12 +6,19 @@ namespace FluentAssemblyScanner
 {
     internal static class FunctionExtensions
     {
+        /// <summary>
+        ///     Whereifies the specified predicate funcs.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="this">The this.</param>
+        /// <param name="predicateFuncs">The predicate funcs.</param>
+        /// <returns></returns>
         public static IEnumerable<T> Whereify<T>(this IEnumerable<T> @this, IEnumerable<Func<T, bool>> predicateFuncs)
         {
-            var enumerator = @this.GetEnumerator();
+            IEnumerator<T> enumerator = @this.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                var currentObject = enumerator.Current;
+                T currentObject = enumerator.Current;
 
                 if (predicateFuncs.As<IEnumerable<Func<T, bool>>>().All(x => x.Invoke(currentObject)))
                 {

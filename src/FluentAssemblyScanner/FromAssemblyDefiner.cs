@@ -5,16 +5,36 @@ using System.Reflection;
 
 namespace FluentAssemblyScanner
 {
+    /// <seealso cref="FluentAssemblyScanner.FromAssemblyDefinerBase" />
     public class FromAssemblyDefiner : FromAssemblyDefinerBase
     {
-        protected internal FromAssemblyDefiner(Assembly assembly)
-            : base(new Assembly[] {assembly}) {}
-
-        protected internal FromAssemblyDefiner(IEnumerable<Assembly> assemblies)
-            : base(assemblies) {}
-
+        /// <summary>
+        ///     The non public types
+        /// </summary>
         protected bool NonPublicTypes;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FromAssemblyDefiner" /> class.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        protected internal FromAssemblyDefiner(Assembly assembly)
+            : base(new Assembly[] { assembly })
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FromAssemblyDefiner" /> class.
+        /// </summary>
+        /// <param name="assemblies">The assemblies.</param>
+        protected internal FromAssemblyDefiner(IEnumerable<Assembly> assemblies)
+            : base(assemblies)
+        {
+        }
+
+        /// <summary>
+        ///     Alls the types.
+        /// </summary>
+        /// <returns></returns>
         public override IEnumerable<Type> AllTypes()
         {
             AssemblyFilters?.Invoke(Assemblies);
@@ -22,18 +42,32 @@ namespace FluentAssemblyScanner
             return Assemblies.SelectMany(a => a.GetAvailableTypesOrdered(NonPublicTypes));
         }
 
+        /// <summary>
+        ///     Excludes the assembly containing.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public FromAssemblyDefiner ExcludeAssemblyContaining<T>()
         {
             return ExcludeAssemblyNamed(typeof(T).Assembly.FullName);
         }
 
+        /// <summary>
+        ///     Excludes the assembly named.
+        /// </summary>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <returns></returns>
         public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
         {
-            var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
-            AssemblyFilters += assemblies => assemblies.Except(new[] {assembly});
+            Assembly assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
+            AssemblyFilters += assemblies => assemblies.Except(new[] { assembly });
             return this;
         }
 
+        /// <summary>
+        ///     Includes the non public types.
+        /// </summary>
+        /// <returns></returns>
         public FromAssemblyDefiner IncludeNonPublicTypes()
         {
             NonPublicTypes = true;

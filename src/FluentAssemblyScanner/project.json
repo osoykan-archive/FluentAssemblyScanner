@@ -1,22 +1,22 @@
 ﻿{
-  "version": "1.0.5-*",
+  "version" : "1.0.5-*",
 
   "dependencies" : {},
   "frameworks" : {
     "net452" : {}
   },
 
-  "packOptions": {
-    "summary": "Fluent assembly and type scanner for .Net",
-    "tags": ["asp.net", "asp.net mvc", "framework", "library", "assembly", "scanner"],
-    "owners": ["Oğuzhan Soykan"],
-    "authors": ["Oğuzhan Soykan"],
-    "iconUrl": "",
-    "projectUrl": "https://github.com/osoykan/FluentAssemblyScanner",
-    "licenseUrl": "https://github.com/osoykan/FluentAssemblyScanner/blob/master/LICENCE",
-    "requireLicenseAcceptance": false,
-    "files": {
-      "lib/net452": "bin/Release/net452/FluentAssemblyScanner.pdb"
+  "packOptions" : {
+    "summary" : "Fluent assembly and type scanner for .Net",
+    "tags" : ["asp.net", "asp.net mvc", "framework", "library", "assembly", "scanner"],
+    "owners" : ["Oğuzhan Soykan"],
+    "authors" : ["Oğuzhan Soykan"],
+    "iconUrl" : "",
+    "projectUrl" : "https://github.com/osoykan/FluentAssemblyScanner",
+    "licenseUrl" : "https://github.com/osoykan/FluentAssemblyScanner/blob/master/LICENCE",
+    "requireLicenseAcceptance" : false,
+    "files" : {
+      "lib/net452" : "bin/Release/net452/FluentAssemblyScanner.pdb"
     },
     "repository" : {
       "type" : "git",
