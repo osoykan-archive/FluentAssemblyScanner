@@ -17,12 +17,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -40,12 +41,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -62,12 +64,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -84,12 +87,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -105,12 +109,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -127,12 +132,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -150,12 +156,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -173,12 +180,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -196,12 +204,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -219,12 +228,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -242,12 +252,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -265,12 +276,13 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            // None.
 
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
