@@ -31,5 +31,21 @@ namespace FluentAssemblyScanner
 
             return true;
         }
+
+        /// <summary>
+        ///     Ands the specified additional predicate.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="existingPredicate">The existing predicate.</param>
+        /// <param name="additionalPredicate">The additional predicate.</param>
+        /// <returns></returns>
+        [NotNull]
+        public static Predicate<T> And<T>([NotNull] this Predicate<T> existingPredicate, [NotNull] Predicate<T> additionalPredicate)
+        {
+            Check.NotNull(existingPredicate, nameof(existingPredicate));
+
+            existingPredicate += additionalPredicate;
+            return existingPredicate;
+        }
     }
 }

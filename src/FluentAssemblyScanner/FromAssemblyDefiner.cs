@@ -34,7 +34,7 @@ namespace FluentAssemblyScanner
         }
 
         /// <summary>
-        ///     Alls the types.
+        ///     Gets all types from searched assemlies according to given criteria.
         /// </summary>
         /// <returns></returns>
         public override IEnumerable<Type> GetAllTypes()

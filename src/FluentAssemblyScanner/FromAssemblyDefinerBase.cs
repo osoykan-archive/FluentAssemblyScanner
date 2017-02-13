@@ -25,6 +25,7 @@ namespace FluentAssemblyScanner
         protected internal FromAssemblyDefinerBase(IEnumerable<Assembly> assemblies)
         {
             Assemblies = assemblies;
+            AssemblyFilter = assembly => true;
         }
 
         /// <summary>

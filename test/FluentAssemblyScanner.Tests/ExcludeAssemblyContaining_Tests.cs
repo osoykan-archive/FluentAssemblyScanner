@@ -27,7 +27,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyContaining<IAdditionalService>()
+            instance.ExcludeAssemblyContaining<IAdditionalAssemblyService>()
                     .GetAllTypes()
                     .Count()
                     .Should()
@@ -50,7 +50,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyContaining<IAdditionalService>()
+            instance.ExcludeAssemblyContaining<IAdditionalAssemblyService>()
                     .GetAllTypes()
                     .Should()
                     .Contain(typeof(AbstractDbContext));
@@ -72,10 +72,10 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyContaining<IAdditionalService>()
+            instance.ExcludeAssemblyContaining<IAdditionalAssemblyService>()
                     .GetAllTypes()
                     .Should()
-                    .NotContain(typeof(AdditionalService));
+                    .NotContain(typeof(AdditionalAssemblyService));
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyContaining<IAdditionalService>()
+            instance.ExcludeAssemblyContaining<IAdditionalAssemblyService>()
                     .GetAllTypes()
                     .Should().NotContain(typeof(SomePrivateClass));
         }
@@ -115,7 +115,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyContaining<IAdditionalService>()
+            instance.ExcludeAssemblyContaining<IAdditionalAssemblyService>()
                     .IncludeNonPublicTypes()
                     .GetAllTypes()
                     .Should().Contain(typeof(SomePrivateClass));
@@ -137,8 +137,8 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyContaining<IAdditionalService>()
-                    .BasedOn<AdditionalService>()
+            instance.ExcludeAssemblyContaining<IAdditionalAssemblyService>()
+                    .BasedOn<AdditionalAssemblyService>()
                     .Filter()
                     .Scan()
                     .Count.Should().Be(0);
@@ -161,7 +161,7 @@ namespace FluentAssemblyScanner.Tests
             // Assert
             //-----------------------------------------------------------------------------------------------------------
             instance.ExcludeAssemblyFullNamed("FluentAssemblyScanner.Tests.AdditionalAssembly, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")
-                    .BasedOn<IAdditionalService>()
+                    .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
                     .Count.Should().Be(0);
@@ -184,7 +184,7 @@ namespace FluentAssemblyScanner.Tests
             // Assert
             //-----------------------------------------------------------------------------------------------------------
             instance.ExcludeAssemblyNameStartsWith("FluentAssemblyScanner.Tests.Ad")
-                    .BasedOn<IAdditionalService>()
+                    .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
                     .Count.Should().Be(0);
@@ -207,7 +207,7 @@ namespace FluentAssemblyScanner.Tests
             // Assert
             //-----------------------------------------------------------------------------------------------------------
             instance.ExcludeAssemblyNameEndsWith("embly")
-                    .BasedOn<IAdditionalService>()
+                    .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
                     .Count.Should().Be(0);
@@ -230,7 +230,7 @@ namespace FluentAssemblyScanner.Tests
             // Assert
             //-----------------------------------------------------------------------------------------------------------
             instance.ExcludeAssemblyNamed("FluentAssemblyScanner.Tests.AdditionalAssembly")
-                    .BasedOn<IAdditionalService>()
+                    .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
                     .Count.Should().Be(0);
@@ -253,13 +253,13 @@ namespace FluentAssemblyScanner.Tests
             // Assert
             //-----------------------------------------------------------------------------------------------------------
             instance.ExcludeAssemblyNameContains("AdditionalAssembly")
-                    .BasedOn<IAdditionalService>()
+                    .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
                     .Count.Should().Be(0);
         }
 
-        [Fact(Skip = "asdas")]
+        [Fact]
         public void should_not_find_any_type_from_excluded_assembly_should_work_on_ignored_dynamic_assemblies()
         {
             //-----------------------------------------------------------------------------------------------------------
@@ -275,8 +275,9 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.IgnoreDynamicAssemblies()
-                    .BasedOn<IAdditionalService>()
+            instance.ExcludeAssemblyContaining<IAdditionalAssemblyService>()
+                    .IgnoreDynamicAssemblies()
+                    .BasedOn<AdditionalAssemblyService>()
                     .Filter()
                     .Scan()
                     .Count.Should().Be(0);

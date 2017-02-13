@@ -1,7 +1,7 @@
 ﻿namespace FluentAssemblyScanner.Tests.SpecClasses
 {
-    public interface ISecurityService
+    public interface IPaymentMethod
     {
-        void SecureMe();
+        void PayMe();
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace FluentAssemblyScanner.Tests.AdditionalAssembly
 {
-    public interface IAdditionalService
+    public interface IAdditionalAssemblyService
     {
-        
+        void DoMe();
     }
 }

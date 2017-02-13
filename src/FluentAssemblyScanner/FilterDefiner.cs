@@ -24,7 +24,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="types">The types.</param>
         /// <param name="filterActions">The filter actions.</param>
-        public FilterDefiner([NotNull] List<Type> types, [NotNull] List<Func<Type, bool>> filterActions) 
+        public FilterDefiner([NotNull] List<Type> types, [NotNull] List<Func<Type, bool>> filterActions)
             : base(types)
         {
             _types = types;
@@ -51,7 +51,51 @@ namespace FluentAssemblyScanner
         [NotNull]
         public FilterDefiner Classes()
         {
-            Where(type => type.IsClass && type.IsAbstract == false);
+            Where(type => type.IsClass && !type.IsInterface);
+            return this;
+        }
+
+        /// <summary>
+        ///     Just interfaces.
+        /// </summary>
+        /// <returns></returns>
+        [NotNull]
+        public FilterDefiner Interfaces()
+        {
+            Where(type => !type.IsClass && type.IsInterface);
+            return this;
+        }
+
+        /// <summary>
+        ///     Eliminates all abstract classes.
+        /// </summary>
+        /// <returns></returns>
+        [NotNull]
+        public FilterDefiner NonAbstract()
+        {
+            Where(type => type.IsAbstract == false);
+            return this;
+        }
+
+        /// <summary>
+        ///     Nons the static.
+        /// </summary>
+        /// <returns></returns>
+        [NotNull]
+        public FilterDefiner NonStatic()
+        {
+            Where(type => type.IsAbstract == false && type.IsSealed == false);
+            return this;
+        }
+
+        /// <summary>
+        ///     Nons the attribute.
+        /// </summary>
+        /// <returns></returns>
+        [NotNull]
+        public FilterDefiner NonAttribute()
+        {
+            Where(type => !typeof(Attribute).IsAssignableFrom(type));
             return this;
         }
 
@@ -72,7 +116,7 @@ namespace FluentAssemblyScanner
         /// <param name="attributeType">Type of the attribute.</param>
         /// <returns></returns>
         [NotNull]
-        public FilterDefiner MethodHasAttribute(Type attributeType)
+        public FilterDefiner MethodHasAttribute([NotNull] Type attributeType)
         {
             MethodFilters += method => method.GetCustomAttributes(attributeType).Any();
             return this;
@@ -84,7 +128,7 @@ namespace FluentAssemblyScanner
         /// <param name="methodName">Name of the method.</param>
         /// <returns></returns>
         [NotNull]
-        public FilterDefiner MethodName(string methodName)
+        public FilterDefiner MethodName([NotNull] string methodName)
         {
             MethodFilters += method => method.Name == methodName;
             return this;
@@ -96,20 +140,9 @@ namespace FluentAssemblyScanner
         /// <param name="methodText">The method text.</param>
         /// <returns></returns>
         [NotNull]
-        public FilterDefiner MethodNameContains(string methodText)
+        public FilterDefiner MethodNameContains([NotNull] string methodText)
         {
             MethodFilters += method => method.Name.Contains(methodText);
-            return this;
-        }
-
-        /// <summary>
-        ///     Nons the static.
-        /// </summary>
-        /// <returns></returns>
-        [NotNull]
-        public FilterDefiner NonStatic()
-        {
-            Where(type => type.IsAbstract == false && type.IsSealed == false);
             return this;
         }
     }

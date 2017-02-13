@@ -1,8 +1,8 @@
 ﻿namespace FluentAssemblyScanner.Tests.SpecClasses
 {
-    public class SecurityService : ISecurityService
+    public static class SomeStaticClass
     {
-        public void SecureMe()
+        public static void SomeStaticMethod()
         {
         }
     }
