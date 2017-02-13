@@ -7,11 +7,11 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>0a8b51cf-b4c0-4b52-bd5c-dc857e260b11</ProjectGuid>
-    <RootNamespace>FluentAssemblyScanner.ConsoleApp</RootNamespace>
+    <ProjectGuid>30446811-1745-40e3-b141-fd15278a5e24</ProjectGuid>
+    <RootNamespace>FluentAssemblyScanner.Test.SecondAdditionalAssembly</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
 
   <PropertyGroup>

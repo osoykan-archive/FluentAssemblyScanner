@@ -1,4 +1,6 @@
 version: 1.0.{build}
+pull_requests:  
+  do_not_increment_build_number: true
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -12,8 +14,9 @@ environment:
 before_build:
 - cmd: dotnet.exe restore
 test:
- assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net452\FluentAssemblyScanner.Tests.dll
+ assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net461\win7-x64\FluentAssemblyScanner.Tests.dll
 nuget:
+  disable_publish_on_pr: true
   account_feed: true
   project_feed: true
 build:
@@ -27,6 +30,8 @@ artifacts:
 - path: '**\*.nupkg'
 deploy:
 - provider: NuGet
+  on:
+    branch: master
   api_key:
     secure: liSTqN52OJQy9fZJk6gubSgYBAy4EXcEPCDSCLJ/3T9cZufzpTwvBlGPLX+iP2n9
   artifact: /.*\.nupkg/

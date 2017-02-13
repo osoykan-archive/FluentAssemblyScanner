@@ -1,20 +1,19 @@
 {
   "version": "1.0.0-*",
 
-  "dependencies": {
-    "FluentAssemblyScanner": "1.0.5-*",
-    "System.Runtime": "4.0.10",
-    "System.Threading.Tasks": "4.0.0",
-    "xunit": "2.2.0-beta2-build3300",
-    "xunit.extensibility.execution": "2.2.0-beta2-build3300",
-    "xunit.runner.console": "2.2.0-beta2-build3300",
-    "xunit.runner.visualstudio": "2.2.0-beta2-build1149",
-    "xunit.runners": "2.0.0"
-  },
-
   "testRunner": "xunit",
 
+  "dependencies": {
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "FluentAssemblyScanner": "1.0.5-*",
+    "FluentAssemblyScanner.Tests.AdditionalAssembly": "1.0.0-*",
+    "FluentAssertions": "4.19.0",
+    "xunit": "2.2.0-beta4-build3444"
+  },
+
   "frameworks": {
-    "net452": {}
+    "net461": {
+    
+    }
   }
 }

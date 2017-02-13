@@ -1,123 +1,182 @@
-﻿using FluentAssemblyScanner.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-
 using System.Reflection;
+
+using JetBrains.Annotations;
 
 namespace FluentAssemblyScanner
 {
-    public class AssemblyFilter : IAssemblyDiscoverer
+    public class AssemblyFilter
     {
-        private readonly string directoryName;
-        private readonly string mask;
-        private Predicate<Assembly> assemblyFilter;
-        private Predicate<AssemblyName> nameFilter;
+        private readonly string _directoryName;
+        private readonly string _mask;
+        private Predicate<Assembly> _assemblyFilter;
+        private Predicate<AssemblyName> _nameFilter;
 
-        public AssemblyFilter(string directoryName, string mask = null)
+        public AssemblyFilter([NotNull] string directoryName, [CanBeNull] string mask = null)
         {
-            if (directoryName == null)
-                throw new ArgumentNullException(nameof(directoryName));
+            Check.NotNull(directoryName, nameof(directoryName));
 
-            this.directoryName = GetFullPath(directoryName);
-            this.mask = mask;
+            _directoryName = GetFullPath(directoryName);
+            _mask = mask;
         }
 
-        IEnumerable<Assembly> IAssemblyDiscoverer.GetAssemblies()
+        /// <summary>
+        ///     Gets the assemblies.
+        /// </summary>
+        /// <returns></returns>
+        [NotNull]
+        public IEnumerable<Assembly> GetAssemblies()
         {
-            foreach (var file in GetFiles())
+            foreach (string file in GetFiles())
             {
                 if (!ReflectionUtil.IsAssemblyFile(file))
+                {
                     continue;
+                }
 
-                var assembly = LoadAssemblyIgnoringErrors(file);
+                Assembly assembly = LoadAssemblyIgnoringErrors(file);
                 if (assembly != null)
+                {
                     yield return assembly;
+                }
             }
         }
 
-        public AssemblyFilter FilterByAssembly(Predicate<Assembly> filter)
+        /// <summary>
+        ///     Filters the by assembly.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns></returns>
+        [NotNull]
+        public AssemblyFilter FilterByAssembly([NotNull] Predicate<Assembly> filter)
         {
-            if (filter == null)
-                throw new ArgumentNullException(nameof(filter));
+            Check.NotNull(filter, nameof(filter));
 
-            assemblyFilter += filter;
+            _assemblyFilter += filter;
             return this;
         }
 
-        public AssemblyFilter FilterByName(Predicate<AssemblyName> filter)
+        /// <summary>
+        ///     Filters the name of the by.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns></returns>
+        [NotNull]
+        public AssemblyFilter FilterByName([NotNull] Predicate<AssemblyName> filter)
         {
-            if (filter == null)
-                throw new ArgumentNullException(nameof(filter));
+            Check.NotNull(filter, nameof(filter));
 
-            nameFilter += filter;
+            _nameFilter += filter;
             return this;
         }
 
-        public AssemblyFilter WithKeyToken(string publicKeyToken)
+        /// <summary>
+        ///     Withes the key token.
+        /// </summary>
+        /// <param name="publicKeyToken">The public key token.</param>
+        /// <returns></returns>
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] string publicKeyToken)
         {
             return WithKeyToken(ExtractKeyToken(publicKeyToken));
         }
 
-        public AssemblyFilter WithKeyToken(byte[] publicKeyToken)
+        /// <summary>
+        ///     Withes the key token.
+        /// </summary>
+        /// <param name="publicKeyToken">The public key token.</param>
+        /// <returns></returns>
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] byte[] publicKeyToken)
         {
-            if (publicKeyToken == null)
-                throw new ArgumentNullException(nameof(publicKeyToken));
+            Check.NotNull(publicKeyToken, nameof(publicKeyToken));
 
             return FilterByName(n => IsTokenEqual(n.GetPublicKeyToken(), publicKeyToken));
         }
 
-        public AssemblyFilter WithKeyToken(Type typeFromAssemblySignedWithKey)
+        /// <summary>
+        ///     Withes the key token.
+        /// </summary>
+        /// <param name="typeFromAssemblySignedWithKey">The type from assembly signed with key.</param>
+        /// <returns></returns>
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] Type typeFromAssemblySignedWithKey)
         {
             return WithKeyToken(typeFromAssemblySignedWithKey.Assembly);
         }
 
+        /// <summary>
+        ///     Withes the key token.
+        /// </summary>
+        /// <typeparam name="TTypeFromAssemblySignedWithKey">The type of the type from assembly signed with key.</typeparam>
+        /// <returns></returns>
+        [NotNull]
         public AssemblyFilter WithKeyToken<TTypeFromAssemblySignedWithKey>()
         {
             return WithKeyToken(typeof(TTypeFromAssemblySignedWithKey).Assembly);
         }
 
-        public AssemblyFilter WithKeyToken(Assembly assembly)
+        /// <summary>
+        ///     Withes the key token.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns></returns>
+        [NotNull]
+        public AssemblyFilter WithKeyToken([NotNull] Assembly assembly)
         {
             return WithKeyToken(assembly.GetName().GetPublicKeyToken());
         }
 
-        private static string GetFullPath(string path)
+        [NotNull]
+        private string GetFullPath([NotNull] string path)
         {
             if (Path.IsPathRooted(path) == false)
+            {
                 path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+            }
             return Path.GetFullPath(path);
         }
 
-        private static bool IsTokenEqual(byte[] actualToken, byte[] expectedToken)
+        private bool IsTokenEqual([CanBeNull] byte[] actualToken, [NotNull] byte[] expectedToken)
         {
-            if (actualToken == null)
+            if (actualToken?.Length != expectedToken.Length)
+            {
                 return false;
-            if (actualToken.Length != expectedToken.Length)
-                return false;
+            }
 
             for (var i = 0; i < actualToken.Length; i++)
+            {
                 if (actualToken[i] != expectedToken[i])
+                {
                     return false;
+                }
+            }
 
             return true;
         }
 
-        private byte[] ExtractKeyToken(string keyToken)
+        [NotNull]
+        private byte[] ExtractKeyToken([NotNull] string keyToken)
         {
-            if (keyToken == null)
-                throw new ArgumentNullException(nameof(keyToken));
+            Check.NotNull(keyToken, nameof(keyToken));
+
             if (keyToken.Length != 16)
+            {
                 throw new ArgumentException(
                     $"The string '{keyToken}' does not appear to be a valid public key token. It should have 16 characters, has {keyToken.Length}.");
+            }
 
             try
             {
                 var tokenBytes = new byte[8];
                 for (var i = 0; i < 8; i++)
+                {
                     tokenBytes[i] = byte.Parse(keyToken.Substring(2 * i, 2), NumberStyles.HexNumber);
+                }
 
                 return tokenBytes;
             }
@@ -129,16 +188,21 @@ namespace FluentAssemblyScanner
             }
         }
 
+        [NotNull]
         private IEnumerable<string> GetFiles()
         {
             try
             {
-                if (Directory.Exists(directoryName) == false)
+                if (Directory.Exists(_directoryName) == false)
+                {
                     return Enumerable.Empty<string>();
-                if (string.IsNullOrEmpty(mask))
-                    return Directory.EnumerateFiles(directoryName);
+                }
+                if (string.IsNullOrEmpty(_mask))
+                {
+                    return Directory.EnumerateFiles(_directoryName);
+                }
 
-                return Directory.EnumerateFiles(directoryName, mask);
+                return Directory.EnumerateFiles(_directoryName, _mask);
             }
             catch (IOException e)
             {
@@ -146,14 +210,17 @@ namespace FluentAssemblyScanner
             }
         }
 
-        private Assembly LoadAssemblyIgnoringErrors(string file)
+        [CanBeNull]
+        private Assembly LoadAssemblyIgnoringErrors([NotNull] string file)
         {
             // based on MEF DirectoryCatalog
             try
             {
-                return ReflectionUtil.GetAssemblyNamed(file, nameFilter, assemblyFilter);
+                return ReflectionUtil.GetAssemblyNamed(file, _nameFilter, _assemblyFilter);
             }
-            catch (FileNotFoundException) { }
+            catch (FileNotFoundException)
+            {
+            }
             catch (FileLoadException)
             {
                 // File was found but could not be loaded
@@ -167,7 +234,6 @@ namespace FluentAssemblyScanner
                 // Dlls that have missing Managed dependencies are not loaded, but do not invalidate the Directory 
             }
 
-            // TODO: log
             return null;
         }
     }

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FluentAssemblyScanner.ConsoleApp")]
+[assembly: AssemblyProduct("FluentAssemblyScanner.Tests.AdditionalAssembly")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0a8b51cf-b4c0-4b52-bd5c-dc857e260b11")]
+[assembly: Guid("2865a2c3-f4f8-453f-b39b-91487f2df836")]

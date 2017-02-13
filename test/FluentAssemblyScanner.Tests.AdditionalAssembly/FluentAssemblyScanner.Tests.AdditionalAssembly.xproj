@@ -7,8 +7,8 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>10baa169-2579-4416-bbc9-7a1ff350f4d9</ProjectGuid>
-    <RootNamespace>FluentAssemblyScanner.Tests</RootNamespace>
+    <ProjectGuid>2865a2c3-f4f8-453f-b39b-91487f2df836</ProjectGuid>
+    <RootNamespace>FluentAssemblyScanner.Tests.AdditionalAssembly</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
