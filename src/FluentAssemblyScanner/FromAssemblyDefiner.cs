@@ -51,7 +51,7 @@ namespace FluentAssemblyScanner
         [NotNull]
         public FromAssemblyDefiner ExcludeAssemblyContaining<T>()
         {
-            return ExcludeAssemblyNamed(typeof(T).Assembly.FullName);
+            return ExcludeAssemblyFullNamed(typeof(T).Assembly.FullName);
         }
 
         /// <summary>
@@ -60,9 +60,21 @@ namespace FluentAssemblyScanner
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
         [NotNull]
-        public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
+        public FromAssemblyDefiner ExcludeAssemblyFullNamed([NotNull] string assemblyName)
         {
             AssemblyFilter += assembly => assembly.FullName != assemblyName;
+            return this;
+        }
+
+        /// <summary>
+        ///     Excludes the assembly named.
+        /// </summary>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <returns></returns>
+        [NotNull]
+        public FromAssemblyDefiner ExcludeAssemblyNamed([NotNull] string assemblyName)
+        {
+            AssemblyFilter += assembly => assembly.GetName().Name != assemblyName;
             return this;
         }
 
@@ -74,7 +86,7 @@ namespace FluentAssemblyScanner
         [NotNull]
         public FromAssemblyDefiner ExcludeAssemblyNameStartsWith([NotNull] string text)
         {
-            AssemblyFilter += assembly => !assembly.FullName.StartsWith(text);
+            AssemblyFilter += assembly => !assembly.GetName().Name.StartsWith(text, StringComparison.OrdinalIgnoreCase);
             return this;
         }
 
@@ -86,7 +98,7 @@ namespace FluentAssemblyScanner
         [NotNull]
         public FromAssemblyDefiner ExcludeAssemblyNameEndsWith([NotNull] string text)
         {
-            AssemblyFilter += assembly => !assembly.FullName.EndsWith(text);
+            AssemblyFilter += assembly => !assembly.GetName().Name.EndsWith(text, StringComparison.OrdinalIgnoreCase);
             return this;
         }
 
@@ -98,7 +110,7 @@ namespace FluentAssemblyScanner
         [NotNull]
         public FromAssemblyDefiner ExcludeAssemblyNameContains([NotNull] string text)
         {
-            AssemblyFilter += assembly => !assembly.FullName.Contains(text);
+            AssemblyFilter += assembly => !assembly.GetName().Name.Contains(text);
             return this;
         }
 

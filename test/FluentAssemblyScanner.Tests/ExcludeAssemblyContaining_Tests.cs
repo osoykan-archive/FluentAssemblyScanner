@@ -145,7 +145,7 @@ namespace FluentAssemblyScanner.Tests
         }
 
         [Fact]
-        public void should_not_find_any_type_from_excluded_assembly_with_named()
+        public void should_not_find_any_type_from_excluded_assembly_with_full_named()
         {
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
@@ -160,7 +160,122 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyNamed("FluentAssemblyScanner.Tests.AdditionalAssembly, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")
+            instance.ExcludeAssemblyFullNamed("FluentAssemblyScanner.Tests.AdditionalAssembly, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")
+                    .BasedOn<IAdditionalService>()
+                    .Filter()
+                    .Scan()
+                    .Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void should_not_find_any_type_from_excluded_assembly_with_name_starts_with()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            instance.ExcludeAssemblyNameStartsWith("FluentAssemblyScanner.Tests.Ad")
+                    .BasedOn<IAdditionalService>()
+                    .Filter()
+                    .Scan()
+                    .Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void should_not_find_any_type_from_excluded_assembly_with_name_ends_with()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            instance.ExcludeAssemblyNameEndsWith("embly")
+                    .BasedOn<IAdditionalService>()
+                    .Filter()
+                    .Scan()
+                    .Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void should_not_find_any_type_from_excluded_assembly_with_name()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            instance.ExcludeAssemblyNamed("FluentAssemblyScanner.Tests.AdditionalAssembly")
+                    .BasedOn<IAdditionalService>()
+                    .Filter()
+                    .Scan()
+                    .Count.Should().Be(0);
+        }
+
+        [Fact]
+        public void should_not_find_any_type_from_excluded_assembly_with_name_contains()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            instance.ExcludeAssemblyNameContains("AdditionalAssembly")
+                    .BasedOn<IAdditionalService>()
+                    .Filter()
+                    .Scan()
+                    .Count.Should().Be(0);
+        }
+
+        [Fact(Skip = "asdas")]
+        public void should_not_find_any_type_from_excluded_assembly_should_work_on_ignored_dynamic_assemblies()
+        {
+            //-----------------------------------------------------------------------------------------------------------
+            // Arrange
+            //-----------------------------------------------------------------------------------------------------------
+            var assemblyFilter = new AssemblyFilter(string.Empty);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Act
+            //-----------------------------------------------------------------------------------------------------------
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInDirectory(assemblyFilter);
+
+            //-----------------------------------------------------------------------------------------------------------
+            // Assert
+            //-----------------------------------------------------------------------------------------------------------
+            instance.IgnoreDynamicAssemblies()
                     .BasedOn<IAdditionalService>()
                     .Filter()
                     .Scan()
