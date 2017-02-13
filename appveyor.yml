@@ -11,10 +11,15 @@ environment:
   nuget_user: oguzhansoykan@outlook.com
   nuget_password:
     secure: w73Xs1Is7iK/DtAOf0XTHg==
+  COVERALLS_REPO_TOKEN:  
+       secure: dVMQAKOiU3HuWBAVVTrML0OS5fiGriqI9
 before_build:
 - cmd: dotnet.exe restore
 test:
  assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net461\win7-x64\FluentAssemblyScanner.Tests.dll
+after_test: 
+  - tools\coverage\opencover\OpenCover.Console.exe -register:user -target:"tools\xunitrunner\xunit.console.x86.exe" -targetdir:"test\FluentAssemblyScanner.Tests\bin\Debug\net461\win7-x64" -targetargs:"FluentAssemblyScanner.Tests.dll" -filter:"+[FluentAssemblyScanner*]* -[FluentAssemblyScanner.T*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -output:xunit_opencovertests.xml -coverbytest:*.Tests.dll
+  - tools\coverage\coveralls.net\csmacnz.Coveralls.exe --opencover -i xunit_opencovertests.xml --repoToken %COVERALLS_REPO_TOKEN% --commitBranch %APPVEYOR_REPO_BRANCH%
 nuget:
   disable_publish_on_pr: true
   account_feed: true
