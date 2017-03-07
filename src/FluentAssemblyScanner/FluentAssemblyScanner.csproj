@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.7</VersionPrefix>
+    <TargetFramework>net452</TargetFramework>
+    <AssemblyName>FluentAssemblyScanner</AssemblyName>
+    <PackageId>FluentAssemblyScanner</PackageId>
+    <PackageTags>asp.net;asp.net mvc;framework;library;assembly;scanner</PackageTags>
+    <PackageProjectUrl>https://github.com/osoykan/FluentAssemblyScanner</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/osoykan/FluentAssemblyScanner/blob/master/LICENCE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/osoykan/FluentAssemblyScanner</RepositoryUrl>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

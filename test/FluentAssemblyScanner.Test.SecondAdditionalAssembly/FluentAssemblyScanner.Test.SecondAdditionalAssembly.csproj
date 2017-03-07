@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>FluentAssemblyScanner.Test.SecondAdditionalAssembly</AssemblyName>
+    <PackageId>FluentAssemblyScanner.Test.SecondAdditionalAssembly</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <Target Name="PostcompileScript" AfterTargets="Build">
+    <Exec Command="xcopy /f /y &quot;$(MSBuildProjectDirectory)/bin/Debug/net461/*.* &quot; &quot;$(MSBuildProjectDirectory)\..\/FluentAssemblyScanner.Tests/bin/Debug/net461/win7-x64/ &quot;" />
+  </Target>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
