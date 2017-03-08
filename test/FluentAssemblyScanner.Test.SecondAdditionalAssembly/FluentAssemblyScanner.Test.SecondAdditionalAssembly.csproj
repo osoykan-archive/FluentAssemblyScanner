@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <Target Name="PostcompileScript" AfterTargets="Build">
-    <Exec Command="xcopy /f /y &quot;$(TargetDir)\*.* &quot; &quot;$(SolutionDir)\test\FluentAssemblyScanner.Tests\$(OutDir)win7-x64\&quot;" />
+    <Exec Command="xcopy /f /y &quot;$(TargetDir)\*.* &quot; &quot;$(SolutionDir)\test\FluentAssemblyScanner.Tests\$(OutDir)&quot;" />
   </Target>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
