@@ -8,6 +8,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9D48C45B-64C7-4631-A217-116B83E76107}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6287E8A4-87EB-4A5D-927E-61EDDADFAFB9}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		LICENCE = LICENCE
+		nuget.config = nuget.config
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "additionalassemlies", "additionalassemlies", "{20AB6590-16BA-485C-9933-1087FE8ABF40}"
 EndProject
