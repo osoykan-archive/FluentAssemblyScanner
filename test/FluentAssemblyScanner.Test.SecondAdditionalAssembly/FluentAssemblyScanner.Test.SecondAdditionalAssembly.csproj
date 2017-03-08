@@ -7,7 +7,7 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <PostBuildEvent>xcopy /f /y "$(MSBuildProjectDirectory)/bin/Debug/net461/*.*" "$(MSBuildProjectDirectory)\..\/FluentAssemblyScanner.Tests/bin/Debug/net461/win7-x64/"</PostBuildEvent>
+    <PostBuildEvent>xcopy /f /y "$(MSBuildProjectDirectory)/bin/$(ConfigurationName)/net461/*.*" "$(MSBuildProjectDirectory)\..\/FluentAssemblyScanner.Tests/bin/$(ConfigurationName)/net461/win7-x64/"</PostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
