@@ -7,9 +7,14 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <PostBuildEvent>xcopy /f /y "$(TargetDir)\win7-x64\*.*" "$(SolutionDir)\test\FluentAssemblyScanner.Tests\$(OutDir)win7-x64\"</PostBuildEvent>
+    <PostBuildEvent />
+    <!--<PostBuildEvent>xcopy "$(TargetDir)\win7-x64\*.*" "$(SolutionDir)\test\FluentAssemblyScanner.Tests\$(OutDir)win7-x64\"  /f /y</PostBuildEvent>-->
   </PropertyGroup>
 
+  <Target Name="PostcompileScript" AfterTargets="Build">
+    <Exec Command="xcopy /f /y &quot;$(TargetDir)\*.* &quot; &quot;$(SolutionDir)\test\FluentAssemblyScanner.Tests\$(OutDir)win7-x64\&quot;" />
+  </Target>
+  
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
