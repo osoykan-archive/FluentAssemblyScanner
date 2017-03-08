@@ -1,38 +1,52 @@
+configuration: Release
 version: 1.0.{build}
+image: Visual Studio 2017 RC
+
 pull_requests:  
   do_not_increment_build_number: true
+  
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+  
 environment:
   nuget_user: oguzhansoykan@outlook.com
   nuget_password:
     secure: w73Xs1Is7iK/DtAOf0XTHg==
   COVERALLS_REPO_TOKEN:  
        secure: dVMQAKOiU3HuWBAVVTrML0OS5fiGriqI9
-before_build:
-- cmd: dotnet.exe restore
-test:
- assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net461\win7-x64\FluentAssemblyScanner.Tests.dll
-after_test: 
-  - tools\coverage\opencover\OpenCover.Console.exe -register:user -target:"tools\xunitrunner\xunit.console.x86.exe" -targetdir:"test\FluentAssemblyScanner.Tests\bin\Debug\net461\win7-x64" -targetargs:"FluentAssemblyScanner.Tests.dll" -filter:"+[FluentAssemblyScanner*]* -[FluentAssemblyScanner.T*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -output:xunit_opencovertests.xml -coverbytest:*.Tests.dll
-  - tools\coverage\coveralls.net\csmacnz.Coveralls.exe --opencover -i xunit_opencovertests.xml --repoToken %COVERALLS_REPO_TOKEN% --commitBranch %APPVEYOR_REPO_BRANCH%
-nuget:
-  disable_publish_on_pr: true
-  account_feed: true
-  project_feed: true
+       
+before_build: 
+ - cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
+ - cmd: nuget install nuget.commandline -source https://dotnet.myget.org/F/nuget-build -prerelease -excludeversion
+ - cmd: set PATH=%appveyor_build_folder%\NuGet.CommandLine\tools;%PATH%
+ - cmd: nuget restore FluentAssemblyScanner.sln 
+   
 build:
+  project: FluentAssemblyScanner.sln 
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
   verbosity: minimal
-after_build:
- cmd: dotnet pack "src\FluentAssemblyScanner" -c "Release" -o "nupkg/"
+
+test:
+ assemblies: test\FluentAssemblyScanner.Tests\bin\Debug\net461\win7-x64\FluentAssemblyScanner.Tests.dll
+ 
+after_test: 
+  - tools\coverage\opencover\OpenCover.Console.exe -register:user -target:"tools\xunitrunner\xunit.console.x86.exe" -targetdir:"test\FluentAssemblyScanner.Tests\bin\Debug\net461\win7-x64" -targetargs:"FluentAssemblyScanner.Tests.dll" -filter:"+[FluentAssemblyScanner*]* -[FluentAssemblyScanner.T*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -output:xunit_opencovertests.xml -coverbytest:*.Tests.dll
+  - tools\coverage\coveralls.net\csmacnz.Coveralls.exe --opencover -i xunit_opencovertests.xml --repoToken %COVERALLS_REPO_TOKEN% --commitBranch %APPVEYOR_REPO_BRANCH%
+  
+nuget:
+  disable_publish_on_pr: true
+  account_feed: true
+  project_feed: true
+ 
 artifacts:
 - path: '**\*.nupkg'
+
 deploy:
 - provider: NuGet
   on:
