@@ -123,7 +123,7 @@ namespace FluentAssemblyScanner.Tests
                                               .Classes()
                                               .Scan();
 
-            scannedTypes.Count.Should().Be(4);
+            scannedTypes.Count.Should().Be(5);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace FluentAssemblyScanner.Tests
                                               .Filter()
                                               .Scan();
 
-            scannedTypes.Count.Should().Be(5);
+            scannedTypes.Count.Should().Be(7);
         }
 
         [Fact]
