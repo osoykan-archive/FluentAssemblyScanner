@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2BF35C86-651F-484A-89CD-DCFFF32646E6}"
 EndProject
@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		build.ps1 = build.ps1
 		LICENCE = LICENCE
 		nuget.config = nuget.config
 		README.md = README.md
@@ -25,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner.Tests
 		{30446811-1745-40E3-B141-FD15278A5E24} = {30446811-1745-40E3-B141-FD15278A5E24}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner.Tests.AdditionalAssembly", "test\FluentAssemblyScanner.Tests.AdditionalAssembly\FluentAssemblyScanner.Tests.AdditionalAssembly.csproj", "{2865A2C3-F4F8-453F-B39B-91487F2DF836}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner.Test.AdditionalAssembly", "test\FluentAssemblyScanner.Test.AdditionalAssembly\FluentAssemblyScanner.Test.AdditionalAssembly.csproj", "{2865A2C3-F4F8-453F-B39B-91487F2DF836}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner.Test.SecondAdditionalAssembly", "test\FluentAssemblyScanner.Test.SecondAdditionalAssembly\FluentAssemblyScanner.Test.SecondAdditionalAssembly.csproj", "{30446811-1745-40E3-B141-FD15278A5E24}"
 EndProject
@@ -61,5 +63,8 @@ Global
 		{10BAA169-2579-4416-BBC9-7A1FF350F4D9} = {9D48C45B-64C7-4631-A217-116B83E76107}
 		{2865A2C3-F4F8-453F-B39B-91487F2DF836} = {20AB6590-16BA-485C-9933-1087FE8ABF40}
 		{30446811-1745-40E3-B141-FD15278A5E24} = {20AB6590-16BA-485C-9933-1087FE8ABF40}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3302D602-74A6-4B6C-BC82-1C1AA80FEA91}
 	EndGlobalSection
 EndGlobal

@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <AssemblyName>FluentAssemblyScanner.Tests.AdditionalAssembly</AssemblyName>
+    <AssemblyName>FluentAssemblyScanner.Test.AdditionalAssembly</AssemblyName>
     <PackageId>FluentAssemblyScanner.Tests.AdditionalAssembly</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>FluentAssemblyScanner.Test.AdditionalAssembly</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

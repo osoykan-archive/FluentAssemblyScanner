@@ -12,7 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAssemblyScanner\FluentAssemblyScanner.csproj" />
-    <ProjectReference Include="..\FluentAssemblyScanner.Tests.AdditionalAssembly\FluentAssemblyScanner.Tests.AdditionalAssembly.csproj" />
+    <ProjectReference Include="..\FluentAssemblyScanner.Test.AdditionalAssembly\FluentAssemblyScanner.Test.AdditionalAssembly.csproj" />
+    <ProjectReference Include="..\FluentAssemblyScanner.Tests.AdditionalAssembly\FluentAssemblyScanner.Test.AdditionalAssembly.csproj" />
   </ItemGroup>
 
   <ItemGroup>

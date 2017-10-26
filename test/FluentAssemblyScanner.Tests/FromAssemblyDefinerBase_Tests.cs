@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using FluentAssemblyScanner.Tests.AdditionalAssembly;
+using FluentAssemblyScanner.Test.AdditionalAssembly;
 using FluentAssemblyScanner.Tests.SpecClasses;
 using FluentAssemblyScanner.Tests.SpecClasses.subPaymentMethodNamespace;
 
@@ -83,7 +83,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Arrange
             //-----------------------------------------------------------------------------------------------------------
-            
+
             // None.
 
             //-----------------------------------------------------------------------------------------------------------

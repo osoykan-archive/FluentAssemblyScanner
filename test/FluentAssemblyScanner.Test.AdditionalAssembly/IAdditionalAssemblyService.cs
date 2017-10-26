@@ -1,4 +1,4 @@
-﻿namespace FluentAssemblyScanner.Tests.AdditionalAssembly
+﻿namespace FluentAssemblyScanner.Test.AdditionalAssembly
 {
     public interface IAdditionalAssemblyService
     {
