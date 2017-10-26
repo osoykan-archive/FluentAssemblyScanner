@@ -112,7 +112,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplication();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert
@@ -137,7 +137,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Act
             //-----------------------------------------------------------------------------------------------------------
-            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplicationDirectory();
+            FromAssemblyDefiner instance = AssemblyScanner.FromAssemblyInThisApplication();
 
             //-----------------------------------------------------------------------------------------------------------
             // Assert

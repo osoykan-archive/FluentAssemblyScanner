@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.7</VersionPrefix>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>FluentAssemblyScanner</AssemblyName>
     <PackageId>FluentAssemblyScanner</PackageId>
     <PackageTags>asp.net;asp.net mvc;framework;library;assembly;scanner</PackageTags>
