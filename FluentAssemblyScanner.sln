@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2BF35C86-651F-484A-89CD-DCFFF32646E6}"
 EndProject
@@ -9,21 +9,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9D48C45B-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6287E8A4-87EB-4A5D-927E-61EDDADFAFB9}"
 	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		LICENCE = LICENCE
+		nuget.config = nuget.config
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FluentAssemblyScanner", "src\FluentAssemblyScanner\FluentAssemblyScanner.xproj", "{0F21FEF4-CFFC-47F9-ADD5-D9BEA0EC3CBB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "additionalassemlies", "additionalassemlies", "{20AB6590-16BA-485C-9933-1087FE8ABF40}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FluentAssemblyScanner.Tests", "test\FluentAssemblyScanner.Tests\FluentAssemblyScanner.Tests.xproj", "{10BAA169-2579-4416-BBC9-7A1FF350F4D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner", "src\FluentAssemblyScanner\FluentAssemblyScanner.csproj", "{0F21FEF4-CFFC-47F9-ADD5-D9BEA0EC3CBB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner.Tests", "test\FluentAssemblyScanner.Tests\FluentAssemblyScanner.Tests.csproj", "{10BAA169-2579-4416-BBC9-7A1FF350F4D9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{30446811-1745-40E3-B141-FD15278A5E24} = {30446811-1745-40E3-B141-FD15278A5E24}
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FluentAssemblyScanner.Tests.AdditionalAssembly", "test\FluentAssemblyScanner.Tests.AdditionalAssembly\FluentAssemblyScanner.Tests.AdditionalAssembly.xproj", "{2865A2C3-F4F8-453F-B39B-91487F2DF836}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner.Test.AdditionalAssembly", "test\FluentAssemblyScanner.Test.AdditionalAssembly\FluentAssemblyScanner.Test.AdditionalAssembly.csproj", "{2865A2C3-F4F8-453F-B39B-91487F2DF836}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "additionalassemlies", "additionalassemlies", "{20AB6590-16BA-485C-9933-1087FE8ABF40}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FluentAssemblyScanner.Test.SecondAdditionalAssembly", "test\FluentAssemblyScanner.Test.SecondAdditionalAssembly\FluentAssemblyScanner.Test.SecondAdditionalAssembly.xproj", "{30446811-1745-40E3-B141-FD15278A5E24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssemblyScanner.Test.SecondAdditionalAssembly", "test\FluentAssemblyScanner.Test.SecondAdditionalAssembly\FluentAssemblyScanner.Test.SecondAdditionalAssembly.csproj", "{30446811-1745-40E3-B141-FD15278A5E24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,10 +58,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{20AB6590-16BA-485C-9933-1087FE8ABF40} = {9D48C45B-64C7-4631-A217-116B83E76107}
 		{0F21FEF4-CFFC-47F9-ADD5-D9BEA0EC3CBB} = {2BF35C86-651F-484A-89CD-DCFFF32646E6}
 		{10BAA169-2579-4416-BBC9-7A1FF350F4D9} = {9D48C45B-64C7-4631-A217-116B83E76107}
 		{2865A2C3-F4F8-453F-B39B-91487F2DF836} = {20AB6590-16BA-485C-9933-1087FE8ABF40}
-		{20AB6590-16BA-485C-9933-1087FE8ABF40} = {9D48C45B-64C7-4631-A217-116B83E76107}
 		{30446811-1745-40E3-B141-FD15278A5E24} = {20AB6590-16BA-485C-9933-1087FE8ABF40}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3302D602-74A6-4B6C-BC82-1C1AA80FEA91}
 	EndGlobalSection
 EndGlobal

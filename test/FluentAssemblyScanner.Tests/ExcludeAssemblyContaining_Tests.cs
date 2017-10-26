@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-using FluentAssemblyScanner.Tests.AdditionalAssembly;
+using FluentAssemblyScanner.Test.AdditionalAssembly;
 using FluentAssemblyScanner.Tests.SpecClasses;
 
 using FluentAssertions;
@@ -167,7 +167,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyFullNamed("FluentAssemblyScanner.Tests.AdditionalAssembly, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")
+            instance.ExcludeAssemblyFullNamed("FluentAssemblyScanner.Test.AdditionalAssembly, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")
                     .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
@@ -191,7 +191,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyNameStartsWith("FluentAssemblyScanner.Tests.Ad")
+            instance.ExcludeAssemblyNameStartsWith("FluentAssemblyScanner.Test.Ad")
                     .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
@@ -239,7 +239,7 @@ namespace FluentAssemblyScanner.Tests
             //-----------------------------------------------------------------------------------------------------------
             // Assert
             //-----------------------------------------------------------------------------------------------------------
-            instance.ExcludeAssemblyNamed("FluentAssemblyScanner.Tests.AdditionalAssembly")
+            instance.ExcludeAssemblyNamed("FluentAssemblyScanner.Test.AdditionalAssembly")
                     .BasedOn<IAdditionalAssemblyService>()
                     .Filter()
                     .Scan()
