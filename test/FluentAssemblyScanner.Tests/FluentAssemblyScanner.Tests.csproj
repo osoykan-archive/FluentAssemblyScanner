@@ -13,17 +13,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAssemblyScanner\FluentAssemblyScanner.csproj" />
     <ProjectReference Include="..\FluentAssemblyScanner.Test.AdditionalAssembly\FluentAssemblyScanner.Test.AdditionalAssembly.csproj" />
-    <ProjectReference Include="..\FluentAssemblyScanner.Tests.AdditionalAssembly\FluentAssemblyScanner.Test.AdditionalAssembly.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.0.0-beta0003" />
     <PackageReference Include="xunit" Version="2.3.1-rc2-build3844" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
 </Project>
