@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FluentAssemblyScanner.Tests
 {
-    public class AllTypes_Tests
+    public class AllTypesTests
     {
         [Fact]
         public void AllTypes_should_be_return_greater_than_zero()

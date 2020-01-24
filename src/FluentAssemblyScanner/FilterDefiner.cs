@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using JetBrains.Annotations;
-
 namespace FluentAssemblyScanner
 {
-    public class FilterDefiner : FilterDefinerBase
+    public class FilterDefiner
     {
         /// <summary>
         ///     The filter actions
@@ -20,35 +18,57 @@ namespace FluentAssemblyScanner
         private readonly List<Type> _types;
 
         /// <summary>
+        ///     The and filter
+        /// </summary>
+        private Predicate<Type> _andFilter;
+
+        /// <summary>
+        ///     The method filters
+        /// </summary>
+        private Predicate<MethodInfo> _methodFilters;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="FilterDefiner" /> class.
         /// </summary>
         /// <param name="types">The types.</param>
         /// <param name="filterActions">The filter actions.</param>
-        public FilterDefiner([NotNull] List<Type> types, [NotNull] List<Func<Type, bool>> filterActions)
-            : base(types)
+        public FilterDefiner(List<Type> types, List<Func<Type, bool>> filterActions)
         {
+            _andFilter = type => true;
+            _methodFilters = info => true;
+
             _types = types;
             _filterActions = filterActions;
 
-            filterActions.Add(type => AndFilter(type));
-            filterActions.Add(type => type.GetMethods().Any(method => MethodFilters.ApplyTo(method)));
+            filterActions.Add(type => _andFilter(type));
+            filterActions.Add(type => type.GetMethods().Any(method => _methodFilters.ApplyTo(method)));
+        }
+
+        /// <summary>
+        ///     Wheres the specified filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns></returns>
+        public FilterDefiner Where(Predicate<Type> filter)
+        {
+            _andFilter += filter;
+            return this;
         }
 
         /// <summary>
         ///     Scans this instance.
         /// </summary>
         /// <returns></returns>
-        public override List<Type> Scan()
+        public List<Type> Scan()
         {
             return _types.Whereify(_filterActions)
-                         .ToList();
+                .ToList();
         }
 
         /// <summary>
         ///     Classeses this instance.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public FilterDefiner Classes()
         {
             Where(type => type.IsClass && !type.IsInterface);
@@ -59,7 +79,6 @@ namespace FluentAssemblyScanner
         ///     Just interfaces.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public FilterDefiner Interfaces()
         {
             Where(type => !type.IsClass && type.IsInterface);
@@ -70,7 +89,6 @@ namespace FluentAssemblyScanner
         ///     Eliminates all abstract classes.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public FilterDefiner NonAbstract()
         {
             Where(type => type.IsAbstract == false);
@@ -81,7 +99,6 @@ namespace FluentAssemblyScanner
         ///     Nons the static.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public FilterDefiner NonStatic()
         {
             Where(type => type.IsAbstract == false && type.IsSealed == false);
@@ -92,7 +109,6 @@ namespace FluentAssemblyScanner
         ///     Nons the attribute.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public FilterDefiner NonAttribute()
         {
             Where(type => !typeof(Attribute).IsAssignableFrom(type));
@@ -104,7 +120,6 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
         /// <returns></returns>
-        [NotNull]
         public FilterDefiner MethodHasAttribute<TAttribute>() where TAttribute : Attribute
         {
             return MethodHasAttribute(typeof(TAttribute));
@@ -115,10 +130,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="attributeType">Type of the attribute.</param>
         /// <returns></returns>
-        [NotNull]
-        public FilterDefiner MethodHasAttribute([NotNull] Type attributeType)
+        public FilterDefiner MethodHasAttribute(Type attributeType)
         {
-            MethodFilters += method => method.GetCustomAttributes(attributeType).Any();
+            _methodFilters += method => method.GetCustomAttributes(attributeType).Any();
             return this;
         }
 
@@ -127,10 +141,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="methodName">Name of the method.</param>
         /// <returns></returns>
-        [NotNull]
-        public FilterDefiner MethodName([NotNull] string methodName)
+        public FilterDefiner MethodName(string methodName)
         {
-            MethodFilters += method => method.Name == methodName;
+            _methodFilters += method => method.Name == methodName;
             return this;
         }
 
@@ -139,10 +152,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="methodText">The method text.</param>
         /// <returns></returns>
-        [NotNull]
-        public FilterDefiner MethodNameContains([NotNull] string methodText)
+        public FilterDefiner MethodNameContains(string methodText)
         {
-            MethodFilters += method => method.Name.Contains(methodText);
+            _methodFilters += method => method.Name.Contains(methodText);
             return this;
         }
     }

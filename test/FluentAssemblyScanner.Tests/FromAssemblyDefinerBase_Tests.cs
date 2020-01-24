@@ -11,7 +11,7 @@ using Xunit;
 
 namespace FluentAssemblyScanner.Tests
 {
-    public class FromAssemblyDefinerBase_Tests
+    public class FromAssemblyDefinerBaseTests
     {
         [Fact]
         public void PickAny_count_should_be_greater_than_zero()

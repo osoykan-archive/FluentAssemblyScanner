@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FluentAssemblyScanner.Tests
 {
-    public class ExcludeAssemblyContaining_Tests
+    public class ExcludeAssemblyContainingTests
     {
         [Fact]
         public void AllTypes_should_return_count_greater_than_zero()

@@ -20,4 +20,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("0f21fef4-cffc-47f9-add5-d9bea0ec3cbb")]
-[assembly:InternalsVisibleTo("FluentAssemblyScanner.Tests")]
+[assembly: InternalsVisibleTo("FluentAssemblyScanner.Tests")]

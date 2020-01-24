@@ -10,7 +10,7 @@ using Xunit;
 
 namespace FluentAssemblyScanner.Tests
 {
-    public class Instantiatable_Test
+    public class InstantiatableTest
     {
         [Fact]
         public void FromAssembly_should_be_instantiatable_by_passing_an_assembly()

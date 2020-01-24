@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using JetBrains.Annotations;
-
 namespace FluentAssemblyScanner
 {
     public class AssemblyFilter
@@ -16,7 +14,7 @@ namespace FluentAssemblyScanner
         private Predicate<Assembly> _assemblyFilter;
         private Predicate<AssemblyName> _nameFilter;
 
-        public AssemblyFilter([NotNull] string directoryName, [CanBeNull] string mask = null)
+        public AssemblyFilter(string directoryName = "", string mask = null)
         {
             Check.NotNull(directoryName, nameof(directoryName));
 
@@ -28,21 +26,14 @@ namespace FluentAssemblyScanner
         ///     Gets the assemblies.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public IEnumerable<Assembly> GetAssemblies()
         {
-            foreach (string file in GetFiles())
+            foreach (var file in GetFiles())
             {
-                if (!ReflectionUtil.IsAssemblyFile(file))
-                {
-                    continue;
-                }
+                if (!ReflectionUtil.IsAssemblyFile(file)) continue;
 
-                Assembly assembly = LoadAssemblyIgnoringErrors(file);
-                if (assembly != null)
-                {
-                    yield return assembly;
-                }
+                var assembly = LoadAssemblyIgnoringErrors(file);
+                if (assembly != null) yield return assembly;
             }
         }
 
@@ -51,8 +42,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        [NotNull]
-        public AssemblyFilter FilterByAssembly([NotNull] Predicate<Assembly> filter)
+        public AssemblyFilter FilterByAssembly(Predicate<Assembly> filter)
         {
             Check.NotNull(filter, nameof(filter));
 
@@ -65,8 +55,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        [NotNull]
-        public AssemblyFilter FilterByName([NotNull] Predicate<AssemblyName> filter)
+        public AssemblyFilter FilterByName(Predicate<AssemblyName> filter)
         {
             Check.NotNull(filter, nameof(filter));
 
@@ -79,8 +68,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="publicKeyToken">The public key token.</param>
         /// <returns></returns>
-        [NotNull]
-        public AssemblyFilter WithKeyToken([NotNull] string publicKeyToken)
+        public AssemblyFilter WithKeyToken(string publicKeyToken)
         {
             return WithKeyToken(ExtractKeyToken(publicKeyToken));
         }
@@ -90,8 +78,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="publicKeyToken">The public key token.</param>
         /// <returns></returns>
-        [NotNull]
-        public AssemblyFilter WithKeyToken([NotNull] byte[] publicKeyToken)
+        public AssemblyFilter WithKeyToken(byte[] publicKeyToken)
         {
             Check.NotNull(publicKeyToken, nameof(publicKeyToken));
 
@@ -103,8 +90,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="typeFromAssemblySignedWithKey">The type from assembly signed with key.</param>
         /// <returns></returns>
-        [NotNull]
-        public AssemblyFilter WithKeyToken([NotNull] Type typeFromAssemblySignedWithKey)
+        public AssemblyFilter WithKeyToken(Type typeFromAssemblySignedWithKey)
         {
             return WithKeyToken(typeFromAssemblySignedWithKey.Assembly);
         }
@@ -114,7 +100,6 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="TTypeFromAssemblySignedWithKey">The type of the type from assembly signed with key.</typeparam>
         /// <returns></returns>
-        [NotNull]
         public AssemblyFilter WithKeyToken<TTypeFromAssemblySignedWithKey>()
         {
             return WithKeyToken(typeof(TTypeFromAssemblySignedWithKey).Assembly);
@@ -125,58 +110,43 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns></returns>
-        [NotNull]
-        public AssemblyFilter WithKeyToken([NotNull] Assembly assembly)
+        public AssemblyFilter WithKeyToken(Assembly assembly)
         {
             return WithKeyToken(assembly.GetName().GetPublicKeyToken());
         }
 
-        [NotNull]
-        private string GetFullPath([NotNull] string path)
+
+        private string GetFullPath(string path)
         {
-            if (Path.IsPathRooted(path) == false)
-            {
-                path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-            }
+            if (Path.IsPathRooted(path) == false) path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
             return Path.GetFullPath(path);
         }
 
-        private bool IsTokenEqual([CanBeNull] byte[] actualToken, [NotNull] byte[] expectedToken)
+        private bool IsTokenEqual(byte[] actualToken, byte[] expectedToken)
         {
-            if (actualToken?.Length != expectedToken.Length)
-            {
-                return false;
-            }
+            if (actualToken?.Length != expectedToken.Length) return false;
 
             for (var i = 0; i < actualToken.Length; i++)
-            {
                 if (actualToken[i] != expectedToken[i])
-                {
                     return false;
-                }
-            }
 
             return true;
         }
 
-        [NotNull]
-        private byte[] ExtractKeyToken([NotNull] string keyToken)
+
+        private byte[] ExtractKeyToken(string keyToken)
         {
             Check.NotNull(keyToken, nameof(keyToken));
 
             if (keyToken.Length != 16)
-            {
                 throw new ArgumentException(
                     $"The string '{keyToken}' does not appear to be a valid public key token. It should have 16 characters, has {keyToken.Length}.");
-            }
 
             try
             {
                 var tokenBytes = new byte[8];
                 for (var i = 0; i < 8; i++)
-                {
                     tokenBytes[i] = byte.Parse(keyToken.Substring(2 * i, 2), NumberStyles.HexNumber);
-                }
 
                 return tokenBytes;
             }
@@ -188,19 +158,13 @@ namespace FluentAssemblyScanner
             }
         }
 
-        [NotNull]
+
         private IEnumerable<string> GetFiles()
         {
             try
             {
-                if (Directory.Exists(_directoryName) == false)
-                {
-                    return Enumerable.Empty<string>();
-                }
-                if (string.IsNullOrEmpty(_mask))
-                {
-                    return Directory.EnumerateFiles(_directoryName);
-                }
+                if (Directory.Exists(_directoryName) == false) return Enumerable.Empty<string>();
+                if (string.IsNullOrEmpty(_mask)) return Directory.EnumerateFiles(_directoryName);
 
                 return Directory.EnumerateFiles(_directoryName, _mask);
             }
@@ -210,8 +174,8 @@ namespace FluentAssemblyScanner
             }
         }
 
-        [CanBeNull]
-        private Assembly LoadAssemblyIgnoringErrors([NotNull] string file)
+
+        private Assembly LoadAssemblyIgnoringErrors(string file)
         {
             // based on MEF DirectoryCatalog
             try

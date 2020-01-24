@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FluentAssemblyScanner.Tests
 {
-    public class FilterDefiner_Tests
+    public class FilterDefinerTests
     {
         [Fact]
         public void when_use_with_filter_with_methodHasAttribute_should_work()

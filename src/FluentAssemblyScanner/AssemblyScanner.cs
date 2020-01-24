@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-using JetBrains.Annotations;
-
 namespace FluentAssemblyScanner
 {
     public class AssemblyScanner
@@ -14,8 +12,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns></returns>
-        [NotNull]
-        public static FromAssemblyDefiner FromAssembly([NotNull] Assembly assembly)
+        public static FromAssemblyDefiner FromAssembly(Assembly assembly)
         {
             Check.NotNull(assembly, nameof(assembly));
 
@@ -27,8 +24,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        [NotNull]
-        public static FromAssemblyDefiner FromAssemblyContaining([NotNull] Type type)
+        public static FromAssemblyDefiner FromAssemblyContaining(Type type)
         {
             Check.NotNull(type, nameof(type));
 
@@ -40,7 +36,6 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        [NotNull]
         public static FromAssemblyDefiner FromAssemblyContaining<T>()
         {
             return FromAssemblyContaining(typeof(T));
@@ -51,12 +46,11 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        [NotNull]
-        public static FromAssemblyDefiner FromAssemblyInDirectory([NotNull] AssemblyFilter filter)
+        public static FromAssemblyDefiner FromAssemblyInDirectory(AssemblyFilter filter)
         {
             Check.NotNull(filter, nameof(filter));
 
-            IEnumerable<Assembly> assemblies = ReflectionUtil.GetAssemblies(filter);
+            var assemblies = ReflectionUtil.GetAssemblies(filter);
             return new FromAssemblyDefiner(assemblies);
         }
 
@@ -71,11 +65,11 @@ namespace FluentAssemblyScanner
         ///     <c>MyApp.exe</c> and <c>MyApp.SuperFeatures.dll</c> will be scanned for components, and other
         ///     assemblies will be ignored.
         /// </remarks>
-        [NotNull]
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static FromAssemblyDefiner FromAssemblyInThisApplication()
         {
-            var assemblies = new HashSet<Assembly>(ReflectionUtil.GetApplicationAssemblies(Assembly.GetCallingAssembly()));
+            var assemblies =
+                new HashSet<Assembly>(ReflectionUtil.GetApplicationAssemblies(Assembly.GetCallingAssembly()));
             return new FromAssemblyDefiner(assemblies);
         }
 
@@ -83,10 +77,10 @@ namespace FluentAssemblyScanner
         ///     Froms the assembly in this application directory.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public static FromAssemblyDefiner FromAssemblyInThisApplicationDirectory()
         {
-            IEnumerable<Assembly> assemblies = ReflectionUtil.GetAssemblies(new AssemblyFilter(AppDomain.CurrentDomain.GetActualDomainPath()));
+            var assemblies =
+                ReflectionUtil.GetAssemblies(new AssemblyFilter(AppDomain.CurrentDomain.GetActualDomainPath()));
             return new FromAssemblyDefiner(assemblies);
         }
 
@@ -96,10 +90,10 @@ namespace FluentAssemblyScanner
         /// <param name="assemblyPrefix">The assembly prefix.</param>
         /// <param name="assemblyFilter">The assembly filter.</param>
         /// <returns></returns>
-        [NotNull]
-        public static FromAssemblyDefiner FromAssemblyMatchingNamed([NotNull] string assemblyPrefix, [NotNull] AssemblyFilter assemblyFilter)
+        public static FromAssemblyDefiner FromAssemblyMatchingNamed(string assemblyPrefix,
+            AssemblyFilter assemblyFilter)
         {
-            IEnumerable<Assembly> assemblies = ReflectionUtil.GetAssembliesContains(assemblyPrefix, assemblyFilter);
+            var assemblies = ReflectionUtil.GetAssembliesContains(assemblyPrefix, assemblyFilter);
             return new FromAssemblyDefiner(assemblies);
         }
 
@@ -108,10 +102,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        [NotNull]
-        public static FromAssemblyDefiner FromAssemblyNamed([NotNull] string assemblyName)
+        public static FromAssemblyDefiner FromAssemblyNamed(string assemblyName)
         {
-            Assembly assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
+            var assembly = ReflectionUtil.GetAssemblyNamed(assemblyName);
             return FromAssembly(assembly);
         }
 
@@ -120,8 +113,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <returns></returns>
-        [NotNull]
-        public static FromAssemblyDefiner FromAssemblies([NotNull] IEnumerable<Assembly> assemblies)
+        public static FromAssemblyDefiner FromAssemblies(IEnumerable<Assembly> assemblies)
         {
             Check.NotNull(assemblies, nameof(assemblies));
 
@@ -132,7 +124,6 @@ namespace FluentAssemblyScanner
         ///     Froms the this assembly.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static FromAssemblyDefiner FromThisAssembly()
         {

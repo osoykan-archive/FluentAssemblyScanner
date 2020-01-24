@@ -49,11 +49,9 @@ namespace FluentAssemblyScanner
         public static Predicate<Type> IsInNamespace(string @namespace, bool includeSubnamespaces)
         {
             if (includeSubnamespaces)
-            {
                 return type => type.Namespace == @namespace ||
                                type.Namespace != null &&
                                type.Namespace.StartsWith(@namespace + ".");
-            }
 
             return type => type.Namespace == @namespace;
         }

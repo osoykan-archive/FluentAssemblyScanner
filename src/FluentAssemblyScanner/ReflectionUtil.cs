@@ -7,11 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-using JetBrains.Annotations;
 // ReSharper disable UncatchableException
-
-// ReSharper disable UnthrowableException
-
 namespace FluentAssemblyScanner
 {
     internal static class ReflectionUtil
@@ -19,15 +15,16 @@ namespace FluentAssemblyScanner
         /// <summary>
         ///     The factories
         /// </summary>
-        private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> factories = new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
+        private static readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> Factories =
+            new ConcurrentDictionary<ConstructorInfo, Func<object[], object>>();
 
         /// <summary>
         ///     The open generic array interfaces
         /// </summary>
         public static readonly Type[] OpenGenericArrayInterfaces = typeof(object[]).GetInterfaces()
-                                                                                   .Where(i => i.IsGenericType)
-                                                                                   .Select(i => i.GetGenericTypeDefinition())
-                                                                                   .ToArray();
+            .Where(i => i.IsGenericType)
+            .Select(i => i.GetGenericTypeDefinition())
+            .ToArray();
 
         /// <summary>
         ///     Creates the instance.
@@ -49,16 +46,14 @@ namespace FluentAssemblyScanner
         /// <param name="rootAssembly">The root assembly.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentException"></exception>
-        public static IEnumerable<Assembly> GetApplicationAssemblies([NotNull] Assembly rootAssembly)
+        public static IEnumerable<Assembly> GetApplicationAssemblies(Assembly rootAssembly)
         {
-            int index = rootAssembly.FullName.IndexOfAny(new[] { '.', ',' });
+            var index = rootAssembly.FullName.IndexOfAny(new[] {'.', ','});
             if (index < 0)
-            {
                 throw new ArgumentException(
                     $"Could not determine application name for assembly \"{rootAssembly.FullName}\". Please use a different method for obtaining assemblies.");
-            }
 
-            string applicationName = rootAssembly.FullName.Substring(0, index);
+            var applicationName = rootAssembly.FullName.Substring(0, index);
             var assemblies = new HashSet<Assembly>();
             AddApplicationAssemblies(rootAssembly, assemblies, applicationName);
             return assemblies;
@@ -69,7 +64,7 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblyFilter">The assembly filter.</param>
         /// <returns></returns>
-        public static IEnumerable<Assembly> GetAssemblies([NotNull] AssemblyFilter assemblyFilter)
+        public static IEnumerable<Assembly> GetAssemblies(AssemblyFilter assemblyFilter)
         {
             return assemblyFilter.GetAssemblies();
         }
@@ -80,8 +75,7 @@ namespace FluentAssemblyScanner
         /// <param name="assemblyPrefix">The assembly prefix.</param>
         /// <param name="assemblyFilter">The assembly filter.</param>
         /// <returns></returns>
-        [NotNull]
-        public static IEnumerable<Assembly> GetAssembliesContains([NotNull] string assemblyPrefix, [NotNull] AssemblyFilter assemblyFilter)
+        public static IEnumerable<Assembly> GetAssembliesContains(string assemblyPrefix, AssemblyFilter assemblyFilter)
         {
             return assemblyFilter.GetAssemblies().Where(assembly => assembly.FullName.Contains(assemblyPrefix));
         }
@@ -93,7 +87,7 @@ namespace FluentAssemblyScanner
         /// <exception cref="Exception"></exception>
         /// <returns></returns>
         /// <exception cref="System.Exception"></exception>
-        public static Assembly GetAssemblyNamed([NotNull] string assemblyName)
+        public static Assembly GetAssemblyNamed(string assemblyName)
         {
             try
             {
@@ -101,18 +95,15 @@ namespace FluentAssemblyScanner
                 if (IsAssemblyFile(assemblyName))
                 {
                     if (Path.GetDirectoryName(assemblyName) == AppDomain.CurrentDomain.BaseDirectory)
-                    {
                         assembly = Assembly.Load(Path.GetFileNameWithoutExtension(assemblyName));
-                    }
                     else
-                    {
                         assembly = Assembly.LoadFile(assemblyName);
-                    }
                 }
                 else
                 {
                     assembly = Assembly.Load(assemblyName);
                 }
+
                 return assembly;
             }
             catch (FileNotFoundException)
@@ -141,33 +132,24 @@ namespace FluentAssemblyScanner
         /// <param name="nameFilter">The name filter.</param>
         /// <param name="assemblyFilter">The assembly filter.</param>
         /// <returns></returns>
-        public static Assembly GetAssemblyNamed([NotNull] string filePath, [CanBeNull] Predicate<AssemblyName> nameFilter, [CanBeNull] Predicate<Assembly> assemblyFilter)
+        public static Assembly GetAssemblyNamed(string filePath, Predicate<AssemblyName> nameFilter,
+            Predicate<Assembly> assemblyFilter)
         {
-            AssemblyName assemblyName = GetAssemblyName(filePath);
+            var assemblyName = GetAssemblyName(filePath);
             if (nameFilter != null)
-            {
-                foreach (Delegate @delegate in nameFilter.GetInvocationList())
+                foreach (var @delegate in nameFilter.GetInvocationList())
                 {
-                    var predicate = (Predicate<AssemblyName>)@delegate;
-                    if (predicate(assemblyName) == false)
-                    {
-                        return null;
-                    }
+                    var predicate = (Predicate<AssemblyName>) @delegate;
+                    if (predicate(assemblyName) == false) return null;
                 }
-            }
 
-            Assembly assembly = LoadAssembly(assemblyName);
+            var assembly = LoadAssembly(assemblyName);
             if (assemblyFilter != null)
-            {
-                foreach (Delegate @delegate in assemblyFilter.GetInvocationList())
+                foreach (var @delegate in assemblyFilter.GetInvocationList())
                 {
-                    var predicate = (Predicate<Assembly>)@delegate;
-                    if (predicate(assembly) == false)
-                    {
-                        return null;
-                    }
+                    var predicate = (Predicate<Assembly>) @delegate;
+                    if (predicate(assembly) == false) return null;
                 }
-            }
 
             return assembly;
         }
@@ -178,10 +160,9 @@ namespace FluentAssemblyScanner
         /// <typeparam name="TAttribute">The type of the attribute.</typeparam>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        [CanBeNull]
-        public static TAttribute[] GetAttributes<TAttribute>([NotNull] this MemberInfo item) where TAttribute : Attribute
+        public static TAttribute[] GetAttributes<TAttribute>(this MemberInfo item) where TAttribute : Attribute
         {
-            return (TAttribute[])Attribute.GetCustomAttributes(item, typeof(TAttribute), true);
+            return (TAttribute[]) Attribute.GetCustomAttributes(item, typeof(TAttribute), true);
         }
 
         /// <summary>
@@ -190,15 +171,11 @@ namespace FluentAssemblyScanner
         /// <param name="assembly">The assembly.</param>
         /// <param name="includeNonExported">if set to <c>true</c> [include non exported].</param>
         /// <returns></returns>
-        [NotNull]
-        public static Type[] GetAvailableTypes([NotNull] this Assembly assembly, bool includeNonExported = false)
+        public static Type[] GetAvailableTypes(this Assembly assembly, bool includeNonExported = false)
         {
             try
             {
-                if (includeNonExported)
-                {
-                    return assembly.GetTypes();
-                }
+                if (includeNonExported) return assembly.GetTypes();
 
                 return assembly.GetExportedTypes();
             }
@@ -216,8 +193,7 @@ namespace FluentAssemblyScanner
         /// <param name="assembly">The assembly.</param>
         /// <param name="includeNonExported">if set to <c>true</c> [include non exported].</param>
         /// <returns></returns>
-        [NotNull]
-        public static Type[] GetAvailableTypesOrdered([NotNull] this Assembly assembly, bool includeNonExported = false)
+        public static Type[] GetAvailableTypesOrdered(this Assembly assembly, bool includeNonExported = false)
         {
             return assembly.GetAvailableTypes(includeNonExported).OrderBy(t => t.FullName).ToArray();
         }
@@ -229,27 +205,14 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        [CanBeNull]
-        public static Type GetCompatibleArrayItemType([CanBeNull] this Type type)
+        public static Type GetCompatibleArrayItemType(this Type type)
         {
-            if (type == null)
-            {
-                return null;
-            }
-            if (type.IsArray)
-            {
-                return type.GetElementType();
-            }
-            if (type.IsGenericType == false || type.IsGenericTypeDefinition)
-            {
-                return null;
-            }
+            if (type == null) return null;
+            if (type.IsArray) return type.GetElementType();
+            if (type.IsGenericType == false || type.IsGenericTypeDefinition) return null;
 
-            Type openGeneric = type.GetGenericTypeDefinition();
-            if (OpenGenericArrayInterfaces.Contains(openGeneric))
-            {
-                return type.GetGenericArguments()[0];
-            }
+            var openGeneric = type.GetGenericTypeDefinition();
+            if (OpenGenericArrayInterfaces.Contains(openGeneric)) return type.GetGenericArguments()[0];
 
             return null;
         }
@@ -258,7 +221,6 @@ namespace FluentAssemblyScanner
         ///     Gets the loaded assemblies.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public static Assembly[] GetLoadedAssemblies()
         {
             return AppDomain.CurrentDomain.GetAssemblies();
@@ -282,11 +244,11 @@ namespace FluentAssemblyScanner
         /// <param name="ctor">The ctor.</param>
         /// <param name="ctorArgs">The ctor arguments.</param>
         /// <returns></returns>
-        public static object Instantiate([NotNull] this ConstructorInfo ctor, object[] ctorArgs)
+        public static object Instantiate(this ConstructorInfo ctor, object[] ctorArgs)
         {
             Func<object[], object> factory;
 
-            factory = factories.GetOrAdd(ctor, BuildFactory);
+            factory = Factories.GetOrAdd(ctor, BuildFactory);
 
             return factory.Invoke(ctorArgs);
         }
@@ -312,7 +274,7 @@ namespace FluentAssemblyScanner
         ///     <c>true</c> if [is assembly file] [the specified file path]; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">filePath</exception>
-        public static bool IsAssemblyFile([NotNull] string filePath)
+        public static bool IsAssemblyFile(string filePath)
         {
             Check.NotNull(filePath, nameof(filePath));
 
@@ -336,20 +298,14 @@ namespace FluentAssemblyScanner
         /// <param name="assembly">The assembly.</param>
         /// <param name="assemblies">The assemblies.</param>
         /// <param name="applicationName">Name of the application.</param>
-        private static void AddApplicationAssemblies(Assembly assembly, HashSet<Assembly> assemblies, string applicationName)
+        private static void AddApplicationAssemblies(Assembly assembly, HashSet<Assembly> assemblies,
+            string applicationName)
         {
-            if (assemblies.Add(assembly) == false)
-            {
-                return;
-            }
+            if (assemblies.Add(assembly) == false) return;
 
-            foreach (AssemblyName referencedAssembly in assembly.GetReferencedAssemblies())
-            {
+            foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
                 if (IsApplicationAssembly(applicationName, referencedAssembly.FullName))
-                {
                     AddApplicationAssemblies(LoadAssembly(referencedAssembly), assemblies, applicationName);
-                }
-            }
         }
 
         /// <summary>
@@ -359,15 +315,15 @@ namespace FluentAssemblyScanner
         /// <returns></returns>
         private static Func<object[], object> BuildFactory(ConstructorInfo ctor)
         {
-            ParameterInfo[] parameterInfos = ctor.GetParameters();
+            var parameterInfos = ctor.GetParameters();
             var parameterExpressions = new Expression[parameterInfos.Length];
-            ParameterExpression argument = Expression.Parameter(typeof(object[]), "parameters");
+            var argument = Expression.Parameter(typeof(object[]), "parameters");
             for (var i = 0; i < parameterExpressions.Length; i++)
-            {
                 parameterExpressions[i] = Expression.Convert(
                     Expression.ArrayIndex(argument, Expression.Constant(i, typeof(int))),
-                    parameterInfos[i].ParameterType.IsByRef ? parameterInfos[i].ParameterType.GetElementType() : parameterInfos[i].ParameterType);
-            }
+                    parameterInfos[i].ParameterType.IsByRef
+                        ? parameterInfos[i].ParameterType.GetElementType()
+                        : parameterInfos[i].ParameterType);
 
             return Expression.Lambda<Func<object[], object>>(
                 Expression.New(ctor, parameterExpressions),
@@ -382,12 +338,9 @@ namespace FluentAssemblyScanner
         /// <exception cref="System.InvalidCastException"></exception>
         private static void EnsureIsAssignable<TBase>(Type subtypeofTBase)
         {
-            if (subtypeofTBase.Is<TBase>())
-            {
-                return;
-            }
+            if (subtypeofTBase.Is<TBase>()) return;
 
-            string message = typeof(TBase).IsInterface
+            var message = typeof(TBase).IsInterface
                 ? $"Type {subtypeofTBase.FullName} does not implement the interface {typeof(TBase).FullName}."
                 : $"Type {subtypeofTBase.FullName} does not inherit from {typeof(TBase).FullName}.";
 
@@ -408,8 +361,9 @@ namespace FluentAssemblyScanner
             }
             catch (ArgumentException)
             {
-                assemblyName = new AssemblyName { CodeBase = filePath };
+                assemblyName = new AssemblyName {CodeBase = filePath};
             }
+
             return assemblyName;
         }
 
@@ -425,33 +379,29 @@ namespace FluentAssemblyScanner
         private static TBase Instantiate<TBase>(Type subtypeofTBase, object[] ctorArgs)
         {
             ctorArgs = ctorArgs ?? new object[0];
-            Type[] types = ctorArgs.ConvertAll(a => a == null ? typeof(object) : a.GetType());
-            ConstructorInfo constructor = subtypeofTBase.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, types, null);
-            if (constructor != null)
-            {
-                return (TBase)Instantiate(constructor, ctorArgs);
-            }
+            var types = ctorArgs.ConvertAll(a => a == null ? typeof(object) : a.GetType());
+            var constructor =
+                subtypeofTBase.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, types, null);
+            if (constructor != null) return (TBase) Instantiate(constructor, ctorArgs);
 
             try
             {
-                return (TBase)Activator.CreateInstance(subtypeofTBase, ctorArgs);
+                return (TBase) Activator.CreateInstance(subtypeofTBase, ctorArgs);
             }
             catch (MissingMethodException ex)
             {
                 string message;
                 if (ctorArgs.Length == 0)
                 {
-                    message = $"Type {subtypeofTBase.FullName} does not have a public default constructor and could not be instantiated.";
+                    message =
+                        $"Type {subtypeofTBase.FullName} does not have a public default constructor and could not be instantiated.";
                 }
                 else
                 {
                     var messageBuilder = new StringBuilder();
                     messageBuilder.AppendLine(
                         $"Type {subtypeofTBase.FullName} does not have a public constructor matching arguments of the following types:");
-                    foreach (Type type in ctorArgs.Select(o => o.GetType()))
-                    {
-                        messageBuilder.AppendLine(type.FullName);
-                    }
+                    foreach (var type in ctorArgs.Select(o => o.GetType())) messageBuilder.AppendLine(type.FullName);
 
                     message = messageBuilder.ToString();
                 }
@@ -460,7 +410,7 @@ namespace FluentAssemblyScanner
             }
             catch (Exception ex)
             {
-                string message = $"Could not instantiate {subtypeofTBase.FullName}.";
+                var message = $"Could not instantiate {subtypeofTBase.FullName}.";
                 throw new Exception(message, ex);
             }
         }

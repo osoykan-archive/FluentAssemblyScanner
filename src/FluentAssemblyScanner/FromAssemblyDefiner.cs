@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using JetBrains.Annotations;
-
 namespace FluentAssemblyScanner
 {
-    /// <seealso cref="FluentAssemblyScanner.FromAssemblyDefinerBase" />
-    public class FromAssemblyDefiner : FromAssemblyDefinerBase
+    public class FromAssemblyDefiner
     {
+        /// <summary>
+        ///     The assemblies
+        /// </summary>
+        private readonly IEnumerable<Assembly> _assemblies;
+
+        /// <summary>
+        ///     The assembly filters
+        /// </summary>
+        private Predicate<Assembly> _assemblyFilter;
+
         /// <summary>
         ///     Include non public types.
         /// </summary>
@@ -19,8 +26,8 @@ namespace FluentAssemblyScanner
         ///     Initializes a new instance of the <see cref="FromAssemblyDefiner" /> class.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
-        protected internal FromAssemblyDefiner([NotNull] Assembly assembly)
-            : base(new Assembly[] { assembly })
+        internal FromAssemblyDefiner(Assembly assembly)
+            : this(new[] {assembly})
         {
         }
 
@@ -28,18 +35,69 @@ namespace FluentAssemblyScanner
         ///     Initializes a new instance of the <see cref="FromAssemblyDefiner" /> class.
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
-        protected internal FromAssemblyDefiner([NotNull] IEnumerable<Assembly> assemblies)
-            : base(assemblies)
+        internal FromAssemblyDefiner(IEnumerable<Assembly> assemblies)
         {
+            _assemblies = assemblies;
+            _assemblyFilter = assembly => true;
+        }
+
+
+        /// <summary>
+        ///     Baseds the on.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public BasedOnDefiner BasedOn<T>()
+        {
+            return BasedOn(typeof(T));
+        }
+
+        /// <summary>
+        ///     Baseds the on.
+        /// </summary>
+        /// <param name="basedOn">The based on.</param>
+        /// <returns></returns>
+        public BasedOnDefiner BasedOn(Type basedOn)
+        {
+            return BasedOn((IEnumerable<Type>) new[] {basedOn});
+        }
+
+        /// <summary>
+        ///     Baseds the on.
+        /// </summary>
+        /// <param name="basedOn">The based on.</param>
+        /// <returns></returns>
+        public BasedOnDefiner BasedOn(params Type[] basedOn)
+        {
+            return BasedOn((IEnumerable<Type>) basedOn);
+        }
+
+        /// <summary>
+        ///     Baseds the on.
+        /// </summary>
+        /// <param name="basedOn">The based on.</param>
+        /// <returns></returns>
+        public BasedOnDefiner BasedOn(IEnumerable<Type> basedOn)
+        {
+            return new BasedOnDefiner(basedOn, this);
+        }
+
+        /// <summary>
+        ///     Picks any.
+        /// </summary>
+        /// <returns></returns>
+        public BasedOnDefiner PickAny()
+        {
+            return BasedOn<object>();
         }
 
         /// <summary>
         ///     Gets all types from searched assemlies according to given criteria.
         /// </summary>
         /// <returns></returns>
-        public override IEnumerable<Type> GetAllTypes()
+        public IEnumerable<Type> GetAllTypes()
         {
-            IEnumerable<Assembly> filteredAssemblies = Assemblies.Where(AssemblyFilter.ApplyTo);
+            var filteredAssemblies = _assemblies.Where(_assemblyFilter.ApplyTo);
             return filteredAssemblies.SelectMany(a => a.GetAvailableTypesOrdered(_nonPublicTypes));
         }
 
@@ -48,7 +106,6 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        [NotNull]
         public FromAssemblyDefiner ExcludeAssemblyContaining<T>()
         {
             return ExcludeAssemblyFullNamed(typeof(T).Assembly.FullName);
@@ -59,10 +116,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        [NotNull]
-        public FromAssemblyDefiner ExcludeAssemblyFullNamed([NotNull] string assemblyName)
+        public FromAssemblyDefiner ExcludeAssemblyFullNamed(string assemblyName)
         {
-            AssemblyFilter += assembly => assembly.FullName != assemblyName;
+            _assemblyFilter += assembly => assembly.FullName != assemblyName;
             return this;
         }
 
@@ -71,10 +127,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        [NotNull]
-        public FromAssemblyDefiner ExcludeAssemblyNamed([NotNull] string assemblyName)
+        public FromAssemblyDefiner ExcludeAssemblyNamed(string assemblyName)
         {
-            AssemblyFilter += assembly => assembly.GetName().Name != assemblyName;
+            _assemblyFilter += assembly => assembly.GetName().Name != assemblyName;
             return this;
         }
 
@@ -83,10 +138,10 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        [NotNull]
-        public FromAssemblyDefiner ExcludeAssemblyNameStartsWith([NotNull] string text)
+        public FromAssemblyDefiner ExcludeAssemblyNameStartsWith(string text)
         {
-            AssemblyFilter += assembly => !assembly.GetName().Name.StartsWith(text, StringComparison.OrdinalIgnoreCase);
+            _assemblyFilter += assembly =>
+                !assembly.GetName().Name.StartsWith(text, StringComparison.OrdinalIgnoreCase);
             return this;
         }
 
@@ -95,10 +150,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        [NotNull]
-        public FromAssemblyDefiner ExcludeAssemblyNameEndsWith([NotNull] string text)
+        public FromAssemblyDefiner ExcludeAssemblyNameEndsWith(string text)
         {
-            AssemblyFilter += assembly => !assembly.GetName().Name.EndsWith(text, StringComparison.OrdinalIgnoreCase);
+            _assemblyFilter += assembly => !assembly.GetName().Name.EndsWith(text, StringComparison.OrdinalIgnoreCase);
             return this;
         }
 
@@ -107,10 +161,9 @@ namespace FluentAssemblyScanner
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns></returns>
-        [NotNull]
-        public FromAssemblyDefiner ExcludeAssemblyNameContains([NotNull] string text)
+        public FromAssemblyDefiner ExcludeAssemblyNameContains(string text)
         {
-            AssemblyFilter += assembly => !assembly.GetName().Name.Contains(text);
+            _assemblyFilter += assembly => !assembly.GetName().Name.Contains(text);
             return this;
         }
 
@@ -118,7 +171,6 @@ namespace FluentAssemblyScanner
         ///     Includes the non public types.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public FromAssemblyDefiner IncludeNonPublicTypes()
         {
             _nonPublicTypes = true;
@@ -129,10 +181,9 @@ namespace FluentAssemblyScanner
         ///     Ignores the dynamic assemblies.
         /// </summary>
         /// <returns></returns>
-        [NotNull]
         public FromAssemblyDefiner IgnoreDynamicAssemblies()
         {
-            AssemblyFilter += assembly => assembly.IsDynamic == false;
+            _assemblyFilter += assembly => assembly.IsDynamic == false;
             return this;
         }
     }
