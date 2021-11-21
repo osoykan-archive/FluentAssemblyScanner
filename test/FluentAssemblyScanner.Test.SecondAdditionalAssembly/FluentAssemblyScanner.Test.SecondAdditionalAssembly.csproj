@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net6</TargetFramework>
     <AssemblyName>FluentAssemblyScanner.Test.SecondAdditionalAssembly</AssemblyName>
     <PackageId>FluentAssemblyScanner.Test.SecondAdditionalAssembly</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
