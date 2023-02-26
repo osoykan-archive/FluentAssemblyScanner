@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>2.0.0</VersionPrefix>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net7</TargetFramework>
     <AssemblyName>FluentAssemblyScanner</AssemblyName>
     <PackageId>FluentAssemblyScanner</PackageId>
     <PackageTags>netstandard;netcore;assemblyscanner;fluent</PackageTags>
